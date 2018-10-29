@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
-    "precommit": "lint-staged"
+    "lint": "eslint ./src/**/*.js",
+    "precommit": "lint"
   },
   "repository": "git@github.com:dharmawankenny/asani-frontend.git",
   "author": "Asani",
@@ -35,6 +36,7 @@
     "lodash": "^4.17.11",
     "moment-timezone": "^0.5.23",
     "normalize.css": "^8.0.0",
+    "prettier": "^1.14.3",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
