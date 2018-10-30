@@ -6,6 +6,19 @@
   box-sizing: inherit;
 }
 
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #5E6C84;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #5E6C84;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #5E6C84;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #5E6C84;
+}
+
 html {
   /* Load Inter UI then system fonts */
   font-family: 'Inter UI', -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI,
@@ -20,6 +33,7 @@ html {
 
   /* Enable kerning and optional ligatures */
   text-rendering: optimizeLegibility;
+  color: #172B4D;
 }
 
 /**
@@ -32,6 +46,7 @@ optgroup,
 select,
 textarea {
   font-family: inherit;
+  letter-spacing: -0.025rem;
 }
 
 button {
@@ -51,6 +66,7 @@ h5,
 h6 {
   margin: 0;
   font-weight: 700;
+  letter-spacing: -0.025rem;
 }
 
 a,
@@ -58,6 +74,7 @@ p,
 span {
   margin: 0;
   font-weight: 400;
+  letter-spacing: -0.025rem;
 }
 
 input {
