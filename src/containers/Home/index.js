@@ -5,7 +5,9 @@ import { flex } from '../../commons/theme';
 
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
+import LoanCard from '../../components/LoanCard';
 import { PageWrapper } from '../../components/PageBuilder';
+import ProductCard from '../../components/ProductCard';
 import Spinner from '../../components/Spinner';
 
 import { Consumer as AuthConsumer } from '../../contexts/auth';
@@ -17,7 +19,7 @@ export default class Home extends React.Component {
         <Header withMenu />
         <CreditScoreSummary>
           <SegmentContext>
-            <SegmentHeader>Skor kredit saya</SegmentHeader>
+            <SegmentHeader>Skor kredit kamu</SegmentHeader>
             <SegmentAction>Info lebih lanjut ></SegmentAction>
           </SegmentContext>
           {/* <SpinnerWrapper>
@@ -30,6 +32,29 @@ export default class Home extends React.Component {
             <div className="bar" />
           </div>
         </CreditScoreSummary>
+        <Loans>
+          <SegmentContext>
+            <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
+            <SegmentAction>Riwayat Pinjaman ></SegmentAction>
+          </SegmentContext>
+          <LoanCard />
+          <LoanCard />
+        </Loans>
+        <Loans>
+          <BigSegmentHeader>Pinjaman terbaik untuk kamu</BigSegmentHeader>
+          <SegmentContext>
+            <SegmentHeader>Pinjaman pilihan pasti cair</SegmentHeader>
+          </SegmentContext>
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <SegmentContext>
+            <DividerSegmentHeader>Naikan skor kredit kamu dan buka kesempatan membuka pinjaman dibawah ini</DividerSegmentHeader>
+          </SegmentContext>
+          <ProductCard locked />
+          <ProductCard locked />
+          <ProductCard locked />
+        </Loans>
       </PageWrapper>
     );
   }
@@ -41,9 +66,18 @@ const SegmentContext = styled.div`
   margin: 0 0 1rem;
 `;
 
+const BigSegmentHeader = styled.span`
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+  color: ${props => props.theme.color.mainProductBlue};
+`;
+
 const SegmentHeader = styled.span`
   flex: 1;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1;
   text-overflow: ellipsis;
@@ -53,8 +87,17 @@ const SegmentHeader = styled.span`
   color: ${props => props.theme.color.N300};
 `;
 
+const DividerSegmentHeader = styled.span`
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25;
+  margin: 1.5rem 0 0;
+  color: ${props => props.theme.color.N300};
+`;
+
 const SegmentAction = styled.button`
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1;
   margin: 0;
@@ -73,7 +116,7 @@ const CreditScoreSummary = styled.div`
   ${flex({ justify: 'space-between' })}
 
   h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 700;
     line-height: 1;
     margin: 0 1rem 0 0;
@@ -83,7 +126,7 @@ const CreditScoreSummary = styled.div`
 
   h2 {
     flex: 1;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     text-align: right;
     color: ${props => props.theme.color.Y200};
@@ -92,10 +135,11 @@ const CreditScoreSummary = styled.div`
 
   .progress {
     width: 100%;
-    height: 1rem;
+    height: 0.75rem;
     margin: 0.5rem 0 0;
     border-radius: ${props => props.theme.borderRadius};
     position: relative;
+    box-shadow: ${props => props.theme.shadow.base};
 
     .bar,
     .bg {
@@ -117,6 +161,20 @@ const CreditScoreSummary = styled.div`
       z-index: 1;
       right: 0;
       opacity: 0.25;
+    }
+  }
+`;
+
+const Loans = styled.div`
+  width: 100%;
+  margin: 3rem 0 0;
+  ${flex()}
+
+  button {
+    margin: 0 0 1rem;
+
+    &:last-of-type {
+      margin: 0;
     }
   }
 `;
