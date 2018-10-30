@@ -9,9 +9,11 @@ import { ThemeProvider } from 'styled-components';
 import SITEMAP from './commons/sitemap';
 import theme from './commons/theme';
 
-import { Provider as UserProvider } from './contexts/user';
+import { Provider as AuthProvider } from './contexts/auth';
 
 import { AUTHENTICATED_PAGES, UNAUTHENTICATED_PAGES } from './containers';
+
+import NotFound from './containers/NotFound';
 
 import { api } from './api';
 
@@ -40,7 +42,6 @@ const Authenticated = ({ auth, componentKey, ...rest }) => {
 export default class App extends React.Component {
   state = {
     loggedIn: localStorage.getItem('asaniMainAuthToken') ? true : false,
-    user: JSON.parse(localStorage.getItem('asaniMainUser')),
     loading: false,
   };
 
@@ -59,42 +60,39 @@ export default class App extends React.Component {
     }
   }
 
-  logIn = async (token, user) => {
+  logIn = async (token) => {
     await localStorage.setItem('asaniMainAuthToken', token);
-    await localStorage.setItem('asaniMainUser', JSON.stringify(user));
-    api.defaults.headers.common['Authorization'] = `JWT ${token}`
-    this.setState({ loggedIn: true, user });
+    api.defaults.headers.common['Authorization'] = `${token}`;
+    this.setState({ loggedIn: true });
     navigate(SITEMAP.HOME);
   };
 
   logOut = async () => {
     await localStorage.removeItem('asaniMainAuthToken');
-    await localStorage.removeItem('asaniMainUser');
-    api.defaults.headers.common['Authorization'] = null;
-    this.setState({ loggedIn: false, user: null });
+    delete api.defaults.headers.common['Authorization'];
+    this.setState({ loggedIn: false });
     navigate(SITEMAP.AUTHENTICATION);
-  }
+  };
 
   render() {
     return (
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <UserProvider value={this.state.user}>
+          <AuthProvider value={{ logIn: this.logIn, logOut: this.logOut }}>
             <Router>
               <UnAuthenticated
                 path={SITEMAP.AUTHENTICATION}
                 auth={this.state.loggedIn}
                 componentKey="userAccess"
-                logIn={this.logIn}
               />
               <Authenticated
                 path={SITEMAP.HOME}
                 auth={this.state.loggedIn}
                 componentKey="home"
-                logOut={this.logOut}
               />
+              <NotFound path="/*" />
             </Router>
-          </UserProvider>
+          </AuthProvider>
         </ThemeProvider>
       </Provider>
     );

@@ -61,13 +61,16 @@ const theme = {
     N20: '#F4F5F7',
     N10: '#FAFBFC',
     N0: '#FFFFFF',
+    mainProductBlue: '#2797FB',
   },
 
   // Box Shadows
   shadow: {
-    dark: '0 0.5rem 2rem 0 rgba(9, 30, 66, 0.15)',
-    base: '0 0.25rem 1rem 0 rgba(9, 30, 66, 0.15)',
+    dark: '0 0.25rem 1rem 0 rgba(9, 30, 66, 0.15)',
+    base: '0 0.125rem 0.5rem 0 rgba(9, 30, 66, 0.15)',
   },
+
+  borderRadius: '0.25rem',
 
   // Elevations (z-index)
   elevation: {
