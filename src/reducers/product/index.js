@@ -1,12 +1,12 @@
 // follow Ducks (https://github.com/erikras/ducks-modular-redux) convention
 import * as apiCalls from '../../api';
 
-const LOADING = 'asani/creditScore/LOADING';
-const LOAD_SUCCESS = 'asani/creditScore/LOAD_SUCCESS';
-const LOAD_ERROR = 'asani/creditScore/LOAD_ERROR';
+const LOADING = 'asani/product/LOADING';
+const LOAD_SUCCESS = 'asani/product/LOAD_SUCCESS';
+const LOAD_ERROR = 'asani/product/LOAD_ERROR';
 
 const initialState = {
-  data: null,
+  products: [],
   loading: false,
   loaded: false,
   error: null,
@@ -17,7 +17,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOADING:
       return { ...state, loading: true };
     case LOAD_SUCCESS:
-      return { ...state, data: action.payload.data, loading: false, error: null, loaded: true };
+      return { ...state, products: action.payload.data, loading: false, error: null, loaded: true };
     case LOAD_ERROR:
       return { ...state, error: action.payload.error, loading: false, loaded: true };
     default:
@@ -37,13 +37,17 @@ export function loadError(error) {
   return { type: LOAD_ERROR, payload: { error } };
 }
 
-export function getCreditScore() {
+export function getProducts() {
   return async dispatch => {
     dispatch(loading());
-    const response = await apiCalls.getCreditScore();
+    const response = await apiCalls.getProducts();
 
     if (response && response.data) {
-      dispatch(loadSuccess(response.data));
+      if (response.data.data) {
+        dispatch(loadSuccess(response.data.data));
+      } else {
+        dispatch(loadSuccess(response.data));
+      }
     } else {
       dispatch(loadError('Error Loading Data'));
     }

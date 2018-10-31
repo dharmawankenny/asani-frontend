@@ -67,7 +67,7 @@ const theme = {
   // Box Shadows
   shadow: {
     dark: '0 0.25rem 1rem 0 rgba(9, 30, 66, 0.15)',
-    base: '0 0.125rem 0.5rem 0 rgba(9, 30, 66, 0.15)',
+    base: '0 0.0675rem 0.5rem 0 rgba(9, 30, 66, 0.15)',
   },
 
   borderRadius: '0.25rem',

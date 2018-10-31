@@ -26,6 +26,10 @@ export default class Header extends React.Component {
     showMenu: false,
   };
 
+  componentWillUnmount() {
+    document.body.style.overflow = 'auto';
+  }
+
   toggleMenu = () => {
     this.setState(prevState => {
       if (prevState.showMenu) {
@@ -39,6 +43,8 @@ export default class Header extends React.Component {
   };
 
   navigateTo = to => () => navigate(to);
+
+  isLinkActive = link => window.location.pathname === link;
 
   render() {
     return (
@@ -56,9 +62,27 @@ export default class Header extends React.Component {
             <Overlay active={this.state.showMenu} onClick={this.toggleMenu} />
             <Content active={this.state.showMenu}>
               <ContentAnimationWrapper active={this.state.showMenu}>
-                <NavigationButton onClick={this.navigateTo(SITEMAP.HOME)}><img src={HomeIcon} /><span>Beranda</span></NavigationButton>
-                <NavigationButton onClick={this.navigateTo(SITEMAP.CREDIT_SCORE)}><img src={CreditScoreIcon} /><span>Skor Kredit</span></NavigationButton>
-                <NavigationButton onClick={this.navigateTo(SITEMAP.LOAN_HISTORY)}><img src={LoanHistoryIcon} /><span>Riwayat</span></NavigationButton>
+                <NavigationButton
+                  onClick={this.navigateTo(SITEMAP.HOME)}
+                  disabled={this.isLinkActive(SITEMAP.HOME)}
+                >
+                  <img src={HomeIcon} />
+                  <span>Beranda</span>
+                </NavigationButton>
+                <NavigationButton
+                  onClick={this.navigateTo(SITEMAP.CREDIT_SCORE)}
+                  disabled={this.isLinkActive(SITEMAP.CREDIT_SCORE)}
+                >
+                  <img src={CreditScoreIcon} />
+                  <span>Skor Kredit</span>
+                </NavigationButton>
+                <NavigationButton
+                  onClick={this.navigateTo(SITEMAP.LOAN_HISTORY)}
+                  disabled={this.isLinkActive(SITEMAP.LOAN_HISTORY)}
+                >
+                  <img src={LoanHistoryIcon} />
+                  <span>Riwayat</span>
+                </NavigationButton>
                 <AuthConsumer>
                   {({ logOut }) => (
                     <NavigationButton onClick={logOut}><img src={LogoutIcon} /><span>Keluar</span></NavigationButton>
@@ -142,7 +166,7 @@ const Content = styled.div`
   background: ${props => props.theme.color.N0};
   transform: translate3d(0, ${props => props.active ? '0' : '-100%'}, 0);
   transition: 0.25s ease all;
-  padding: 5.5rem 2rem 2rem;
+  padding: 4.5rem 1.5rem 1.5rem;
 `;
 
 const ContentAnimationWrapper = styled.div`
@@ -150,6 +174,11 @@ const ContentAnimationWrapper = styled.div`
   ${flex({ justify: 'space-between' })}
   opacity: ${props => props.active ? '1' : '0'};
   transition: ${props => props.active ? '0.125s ease all 0.125s' : 'none'};
+
+  @media screen and (min-width: ${props => props.theme.breakpoint.tablet}) {
+    width: 32rem;
+    margin: 0 auto;
+  }
 `;
 
 const NavigationButton = styled.button`
@@ -162,6 +191,15 @@ const NavigationButton = styled.button`
   color: ${props => props.theme.color.N800};
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
+
+  &:disabled {
+    color: ${props => props.theme.color.N0};
+    background: ${props => props.theme.color.mainProductBlue};
+
+    img {
+      filter: brightness(0) invert(1);
+    }
+  }
 
   img {
     width: 2rem;

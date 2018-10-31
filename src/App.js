@@ -5,6 +5,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router, navigate } from '@reach/router';
 import { ThemeProvider } from 'styled-components';
+import moment from 'moment-timezone';
 
 import SITEMAP from './commons/sitemap';
 import theme from './commons/theme';
@@ -18,6 +19,9 @@ import NotFound from './containers/NotFound';
 import { api } from './api';
 
 import configureStore from './store';
+
+moment.tz.setDefault('Asia/Jakarta');
+moment.locale('id-id')
 
 const store = configureStore();
 
@@ -48,7 +52,7 @@ export default class App extends React.Component {
   componentWillMount() {
     if (this.state.loggedIn) {
       const token = localStorage.getItem('asaniMainAuthToken');
-      api.defaults.headers.common['Authorization'] = `JWT ${token}`;
+      api.defaults.headers.common['Authorization'] = `${token}`;
     }
   }
 
@@ -80,16 +84,20 @@ export default class App extends React.Component {
         <ThemeProvider theme={theme}>
           <AuthProvider value={{ logIn: this.logIn, logOut: this.logOut }}>
             <Router>
-              <UnAuthenticated
-                path={SITEMAP.AUTHENTICATION}
-                auth={this.state.loggedIn}
-                componentKey="userAccess"
-              />
-              <Authenticated
-                path={SITEMAP.HOME}
-                auth={this.state.loggedIn}
-                componentKey="home"
-              />
+              {Object.keys(UNAUTHENTICATED_PAGES).map(key => (
+                <UnAuthenticated
+                  auth={this.state.loggedIn}
+                  componentKey={key}
+                  path={SITEMAP[key]}
+                />
+              ))}
+              {Object.keys(AUTHENTICATED_PAGES).map(key => (
+                <Authenticated
+                  auth={this.state.loggedIn}
+                  componentKey={key}
+                  path={SITEMAP[key]}
+                />
+              ))}
               <NotFound path="/*" />
             </Router>
           </AuthProvider>

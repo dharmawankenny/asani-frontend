@@ -1,27 +1,100 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import moment from 'moment-timezone';
 
 import { flex } from '../commons/theme';
+import { printPrice } from '../commons/utils';
 
+import ClockIcon from '../assets/clock.svg';
 import DummyIcon from '../assets/cash.svg';
 
+const STATUS_COLOR_MAP = [
+  'Y300',
+  'G300',
+  'R300',
+  'G300',
+];
+
 export default class LoanCard extends React.Component {
+  static propTypes = {
+    loan: PropTypes.shape({
+      createTime: PropTypes.string,
+      disburseTime: PropTypes.string,
+      dueTime: PropTypes.string,
+      interestPct: PropTypes.string,
+      isSyariah: PropTypes.number,
+      lenderName: PropTypes.string,
+      loanId: PropTypes.number,
+      note: PropTypes.string,
+      paymentTime: PropTypes.string,
+      productPrice: PropTypes.number,
+      productType: PropTypes.string,
+      status: PropTypes.shape({
+        status: PropTypes.number,
+        description: PropTypes.string,
+      }),
+      tenorDays: PropTypes.number,
+      urlProductLogo: PropTypes.string,
+    }).isRequired,
+  };
+
+  static defaultProps = {
+    loan: {
+      status: {
+        status: 2,
+      },
+    },
+  };
+
   render() {
+    const {
+      createTime,
+      disburseTime,
+      dueTime,
+      interestPct,
+      isSyariah,
+      lenderName,
+      loanId,
+      note,
+      paymentTime,
+      productPrice,
+      productType,
+      status,
+      tenorDays,
+      urlProductLogo,
+    } = this.props.loan;
+
     return (
-      <Wrapper>
-        <LoanProduct>
-          <img src={DummyIcon} />
-          <span>Cair</span>
+      <Wrapper onClick={this.props.onClick}>
+        <LoanProduct color={STATUS_COLOR_MAP[Number(status.status)]}>
+          <img src={urlProductLogo} />
+          <span>{status.description}</span>
         </LoanProduct>
         <LoanDetail>
-          <h2>Loan Provider</h2>
-          <h3>Product Name</h3>
-          <h1>Rp X.XXX.XXX</h1>
+          <h2>{lenderName}</h2>
+          <h3>{productType}</h3>
+          <h1>{printPrice(productPrice)}</h1>
         </LoanDetail>
         <LoanPayment>
-          <h3>Jatuh Tempo</h3>
-          <h2>3 Hari Lagi</h2>
-          <h1>Lunaskan ></h1>
+          {Number(status.status) === 0 && (
+            <Fragment>
+              <h4>Peminjaman anda sedang diproses oleh tim kami, mohon menunggu</h4>
+            </Fragment>
+          )}
+          {Number(status.status) === 2 && (
+            <Fragment>
+              <h3>Alasan</h3>
+              <h4>{note}</h4>
+            </Fragment>
+          )}
+          {(Number(status.status) !== 0 && Number(status.status) !== 2) && (
+            <Fragment>
+              <h3>Jatuh Tempo</h3>
+              <h2><img src={ClockIcon} />{moment(dueTime).fromNow()}</h2>
+              <h1>Lunaskan ></h1>
+            </Fragment>
+          )}
         </LoanPayment>
       </Wrapper>
     );
@@ -34,27 +107,25 @@ const Wrapper = styled.button`
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
   padding: 0.75rem;
-  ${flex({ justify: 'flex-start', align: 'flex-start' })}
+  ${flex({ justify: 'flex-start', align: 'stretch' })}
 `;
 
 const LoanProduct = styled.div`
-  width: calc(20% - 0.5rem);
-  ${flex()}
+  width: calc(17.5% - 0.5rem);
+  ${flex({ direction: 'column' })}
 
   img {
     width: 2.5rem;
-    height: auto;
-    margin: 0 0 0.5rem;
+    height: 2.5rem;
+    object-fit: contain;
+    margin: 0 0 0.25rem;
   }
 
   span {
     font-size: 0.75rem;
-    padding: 0.125rem;
-    width: 100%;
-    ${flex()}
-    border: 1px solid ${props => props.theme.color.G200};
-    border-radius: ${props => props.theme.borderRadius};
-    color: ${props => props.theme.color.G200};
+    font-weight: 700;
+    margin: 0;
+    color: ${props => props.theme.color[props.color]};
   }
 `;
 
@@ -83,19 +154,19 @@ const LoanDetail = styled.div`
   h2 {
     font-size: 0.875rem;
     font-weight: 700;
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.125rem;
   }
 
   h3 {
     font-size: 0.75rem;
     font-weight: 400;
-    margin: 0 0 1rem;
+    margin: 0 0 0.5rem;
     color: ${props => props.theme.color.N300};
   }
 `;
 
 const LoanPayment = styled.div`
-  width: calc(35% - 0.5rem);
+  width: calc(37.5% - 0.5rem);
   ${flex()}
 
   h1,
@@ -124,6 +195,14 @@ const LoanPayment = styled.div`
     font-size: 0.875rem;
     font-weight: 400;
     margin: 0 0 0.5rem;
+    ${flex({ justify: 'flex-start' })}
+
+    img {
+      width: 0.875rem;
+      height: 0.875rem;
+      object-fit: contain;
+      margin: 0 0.25rem 0 0;
+    }
   }
 
   h3 {
@@ -131,5 +210,16 @@ const LoanPayment = styled.div`
     font-weight: 400;
     margin: 0 0 0.25rem;
     color: ${props => props.theme.color.N300};
+  }
+
+  h4 {
+    width: 100%;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.25;
+    margin: 0;
+    text-align: left;
+    color: ${props => props.theme.color.Y300};
+    text-transform: capitalize;
   }
 `;
