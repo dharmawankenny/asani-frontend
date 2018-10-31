@@ -5,6 +5,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router, navigate } from '@reach/router';
 import { ThemeProvider } from 'styled-components';
+import moment from 'moment-timezone';
 
 import SITEMAP from './commons/sitemap';
 import theme from './commons/theme';
@@ -18,6 +19,9 @@ import NotFound from './containers/NotFound';
 import { api } from './api';
 
 import configureStore from './store';
+
+moment.tz.setDefault('Asia/Jakarta');
+moment.locale('id-id')
 
 const store = configureStore();
 

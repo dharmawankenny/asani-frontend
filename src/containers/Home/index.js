@@ -20,6 +20,7 @@ import {
   SegmentAction,
   SegmentDescription,
   SpinnerWrapper,
+  EmptyWrapper,
 } from '../../components/PageBuilder';
 import ProductCard from '../../components/ProductCard';
 import Spinner from '../../components/Spinner';
@@ -68,8 +69,8 @@ export default class Home extends React.Component {
       this.props.productActions.getProducts();
     }
 
-    if (!this.props.loan.loading && !this.props.loan.loaded) {
-      this.props.loanActions.getLoans();
+    if (!this.props.loan.activeLoansLoading && !this.props.loan.activeLoansLoaded) {
+      this.props.loanActions.getActiveLoans();
     }
   }
 
@@ -140,14 +141,15 @@ export default class Home extends React.Component {
               </Fragment>
             )}
         </CreditScoreSummary>
-        {this.props.loan.loaded &&
-          this.props.loan.data && (
+        {this.props.loan.activeLoansLoaded &&
+          this.props.loan.activeLoans &&
+          this.props.loan.activeLoans.length > 0 && (
           <Loans>
             <SegmentContext>
               <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
               <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
             </SegmentContext>
-            <LoanCard />
+            {this.props.loan.activeLoans.map(loan => <LoanCard loan={loan} />)}
           </Loans>
         )}
         <Loans>
@@ -200,10 +202,17 @@ export default class Home extends React.Component {
             </SpinnerWrapper>
           )}
           {this.props.product.loaded &&
-            this.props.product.data &&
-            this.props.product.data.map(product => (
+            this.props.product.products &&
+            this.props.product.products.map(product => (
               <ProductCard product={product} />
             ))}
+          {this.props.product.loaded &&
+            this.props.product.products &&
+            this.props.product.products.length === 0 && (
+              <EmptyWrapper>
+                Mohon Maaf, sepertinya tidak ada pinjaman terbaik untuk kamu saat ini, tunggu pembaharuan selanjutnya ya!
+              </EmptyWrapper>
+            )}
         </Loans>
       </PageWrapper>
     );

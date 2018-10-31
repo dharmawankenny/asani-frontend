@@ -6,7 +6,7 @@ const LOAD_SUCCESS = 'asani/product/LOAD_SUCCESS';
 const LOAD_ERROR = 'asani/product/LOAD_ERROR';
 
 const initialState = {
-  data: null,
+  products: [],
   loading: false,
   loaded: false,
   error: null,
@@ -17,7 +17,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOADING:
       return { ...state, loading: true };
     case LOAD_SUCCESS:
-      return { ...state, data: action.payload.data, loading: false, error: null, loaded: true };
+      return { ...state, products: action.payload.data, loading: false, error: null, loaded: true };
     case LOAD_ERROR:
       return { ...state, error: action.payload.error, loading: false, loaded: true };
     default:
@@ -43,7 +43,11 @@ export function getProducts() {
     const response = await apiCalls.getProducts();
 
     if (response && response.data) {
-      dispatch(loadSuccess(response.data.data));
+      if (response.data.data) {
+        dispatch(loadSuccess(response.data.data));
+      } else {
+        dispatch(loadSuccess(response.data));
+      }
     } else {
       dispatch(loadError('Error Loading Data'));
     }

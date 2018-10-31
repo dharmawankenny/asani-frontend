@@ -12,6 +12,8 @@ export const api = axios.create({
   baseURL: PREFIX_API_URL,
 });
 
+const cdnApi = axios.create();
+
 export const postSendOTP = async (telNumber) => {
   try {
     const response = await api.post('/send_otp/', { phone_number: telNumber });
@@ -95,7 +97,26 @@ export const getDocuments = async () => {
 
 export const signDocument = async (fileName, fileType) => {
   try {
-    const response = await api.post('/signing/', { file_name: fileName, file_type: fileType });
+    const response = await api.post('/sign-s3/', { fileName, fileType });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const uploadDocument = async (url, file, onUploadProgress) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const opts = {
+      onUploadProgress,
+      headers: {
+        'Content-Type': file.type,
+      },
+    };
+
+    const response = await api.put(url, formData, opts);
+
     return response;
   } catch (err) {
     return err.response;

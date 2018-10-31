@@ -55,7 +55,8 @@ export default class ProductCard extends React.Component {
         </ProductDetail>
         <ProductPrice locked={isLocked}>
           {isLocked ? (<h3><img src={LockIcon} /> Skor Minimal {minCreditScore}</h3>) : (<h3>Pasti Cair</h3>)}
-          <h1>{productNominal}</h1>
+          <h1>{printPrice(productPrice)}</h1>
+          <span>{productType} {productNominal}</span>
           <h2>Pilih ></h2>
         </ProductPrice>
       </Wrapper>
@@ -146,7 +147,7 @@ const ProductPrice = styled.div`
   h1 {
     font-size: 1rem;
     font-weight: 700;
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.0625rem;
   }
 
   h2 {
@@ -173,5 +174,14 @@ const ProductPrice = styled.div`
       width: auto;
       margin: 0 0.125rem 0 0;
     }
+  }
+
+  span {
+    width: 100%;
+    text-align: left;
+    font-size: 0.75rem;
+    margin: 0 0 0.25rem;
+    color: ${props => props.theme.color.N800};
+    text-align: left;
   }
 `;

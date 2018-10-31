@@ -1,4 +1,6 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 
@@ -17,8 +19,23 @@ import {
   SegmentDescription,
   SpinnerWrapper,
 } from '../../components/PageBuilder';
+import Spinner from '../../components/Spinner';
 
+import * as loanActions from '../../reducers/loan';
+
+@connect(
+  state => ({ loan: state.loan }),
+  dispatch => ({
+    loanActions: bindActionCreators(loanActions, dispatch),
+  })
+)
 export default class LoanHistory extends React.Component {
+  componentDidMount() {
+    if (!this.props.loan.loading && !this.props.loan.loaded) {
+      this.props.loanActions.getLoans();
+    }
+  }
+
   render() {
     return (
       <PageWrapper>
@@ -26,10 +43,22 @@ export default class LoanHistory extends React.Component {
         <History>
           <FullSegmentHeader>Riwayat Peminjaman</FullSegmentHeader>
           <SegmentDescription>Berikut adalah daftar peminjaman yang sudah atau sedang kamu lakukan</SegmentDescription>
-          <LoanCard />
-          <LoanCard />
-          <LoanCard />
-          <LoanCard />
+          {this.props.loan.loading && (
+            <SpinnerWrapper>
+              <Spinner color="N800" />
+            </SpinnerWrapper>
+          )}
+          {this.props.loan.loaded &&
+            this.props.loan.loans &&
+            this.props.loan.loans.length > 0 &&
+            this.props.loan.loans.map(loan => <LoanCard loan={loan} />)}
+          {this.props.loan.loaded &&
+            this.props.loan.loans &&
+            this.props.loan.loans.length === 0 && (
+              <EmptyWrapper>
+                Anda belum pernah melakukan pinjaman, ajukan pinjaman sekarang juga dan naikan skor kredit anda!
+              </EmptyWrapper>
+            )}
         </History>
       </PageWrapper>
     );
@@ -45,11 +74,11 @@ const History = styled.div`
     margin: 0 0 1rem;
 
     &:first-of-type {
-      margin: 1rem 0;
+      margin-top: 1rem;
     }
 
     &:last-of-type {
-      margin: 0;
+      margin-bottom: 0;
     }
   }
 `;

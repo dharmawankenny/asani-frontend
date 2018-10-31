@@ -24,6 +24,7 @@ import { flex } from '../../commons/theme';
 import { calculatePercentage } from '../../commons/utils';
 
 import { BigActionButton } from '../../components/Buttons';
+import DocUpload from '../../components/DocUpload';
 import Header from '../../components/Header';
 import {
   PageWrapper,
@@ -143,6 +144,7 @@ export default class CreditScore extends React.Component {
               <SegmentHeader>Skor kredit kamu</SegmentHeader>
               <SegmentAction onClick={() => navigate(SITEMAP.WHAT_IS_CREDIT_SCORE)}>Apa itu skor kredit? ></SegmentAction>
             </SegmentContext>
+            <DocUpload upload={this.props.userDocumentActions.uploadDocument} />
             {this.props.creditScore.loading && (
               <SpinnerWrapper>
                 <Spinner color="N800" />
@@ -210,8 +212,8 @@ export default class CreditScore extends React.Component {
             </SpinnerWrapper>
           )}
           {this.props.userDocument.loaded &&
-            this.props.userDocument.data &&
-            this.props.userDocument.data.map(doc => (
+            this.props.userDocument.userDocuments &&
+            this.props.userDocument.userDocuments.map(doc => (
               <UserDataAction onClick={this.userDataDocumentAction(doc)}>
                 <img src={this.getDocumentActionIcon(doc)} />
                 <span>Upload {doc.doc_name}</span>

@@ -72,3 +72,13 @@ export const SpinnerWrapper = styled.div`
   ${flex()}
   padding: 2rem;
 `;
+
+export const EmptyWrapper = styled.p`
+  width: 100%;
+  ${flex()}
+  padding: 2rem 0;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  text-align: center;
+  color: ${props => props.theme.color.N300};
+`;

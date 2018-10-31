@@ -10,5 +10,5 @@ export function calculatePercentage(score) {
 }
 
 export function printPrice(price) {
-  return `Rp ${numeral(price).format('0,0')}`;
+  return `Rp ${Number(price).toLocaleString('id-ID')}`;
 }
