@@ -40,7 +40,7 @@ const Wrapper = styled.button`
 
 const LoanProduct = styled.div`
   width: calc(17.5% - 0.5rem);
-  ${flex()}
+  ${flex({ direction: 'column' })}
 
   img {
     width: 2.5rem;

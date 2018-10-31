@@ -48,7 +48,7 @@ export default class App extends React.Component {
   componentWillMount() {
     if (this.state.loggedIn) {
       const token = localStorage.getItem('asaniMainAuthToken');
-      api.defaults.headers.common['Authorization'] = `JWT ${token}`;
+      api.defaults.headers.common['Authorization'] = `${token}`;
     }
   }
 

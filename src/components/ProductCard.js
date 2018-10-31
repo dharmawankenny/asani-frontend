@@ -1,28 +1,61 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { flex } from '../commons/theme';
+import { printPrice } from '../commons/utils';
 
 import LockIcon from '../assets/lock.svg';
 import DummyIcon from '../assets/cash.svg';
 
 export default class ProductCard extends React.Component {
+  static propTypes = {
+    product: PropTypes.shape({
+      productId: PropTypes.number,
+      lenderName: PropTypes.string,
+      productPrice: PropTypes.number,
+      productNominal: PropTypes.string,
+      productType: PropTypes.string,
+      minCreditScore: PropTypes.number,
+      tenorDays: PropTypes.number,
+      interestPct: PropTypes.string,
+      urlProductLogo: PropTypes.string,
+      isLocked: PropTypes.number,
+    }).isRequired,
+  };
+
+  static defaultProps = {
+    product: {},
+  };
+
   render() {
+    const {
+      productId,
+      lenderName,
+      productPrice,
+      productNominal,
+      productType,
+      minCreditScore,
+      tenorDays,
+      interestPct,
+      urlProductLogo,
+      isLocked,
+    } = this.props.product;
+
     return (
       <Wrapper>
-        <ProductName locked={this.props.locked}>
-          <img src={DummyIcon} />
-          <span>Voucher Game</span>
+        <ProductName locked={isLocked}>
+          <img src={urlProductLogo} />
+          <span>{productType}</span>
         </ProductName>
         <ProductDetail>
-          <h1>Loan Provider</h1>
-          <h2>Bunga XX%</h2>
-          <h3>Tenor XX Waktu</h3>
+          <h1>{lenderName}</h1>
+          <h2>Bunga {interestPct}%</h2>
+          <h3>Tenor {tenorDays} hari</h3>
         </ProductDetail>
-        <ProductPrice locked={this.props.locked}>
-          {!this.props.locked && <h3>Pasti Cair</h3>}
-          {this.props.locked && <h3><img src={LockIcon} /> Skor Minimal 750</h3>}
-          <h1>Rp X.XXX.XXX</h1>
+        <ProductPrice locked={isLocked}>
+          {isLocked ? (<h3><img src={LockIcon} /> Skor Minimal {minCreditScore}</h3>) : (<h3>Pasti Cair</h3>)}
+          <h1>{productNominal}</h1>
           <h2>Pilih ></h2>
         </ProductPrice>
       </Wrapper>
@@ -41,12 +74,11 @@ const Wrapper = styled.button`
 
 const ProductName = styled.div`
   width: calc(17.5% - 0.5rem);
-  ${flex()}
   ${props => props.locked && 'filter: grayscale(100%);'}
+  ${flex({ direction: 'column' })}
 
   img {
     width: 2.5rem;
-    max-width: 100%;
     height: 2.5rem;
     object-fit: contain;
     margin: 0 0 0.25rem;

@@ -29,3 +29,84 @@ export const postCheckOTPLogin = async (telNumber, otpCode) => {
     return err.response;
   }
 };
+
+export const getCreditScore = async () => {
+  try {
+    const response = await api.get('/get_credit_score/');
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const getProducts = async () => {
+  try {
+    const response = await api.get('/get-product/');
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const getProductDetail = async productId => {
+  try {
+    const response = await api.post('/get-product-detail/', { productId });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const getLoans = async (nonCompleteOnly = 0) => {
+  try {
+    const response = await api.post('/get-all-loans-by-user/', { nonCompleteOnly });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const getLoanDetail = async loanId => {
+  try {
+    const response = await api.post('/get-loan-detail/', { loanId });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const postLoan = async productId => {
+  try {
+    const response = await api.post('/request_loan/', { productId });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const getDocuments = async () => {
+  try {
+    const response = await api.get('/get_doc/');
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const signDocument = async (fileName, fileType) => {
+  try {
+    const response = await api.post('/signing/', { file_name: fileName, file_type: fileType });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}
+
+export const postDocument = async (type, url) => {
+  try {
+    const response = await api.get('/upload_doc/', { type, url });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+}

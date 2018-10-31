@@ -1,4 +1,6 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 import swal from 'sweetalert';
@@ -13,8 +15,13 @@ import RejectedIcon from '../../assets/rejected.svg';
 import PendingIcon from '../../assets/pending.svg';
 import ArrowIcon from '../../assets/progress_arrow.svg';
 
+import {
+  DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY,
+  DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY,
+} from '../../commons/constants';
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
+import { calculatePercentage } from '../../commons/utils';
 
 import { BigActionButton } from '../../components/Buttons';
 import Header from '../../components/Header';
@@ -29,17 +36,42 @@ import {
 } from '../../components/PageBuilder';
 import Spinner from '../../components/Spinner';
 
+import * as creditScoreActions from '../../reducers/creditScore';
+import * as userDocumentActions from '../../reducers/userDocument';
+
+@connect(
+  state => ({ creditScore: state.creditScore, userDocument: state.userDocument }),
+  dispatch => ({
+    creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
+    userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
+  })
+)
 export default class CreditScore extends React.Component {
-  static LOWER_BOUNDARY = 200;
-  static UPPER_BOUNDARY = 850;
   static ICON_MAP = [
     PendingIcon,
     ApprovedIcon,
     RejectedIcon,
   ];
 
-  calculatePercentage = score => Math.floor(((score - CreditScore.LOWER_BOUNDARY) / (CreditScore.UPPER_BOUNDARY - CreditScore.LOWER_BOUNDARY)) * 100);
-  getDocumentActionIcon = doc => Number(doc.status) === -1 ? doc.iconUrl : CreditScore.ICON_MAP[Number(doc.status)];
+  componentDidMount() {
+    if (!this.props.creditScore.loading && !this.props.creditScore.loaded) {
+      this.props.creditScoreActions.getCreditScore();
+    }
+
+    if (!this.props.userDocument.loading && !this.props.userDocument.loaded) {
+      this.props.userDocumentActions.getDocuments();
+    }
+  }
+
+  getDocumentActionIcon = doc => Number(doc.status) === -1 ? doc.icon_url : CreditScore.ICON_MAP[Number(doc.status)];
+
+  calculateCurrentProgress = () => {
+    if (this.props.creditScore.loaded && this.props.creditScore.data && this.props.creditScore.data.credit_score) {
+      return calculatePercentage(this.props.creditScore.data.credit_score);
+    }
+
+    return calculatePercentage(200);
+  }
 
   userDataDocumentAction = doc => () => {
     if (Number(doc.status) === -1) {
@@ -64,6 +96,7 @@ export default class CreditScore extends React.Component {
         button: 'Upload ulang dokumen',
       }).then(value => {
         if (value) {
+          // open uploader
           console.log('abc');
         }
       });
@@ -99,7 +132,7 @@ export default class CreditScore extends React.Component {
       ],
     };
 
-    const progress = this.calculatePercentage(dummyData.score);
+    const progress = calculatePercentage(dummyData.score);
 
     return (
       <PageWrapper>
@@ -110,40 +143,51 @@ export default class CreditScore extends React.Component {
               <SegmentHeader>Skor kredit kamu</SegmentHeader>
               <SegmentAction onClick={() => navigate(SITEMAP.WHAT_IS_CREDIT_SCORE)}>Apa itu skor kredit? ></SegmentAction>
             </SegmentContext>
-            <Current progress={progress}>
-              <div>
-                <h1>{dummyData.score}</h1>
-                <h3>{dummyData.level}</h3>
-              </div>
-            </Current>
+            {this.props.creditScore.loading && (
+              <SpinnerWrapper>
+                <Spinner color="N800" />
+              </SpinnerWrapper>
+            )}
+            {this.props.creditScore.loaded &&
+              this.props.creditScore.data && (
+                <Current progress={calculatePercentage(this.props.creditScore.data.credit_score)} levelColor={this.props.creditScore.data.color}>
+                  <div>
+                    <h1>{this.props.creditScore.data.credit_score}</h1>
+                    <h3>{this.props.creditScore.data.level}</h3>
+                  </div>
+                </Current>
+              )}
             <Progress>
-              <ProgressBar progress={progress}>
-                <span>{CreditScore.LOWER_BOUNDARY}</span>
-                <span>{CreditScore.UPPER_BOUNDARY}</span>
+              <ProgressBar
+                progress={this.calculateCurrentProgress()}
+                levelColor={this.props.creditScore.loaded && this.props.creditScore.data ? this.props.creditScore.data.color : '#36B37E'}
+              >
+                <span>{DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY}</span>
+                <span>{DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY}</span>
                 <div>
                   <div className="bg" />
                   <div className="bar" />
-                  <ArrowMarker progress={progress} invert><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={this.calculatePercentage(300)}><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={this.calculatePercentage(600)}><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={this.calculatePercentage(700)}><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={this.calculatePercentage(800)}><img src={ArrowIcon} /></ArrowMarker>
+                  <ArrowMarker progress={this.calculateCurrentProgress()} invert><img src={ArrowIcon} /></ArrowMarker>
+                  <ArrowMarker progress={calculatePercentage(300)}><img src={ArrowIcon} /></ArrowMarker>
+                  <ArrowMarker progress={calculatePercentage(600)}><img src={ArrowIcon} /></ArrowMarker>
+                  <ArrowMarker progress={calculatePercentage(700)}><img src={ArrowIcon} /></ArrowMarker>
+                  <ArrowMarker progress={calculatePercentage(800)}><img src={ArrowIcon} /></ArrowMarker>
                 </div>
               </ProgressBar>
               <ProgressMarkers>
-                <ProgressMarker progress={this.calculatePercentage(300)}>
+                <ProgressMarker progress={calculatePercentage(300)}>
                   <img src={ProgressDigitalIcon} />
                   <span>Digital</span>
                 </ProgressMarker>
-                <ProgressMarker progress={this.calculatePercentage(600)}>
+                <ProgressMarker progress={calculatePercentage(600)}>
                   <img src={ProgressElectronicIcon} />
                   <span>Elektronik</span>
                 </ProgressMarker>
-                <ProgressMarker progress={this.calculatePercentage(700)}>
+                <ProgressMarker progress={calculatePercentage(700)}>
                   <img src={ProgressCarIcon} />
                   <span>Mobil</span>
                 </ProgressMarker>
-                <ProgressMarker progress={this.calculatePercentage(800)}>
+                <ProgressMarker progress={calculatePercentage(800)}>
                   <img src={ProgressHomeIcon} />
                   <span>Rumah</span>
                 </ProgressMarker>
@@ -160,12 +204,19 @@ export default class CreditScore extends React.Component {
             <img src={LoanHistoryIcon} />
             <span>Lunaskan Pinjaman</span>
           </UserDataAction>
-          {dummyData.documents.map(doc => (
-            <UserDataAction onClick={this.userDataDocumentAction(doc)}>
-              <img src={this.getDocumentActionIcon(doc)} />
-              <span>Upload {doc.name}</span>
-            </UserDataAction>
-          ))}
+          {this.props.userDocument.loading && (
+            <SpinnerWrapper>
+              <Spinner color="N800" />
+            </SpinnerWrapper>
+          )}
+          {this.props.userDocument.loaded &&
+            this.props.userDocument.data &&
+            this.props.userDocument.data.map(doc => (
+              <UserDataAction onClick={this.userDataDocumentAction(doc)}>
+                <img src={this.getDocumentActionIcon(doc)} />
+                <span>Upload {doc.doc_name}</span>
+              </UserDataAction>
+            ))}
         </UserData>
       </PageWrapper>
     );
@@ -200,11 +251,11 @@ const Current = styled.div`
   & > div {
     position: relative;
     left: ${props => props.progress}%;
-    transform: translate3d(${props => props.progress > 80 ? '-100%' : '-50%'}, 0, 0);
+    transform: translate3d(${props => props.progress > 80 ? '-100%' : props.progress < 20 ? '0' : '-50%'}, 0, 0);
 
     h1,
     h3 {
-      text-align: center;
+      text-align: ${props => props.progress > 80 ? 'right' : props.progress < 20 ? 'left' : 'center'};
     }
 
     h1 {
@@ -221,7 +272,7 @@ const Current = styled.div`
       font-weight: 700;
       line-height: 1;
       margin: 0;
-      color: ${props => props.theme.color.Y300};
+      color: ${props => props.levelColor};
     }
   }
 `;
@@ -249,7 +300,7 @@ const ProgressBar = styled.div`
       top: 0;
       left: 0;
       bottom: 0;
-      background: ${props => props.theme.color.Y200};
+      background: ${props => props.levelColor};
       border-radius: ${props => props.theme.borderRadius};
     }
 

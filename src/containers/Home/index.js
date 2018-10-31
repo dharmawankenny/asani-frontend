@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import classNames from 'classnames';
 import { navigate } from '@reach/router';
 
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
+import { calculatePercentage } from '../../commons/utils';
 
 import { BigActionButton } from '../../components/Buttons';
 import Header from '../../components/Header';
@@ -23,6 +26,18 @@ import Spinner from '../../components/Spinner';
 
 import { Consumer as AuthConsumer } from '../../contexts/auth';
 
+import * as creditScoreActions from '../../reducers/creditScore';
+import * as productActions from '../../reducers/product';
+import * as loanActions from '../../reducers/loan';
+
+@connect(
+  state => ({ creditScore: state.creditScore, product: state.product, loan: state.loan }),
+  dispatch => ({
+    creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
+    productActions: bindActionCreators(productActions, dispatch),
+    loanActions: bindActionCreators(loanActions, dispatch),
+  })
+)
 export default class Home extends React.Component {
   static SORT_QUERIES = [
     'Pasti Cair',
@@ -43,6 +58,20 @@ export default class Home extends React.Component {
       'PUBG Mobile': true,
     },
   };
+
+  componentDidMount() {
+    if (!this.props.creditScore.loading && !this.props.creditScore.loaded) {
+      this.props.creditScoreActions.getCreditScore();
+    }
+
+    if (!this.props.product.loading && !this.props.product.loaded) {
+      this.props.productActions.getProducts();
+    }
+
+    if (!this.props.loan.loading && !this.props.loan.loaded) {
+      this.props.loanActions.getLoans();
+    }
+  }
 
   toggleFilter = () => {
     this.setState(prevState => {
@@ -94,24 +123,33 @@ export default class Home extends React.Component {
             <SegmentHeader>Skor kredit kamu</SegmentHeader>
             <SegmentAction onClick={() => navigate(SITEMAP.CREDIT_SCORE)}>Info lebih lanjut ></SegmentAction>
           </SegmentContext>
-          {/* <SpinnerWrapper>
-            <Spinner color="N800" />
-          </SpinnerWrapper> */}
-          <h1>550</h1>
-          <h2>Cukup Baik</h2>
-          <div className="progress">
-            <div className="bg" />
-            <div className="bar" />
-          </div>
+          {this.props.creditScore.loading && (
+            <SpinnerWrapper>
+              <Spinner color="N800" />
+            </SpinnerWrapper>
+          )}
+          {this.props.creditScore.loaded &&
+            this.props.creditScore.data && (
+              <Fragment>
+                <h1>{this.props.creditScore.data.credit_score}</h1>
+                <h2 style={{ color: this.props.creditScore.data.color }}>{this.props.creditScore.data.level}</h2>
+                <ProgressBar progress={calculatePercentage(this.props.creditScore.data.credit_score)} levelColor={this.props.creditScore.data.color}>
+                  <div className="bg" />
+                  <div className="bar" />
+                </ProgressBar>
+              </Fragment>
+            )}
         </CreditScoreSummary>
-        <Loans>
-          <SegmentContext>
-            <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
-            <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
-          </SegmentContext>
-          <LoanCard />
-          <LoanCard />
-        </Loans>
+        {this.props.loan.loaded &&
+          this.props.loan.data && (
+          <Loans>
+            <SegmentContext>
+              <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
+              <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
+            </SegmentContext>
+            <LoanCard />
+          </Loans>
+        )}
         <Loans>
           <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
           <Filter active={this.state.showFilterModal}>
@@ -156,12 +194,16 @@ export default class Home extends React.Component {
               </div>
             </div>
           </Filter>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard locked />
-          <ProductCard locked />
-          <ProductCard locked />
+          {this.props.product.loading && (
+            <SpinnerWrapper>
+              <Spinner color="N800" />
+            </SpinnerWrapper>
+          )}
+          {this.props.product.loaded &&
+            this.props.product.data &&
+            this.props.product.data.map(product => (
+              <ProductCard product={product} />
+            ))}
         </Loans>
       </PageWrapper>
     );
@@ -187,39 +229,39 @@ const CreditScoreSummary = styled.div`
     font-size: 1.25rem;
     font-weight: 700;
     text-align: right;
-    color: ${props => props.theme.color.Y200};
+    color: ${props => props.theme.color.G300};
     margin: 0;
   }
+`;
 
-  .progress {
-    width: 100%;
-    height: 0.75rem;
-    margin: 0.5rem 0 0;
+const ProgressBar = styled.div`
+  width: 100%;
+  height: 0.75rem;
+  margin: 0.5rem 0 0;
+  border-radius: ${props => props.theme.borderRadius};
+  position: relative;
+  box-shadow: ${props => props.theme.shadow.base};
+
+  .bar,
+  .bg {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: ${props => props.levelColor};
     border-radius: ${props => props.theme.borderRadius};
-    position: relative;
-    box-shadow: ${props => props.theme.shadow.base};
+  }
 
-    .bar,
-    .bg {
-      position: absolute;
-      height: 100%;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      background: ${props => props.theme.color.Y200};
-      border-radius: ${props => props.theme.borderRadius};
-    }
+  .bar {
+    z-index: 2;
+    width: ${props => props.progress}%;
+  }
 
-    .bar {
-      z-index: 2;
-      width: 60%;
-    }
-
-    .bg {
-      z-index: 1;
-      right: 0;
-      opacity: 0.25;
-    }
+  .bg {
+    z-index: 1;
+    right: 0;
+    opacity: 0.25;
   }
 `;
 
