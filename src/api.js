@@ -137,7 +137,7 @@ export const uploadDocument = async (url, file, onUploadProgress) => {
 
 export const postDocument = async (type, url) => {
   try {
-    const response = await api.get('/upload_doc/', { type, url });
+    const response = await api.post('/upload_doc/', { type, url });
     return response;
   } catch (err) {
     return err.response;

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 import swal from 'sweetalert';
+import isEmpty from 'lodash/isEmpty';
 
 import ProgressDigitalIcon from '../../assets/progress_digital.svg';
 import ProgressElectronicIcon from '../../assets/progress_electronic.svg';
@@ -24,7 +25,7 @@ import { flex } from '../../commons/theme';
 import { calculatePercentage } from '../../commons/utils';
 
 import { BigActionButton } from '../../components/Buttons';
-import DocUpload from '../../components/DocUpload';
+import DocUploadModal from '../../components/DocUploadModal';
 import Header from '../../components/Header';
 import {
   PageWrapper,
@@ -54,6 +55,10 @@ export default class CreditScore extends React.Component {
     RejectedIcon,
   ];
 
+  state = {
+    focusedDoc: {},
+  };
+
   componentDidMount() {
     if (!this.props.creditScore.loading && !this.props.creditScore.loaded) {
       this.props.creditScoreActions.getCreditScore();
@@ -64,6 +69,9 @@ export default class CreditScore extends React.Component {
     }
   }
 
+  openDocumentUploader = focusedDoc => this.setState({ focusedDoc });
+  closeDocumentUploader = () => this.setState({ focusedDoc: {} });
+
   getDocumentActionIcon = doc => Number(doc.status) === -1 ? doc.icon_url : CreditScore.ICON_MAP[Number(doc.status)];
 
   calculateCurrentProgress = () => {
@@ -72,11 +80,11 @@ export default class CreditScore extends React.Component {
     }
 
     return calculatePercentage(200);
-  }
+  };
 
   userDataDocumentAction = doc => () => {
     if (Number(doc.status) === -1) {
-      // open uploader
+      this.openDocumentUploader(doc);
     } else if (Number(doc.status) === 0) {
       swal({
         icon:'info',
@@ -97,44 +105,18 @@ export default class CreditScore extends React.Component {
         button: 'Upload ulang dokumen',
       }).then(value => {
         if (value) {
-          // open uploader
-          console.log('abc');
+          this.openDocumentUploader(doc);
         }
       });
     }
   };
 
+  successfullyUploadedCallback = () => {
+    this.closeDocumentUploader();
+    this.props.userDocumentActions.uploadingReset();
+  };
+
   render() {
-    const dummyData = {
-      score: 650,
-      level: 'Cukup Baik',
-      documents: [
-        {
-          name: 'KTP',
-          status: '-1',
-          iconUrl: ProgressDigitalIcon,
-        },
-        {
-          name: 'Selfie dengan KTP',
-          status: '1',
-          iconUrl: ProgressDigitalIcon,
-        },
-        {
-          name: 'Slip Gaji',
-          status: '2',
-          iconUrl: ProgressDigitalIcon,
-          notes: 'Slip gaji anda salah tanggal, notes terkait error yang terjadi',
-        },
-        {
-          name: 'Kartu Keluarga',
-          status: '0',
-          iconUrl: ProgressDigitalIcon,
-        },
-      ],
-    };
-
-    const progress = calculatePercentage(dummyData.score);
-
     return (
       <PageWrapper>
         <Header withMenu />
@@ -144,7 +126,16 @@ export default class CreditScore extends React.Component {
               <SegmentHeader>Skor kredit kamu</SegmentHeader>
               <SegmentAction onClick={() => navigate(SITEMAP.WHAT_IS_CREDIT_SCORE)}>Apa itu skor kredit? ></SegmentAction>
             </SegmentContext>
-            <DocUpload upload={this.props.userDocumentActions.uploadDocument} />
+            <DocUploadModal
+              active={!isEmpty(this.state.focusedDoc)}
+              userDocument={this.state.focusedDoc}
+              onClose={this.closeDocumentUploader}
+              upload={this.props.userDocumentActions.uploadDocument}
+              progress={this.props.userDocument.uploadProgress}
+              finished={this.props.userDocument.uploadFinished}
+              finishedText="Oke"
+              finishedCallback={this.successfullyUploadedCallback}
+            />
             {this.props.creditScore.loading && (
               <SpinnerWrapper>
                 <Spinner color="N800" />
