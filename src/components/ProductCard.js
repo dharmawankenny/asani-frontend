@@ -43,7 +43,7 @@ export default class ProductCard extends React.Component {
     } = this.props.product;
 
     return (
-      <Wrapper>
+      <Wrapper onClick={this.props.onClick}>
         <ProductName locked={isLocked}>
           <img src={urlProductLogo} />
           <span>{productType}</span>

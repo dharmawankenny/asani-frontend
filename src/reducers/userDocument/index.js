@@ -42,7 +42,7 @@ export default function reducer(state = initialState, action = {}) {
             return doc;
           }
 
-          return { ...doc, status: 2 };
+          return { ...doc, status: -1 };
         }),
         uploadProgress: 100,
         uploadFinished: true,

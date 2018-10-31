@@ -78,17 +78,18 @@ export default class LoanCard extends React.Component {
         </LoanDetail>
         <LoanPayment>
           {Number(status.status) === 0 && (
-            <Fragment>
-              <h4>Peminjaman anda sedang diproses oleh tim kami, mohon menunggu</h4>
-            </Fragment>
+            <h5>Peminjaman anda sedang diproses oleh tim kami, mohon menunggu</h5>
           )}
           {Number(status.status) === 2 && (
             <Fragment>
               <h3>Alasan</h3>
-              <h4>{note}</h4>
+              <h6>{note}</h6>
             </Fragment>
           )}
-          {(Number(status.status) !== 0 && Number(status.status) !== 2) && (
+          {Number(status.status) === 3 && (
+            <h4>Peminjaman ini sudah dilunasi</h4>
+          )}
+          {(Number(status.status) > 0 && Number(status.status) < 2) && (
             <Fragment>
               <h3>Jatuh Tempo</h3>
               <h2><img src={ClockIcon} />{moment(dueTime).fromNow()}</h2>
@@ -212,14 +213,28 @@ const LoanPayment = styled.div`
     color: ${props => props.theme.color.N300};
   }
 
-  h4 {
+  h4,
+  h5,
+  h6 {
     width: 100%;
     font-size: 0.75rem;
     font-weight: 400;
     line-height: 1.25;
     margin: 0;
     text-align: left;
-    color: ${props => props.theme.color.Y300};
     text-transform: capitalize;
+  }
+
+  h4 {
+    font-weight: 700;
+    color: ${props => props.theme.color.G300};
+  }
+
+  h5 {
+    color: ${props => props.theme.color.Y300};
+  }
+
+  h6 {
+    color: ${props => props.theme.color.R300};
   }
 `;

@@ -47,7 +47,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD_DETAIL_ERROR:
       return { ...state, detailError: action.payload.error, detailLoading: false, detailLoaded: true };
     case RESET_DETAIL:
-      return { ...state, detailedLoan: {}, detailLoading: false, detailError: null, detailLoaded: true };
+      return { ...state, detailedLoan: {}, detailLoading: false, detailError: null, detailLoaded: false };
     default:
       return state;
   }

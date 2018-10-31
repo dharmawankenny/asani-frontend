@@ -32,13 +32,15 @@ import { Consumer as AuthConsumer } from '../../contexts/auth';
 import * as creditScoreActions from '../../reducers/creditScore';
 import * as productActions from '../../reducers/product';
 import * as loanActions from '../../reducers/loan';
+import * as userDocumentActions from '../../reducers/userDocument';
 
 @connect(
-  state => ({ creditScore: state.creditScore, product: state.product, loan: state.loan }),
+  state => ({ ...state }),
   dispatch => ({
     creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
     productActions: bindActionCreators(productActions, dispatch),
     loanActions: bindActionCreators(loanActions, dispatch),
+    userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
   })
 )
 export default class Home extends React.Component {
@@ -74,6 +76,24 @@ export default class Home extends React.Component {
     if (!this.props.loan.activeLoansLoading && !this.props.loan.activeLoansLoaded) {
       this.props.loanActions.getActiveLoans();
     }
+
+    if (!this.props.userDocument.loading && !this.props.userDocument.loaded) {
+      this.props.userDocumentActions.getDocuments();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.product.loaded && this.props.product.products.length > 0 && !prevProps.product.loaded && prevProps.product.products.length === 0) {
+      this.updateFilterStructure(this.props.product.products);
+    }
+  }
+
+  updateFilterStructure(products) {
+    const filters = {};
+
+    products.forEach(product => filters[product.productType] = true);
+
+    this.setState({ productQuery: { ...filters } })
   }
 
   toggleFilter = () => {
@@ -119,6 +139,56 @@ export default class Home extends React.Component {
 
   onActiveLoanClick = loanId => () => {
     this.props.loanActions.getLoanDetail(loanId);
+  };
+
+  onProductClick = productId => () => {
+    this.props.productActions.getProductDetail(productId);
+  };
+
+  compareByUnlocked = (a, b) => {
+    if (Number(a.isLocked) < Number(b.isLocked)) {
+      return -1;
+    } else if (Number(a.isLocked) > Number(b.isLocked)) {
+      return 1;
+    }
+
+    return 0;
+  };
+
+  compareAscending = key => (a, b) => {
+    if (Number(a[key]) < Number(b[key])) {
+      return -1;
+    } else if (Number(a[key]) > Number(b[key])) {
+      return 1;
+    }
+
+    return 0;
+  };
+
+  compareDescending = key => (a, b) => {
+    if (Number(a[key]) < Number(b[key])) {
+      return 1;
+    } else if (Number(a[key]) > Number(b[key])) {
+      return -1;
+    }
+
+    return 0;
+  };
+
+  applyFilter = productList => {
+    let sortFunction = this.compareAscending('isLocked');
+
+    if (this.state.sortQuery === Home.SORT_QUERIES[1]) {
+      sortFunction = this.compareDescending('productPrice');
+    } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
+      sortFunction = this.compareAscending('interestPct');
+    } else if (this.state.sortQuery === Home.SORT_QUERIES[3]) {
+      sortFunction = this.compareDescending('tenorDays');
+    }
+
+    return productList
+      .filter(product => this.state.productQuery[product.productType])
+      .sort(sortFunction);
   };
 
   render() {
@@ -220,8 +290,8 @@ export default class Home extends React.Component {
           )}
           {this.props.product.loaded &&
             this.props.product.products &&
-            this.props.product.products.map(product => (
-              <ProductCard product={product} />
+            this.applyFilter(this.props.product.products).map(product => (
+              <ProductCard product={product} onClick={this.onProductClick(product.productId)} />
             ))}
           {this.props.product.loaded &&
             this.props.product.products &&
