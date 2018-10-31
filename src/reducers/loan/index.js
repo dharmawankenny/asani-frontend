@@ -7,15 +7,23 @@ const LOAD_ERROR = 'asani/loan/LOAD_ERROR';
 const LOADING_ACTIVE = 'asani/loan/LOADING_ACTIVE';
 const LOAD_ACTIVE_SUCCESS = 'asani/loan/LOAD_ACTIVE_SUCCESS';
 const LOAD_ACTIVE_ERROR = 'asani/loan/LOAD_ACTIVE_ERROR';
+const LOADING_DETAIL = 'asani/loan/LOADING_DETAIL';
+const LOAD_DETAIL_SUCCESS = 'asani/loan/LOAD_DETAIL_SUCCESS';
+const LOAD_DETAIL_ERROR = 'asani/loan/LOAD_DETAIL_ERROR';
+const RESET_DETAIL = 'asani/loan/RESET_DETAIL';
 
 const initialState = {
   loans: [],
   activeLoans: [],
+  detailedLoan: {},
   loading: false,
   loaded: false,
   activeLoansLoading: false,
   activeLoansLoaded: false,
   activeLoansError: null,
+  detailLoading: false,
+  detailLoaded: false,
+  detailError: null,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -32,6 +40,14 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, activeLoans: action.payload.data, activeLoansLoading: false, activeLoansError: null, activeLoansLoaded: true };
     case LOAD_ACTIVE_ERROR:
       return { ...state, activeLoansError: action.payload.error, activeLoansLoading: false, activeLoansLoaded: true };
+    case LOADING_DETAIL:
+      return { ...state, detailLoading: true, detailError: null, detailLoaded: false };
+    case LOAD_DETAIL_SUCCESS:
+      return { ...state, detailedLoan: action.payload.data, detailLoading: false, detailError: null, detailLoaded: true };
+    case LOAD_DETAIL_ERROR:
+      return { ...state, detailError: action.payload.error, detailLoading: false, detailLoaded: true };
+    case RESET_DETAIL:
+      return { ...state, detailedLoan: {}, detailLoading: false, detailError: null, detailLoaded: true };
     default:
       return state;
   }
@@ -61,6 +77,22 @@ export function loadActiveError(error) {
   return { type: LOAD_ACTIVE_ERROR, payload: { error } };
 }
 
+export function loadingDetail() {
+  return { type: LOADING_DETAIL };
+}
+
+export function loadingDetailSuccess(data) {
+  return { type: LOAD_DETAIL_SUCCESS, payload: { data } };
+}
+
+export function loadingDetailError(error) {
+  return { type: LOAD_DETAIL_ERROR, payload: { error } };
+}
+
+export function resetDetail() {
+  return { type: RESET_DETAIL };
+}
+
 export function getLoans() {
   return async dispatch => {
     dispatch(loading());
@@ -83,6 +115,19 @@ export function getActiveLoans() {
       dispatch(loadActiveSuccess(response.data));
     } else {
       dispatch(loadActiveError('Error Loading Data'));
+    }
+  };
+}
+
+export function getLoanDetail(loanId) {
+  return async dispatch => {
+    dispatch(loadingDetail());
+    const response = await apiCalls.getLoanDetail(loanId);
+
+    if (response && response.data) {
+      dispatch(loadingDetailSuccess(response.data));
+    } else {
+      dispatch(loadingDetailError('Error Loading Data'));
     }
   };
 }

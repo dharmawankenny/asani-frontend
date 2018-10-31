@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import classNames from 'classnames';
 import { navigate } from '@reach/router';
+import isEmpty from 'lodash/isEmpty';
 
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
@@ -12,6 +13,7 @@ import { calculatePercentage } from '../../commons/utils';
 import { BigActionButton } from '../../components/Buttons';
 import Header from '../../components/Header';
 import LoanCard from '../../components/LoanCard';
+import LoanDetailModal from '../../components/LoanDetailModal';
 import {
   PageWrapper,
   SegmentContext,
@@ -115,6 +117,10 @@ export default class Home extends React.Component {
     });
   };
 
+  onActiveLoanClick = loanId => () => {
+    this.props.loanActions.getLoanDetail(loanId);
+  };
+
   render() {
     return (
       <PageWrapper>
@@ -149,9 +155,20 @@ export default class Home extends React.Component {
               <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
               <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
             </SegmentContext>
-            {this.props.loan.activeLoans.map(loan => <LoanCard loan={loan} />)}
+            {this.props.loan.activeLoans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
           </Loans>
         )}
+        {this.props.loan.activeLoansLoaded &&
+          this.props.loan.activeLoans &&
+          this.props.loan.activeLoans.length > 0 && (
+            <LoanDetailModal
+              active={!isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading}
+              loading={this.props.loan.detailLoading}
+              loaded={this.props.loan.detailLoaded}
+              loanDetail={this.props.loan.detailedLoan}
+              onClose={this.props.loanActions.resetDetail}
+            />
+          )}
         <Loans>
           <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
           <Filter active={this.state.showFilterModal}>

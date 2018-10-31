@@ -1,4 +1,5 @@
 import numeral from 'numeral';
+import moment from 'moment-timezone';
 
 import {
   DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY,
@@ -11,4 +12,8 @@ export function calculatePercentage(score) {
 
 export function printPrice(price) {
   return `Rp ${Number(price).toLocaleString('id-ID')}`;
+}
+
+export function fromNow(time) {
+  return moment(time).locale('id').fromNow();
 }

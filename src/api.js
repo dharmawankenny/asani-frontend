@@ -12,7 +12,7 @@ export const api = axios.create({
   baseURL: PREFIX_API_URL,
 });
 
-const cdnApi = axios.create();
+const cdnApi = axios.create({});
 
 export const postSendOTP = async (telNumber) => {
   try {
@@ -70,7 +70,7 @@ export const getLoans = async (nonCompleteOnly = 0) => {
 
 export const getLoanDetail = async loanId => {
   try {
-    const response = await api.post('/get-loan-detail/', { loanId });
+    const response = await api.post('/get-loan-details/', { loanId });
     return response;
   } catch (err) {
     return err.response;
@@ -97,7 +97,15 @@ export const getDocuments = async () => {
 
 export const signDocument = async (fileName, fileType) => {
   try {
-    const response = await api.post('/sign-s3/', { fileName, fileType });
+    const response = await api.post(`${PREFIX_API_URL}/sign-s3/`, { fileName, fileType }, {
+      transformRequest: [(data, headers) => {
+        delete headers.common['Authorization'];
+        return JSON.stringify(data);
+      }],
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     return response;
   } catch (err) {
     return err.response;
@@ -110,8 +118,12 @@ export const uploadDocument = async (url, file, onUploadProgress) => {
     formData.append('file', file);
     const opts = {
       onUploadProgress,
+      transformRequest: [(data, headers) => {
+        delete headers.common['Authorization'];
+        return data;
+      }],
       headers: {
-        'Content-Type': file.type,
+        'content-type': 'multipart/form-data',
       },
     };
 

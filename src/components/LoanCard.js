@@ -66,7 +66,7 @@ export default class LoanCard extends React.Component {
     } = this.props.loan;
 
     return (
-      <Wrapper>
+      <Wrapper onClick={this.props.onClick}>
         <LoanProduct color={STATUS_COLOR_MAP[Number(status.status)]}>
           <img src={urlProductLogo} />
           <span>{status.description}</span>
@@ -215,11 +215,11 @@ const LoanPayment = styled.div`
   h4 {
     width: 100%;
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.25;
     margin: 0;
     text-align: left;
-    color: ${props => props.theme.color.N500};
+    color: ${props => props.theme.color.Y300};
     text-transform: capitalize;
   }
 `;

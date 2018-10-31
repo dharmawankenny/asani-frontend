@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
+import isEmpty from 'lodash/isEmpty';
 
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
@@ -10,6 +11,7 @@ import { flex } from '../../commons/theme';
 import { BigActionButton } from '../../components/Buttons';
 import Header from '../../components/Header';
 import LoanCard from '../../components/LoanCard';
+import LoanDetailModal from '../../components/LoanDetailModal';
 import {
   PageWrapper,
   SegmentContext,
@@ -36,6 +38,10 @@ export default class LoanHistory extends React.Component {
     }
   }
 
+  onActiveLoanClick = loanId => () => {
+    this.props.loanActions.getLoanDetail(loanId);
+  };
+
   render() {
     return (
       <PageWrapper>
@@ -51,7 +57,18 @@ export default class LoanHistory extends React.Component {
           {this.props.loan.loaded &&
             this.props.loan.loans &&
             this.props.loan.loans.length > 0 &&
-            this.props.loan.loans.map(loan => <LoanCard loan={loan} />)}
+            this.props.loan.loans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
+          {this.props.loan.loaded &&
+              this.props.loan.loans &&
+              this.props.loan.loans.length > 0 && (
+              <LoanDetailModal
+                active={!isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading}
+                loading={this.props.loan.detailLoading}
+                loaded={this.props.loan.detailLoaded}
+                loanDetail={this.props.loan.detailedLoan}
+                onClose={this.props.loanActions.resetDetail}
+              />
+            )}
           {this.props.loan.loaded &&
             this.props.loan.loans &&
             this.props.loan.loans.length === 0 && (
