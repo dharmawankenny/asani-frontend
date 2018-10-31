@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { flex } from '../commons/theme';
 
+import ClockIcon from '../assets/clock.svg';
 import DummyIcon from '../assets/cash.svg';
 
 export default class LoanCard extends React.Component {
@@ -20,7 +21,7 @@ export default class LoanCard extends React.Component {
         </LoanDetail>
         <LoanPayment>
           <h3>Jatuh Tempo</h3>
-          <h2>3 Hari Lagi</h2>
+          <h2><img src={ClockIcon} />3 Hari Lagi</h2>
           <h1>Lunaskan ></h1>
         </LoanPayment>
       </Wrapper>
@@ -34,27 +35,25 @@ const Wrapper = styled.button`
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
   padding: 0.75rem;
-  ${flex({ justify: 'flex-start', align: 'flex-start' })}
+  ${flex({ justify: 'flex-start', align: 'stretch' })}
 `;
 
 const LoanProduct = styled.div`
-  width: calc(20% - 0.5rem);
+  width: calc(17.5% - 0.5rem);
   ${flex()}
 
   img {
     width: 2.5rem;
-    height: auto;
-    margin: 0 0 0.5rem;
+    height: 2.5rem;
+    object-fit: contain;
+    margin: 0 0 0.25rem;
   }
 
   span {
     font-size: 0.75rem;
-    padding: 0.125rem;
-    width: 100%;
-    ${flex()}
-    border: 1px solid ${props => props.theme.color.G200};
-    border-radius: ${props => props.theme.borderRadius};
-    color: ${props => props.theme.color.G200};
+    font-weight: 700;
+    margin: 0;
+    color: ${props => props.theme.color.G300};
   }
 `;
 
@@ -83,19 +82,19 @@ const LoanDetail = styled.div`
   h2 {
     font-size: 0.875rem;
     font-weight: 700;
-    margin: 0 0 0.25rem;
+    margin: 0 0 0.125rem;
   }
 
   h3 {
     font-size: 0.75rem;
     font-weight: 400;
-    margin: 0 0 1rem;
+    margin: 0 0 0.5rem;
     color: ${props => props.theme.color.N300};
   }
 `;
 
 const LoanPayment = styled.div`
-  width: calc(35% - 0.5rem);
+  width: calc(37.5% - 0.5rem);
   ${flex()}
 
   h1,
@@ -124,6 +123,14 @@ const LoanPayment = styled.div`
     font-size: 0.875rem;
     font-weight: 400;
     margin: 0 0 0.5rem;
+    ${flex({ justify: 'flex-start' })}
+
+    img {
+      width: 0.875rem;
+      height: 0.875rem;
+      object-fit: contain;
+      margin: 0 0.25rem 0 0;
+    }
   }
 
   h3 {

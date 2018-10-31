@@ -1,12 +1,14 @@
 import Home from './Home';
 import UserAccess from './UserAccess';
+import CreditScore from './CreditScore';
 
 export const AUTHENTICATED_PAGES = {
-  home: Home,
+  HOME: Home,
+  CREDIT_SCORE: CreditScore,
 };
 
 export const UNAUTHENTICATED_PAGES = {
-  userAccess: UserAccess,
+  AUTHENTICATION: UserAccess,
 };
 
 export default {

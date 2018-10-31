@@ -26,6 +26,10 @@ export default class Header extends React.Component {
     showMenu: false,
   };
 
+  componentWillUnmount() {
+    document.body.style.overflow = 'auto';
+  }
+
   toggleMenu = () => {
     this.setState(prevState => {
       if (prevState.showMenu) {
@@ -142,7 +146,7 @@ const Content = styled.div`
   background: ${props => props.theme.color.N0};
   transform: translate3d(0, ${props => props.active ? '0' : '-100%'}, 0);
   transition: 0.25s ease all;
-  padding: 5.5rem 2rem 2rem;
+  padding: 4.5rem 1.5rem 1.5rem;
 `;
 
 const ContentAnimationWrapper = styled.div`

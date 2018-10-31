@@ -80,16 +80,20 @@ export default class App extends React.Component {
         <ThemeProvider theme={theme}>
           <AuthProvider value={{ logIn: this.logIn, logOut: this.logOut }}>
             <Router>
-              <UnAuthenticated
-                path={SITEMAP.AUTHENTICATION}
-                auth={this.state.loggedIn}
-                componentKey="userAccess"
-              />
-              <Authenticated
-                path={SITEMAP.HOME}
-                auth={this.state.loggedIn}
-                componentKey="home"
-              />
+              {Object.keys(UNAUTHENTICATED_PAGES).map(key => (
+                <UnAuthenticated
+                  auth={this.state.loggedIn}
+                  componentKey={key}
+                  path={SITEMAP[key]}
+                />
+              ))}
+              {Object.keys(AUTHENTICATED_PAGES).map(key => (
+                <Authenticated
+                  auth={this.state.loggedIn}
+                  componentKey={key}
+                  path={SITEMAP[key]}
+                />
+              ))}
               <NotFound path="/*" />
             </Router>
           </AuthProvider>

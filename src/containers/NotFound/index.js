@@ -18,7 +18,7 @@ export default class NotFound extends React.Component {
         <Content>
           <h1>404 :(</h1>
           <h2>Oh Tidak, anda tersesat, halaman yang anda cari tidak tersedia pada Asani :(</h2>
-          <BigActionButton onClick={() => navigate(SITEMAP.HOME)}>Kembali ke Peradaban</BigActionButton>
+          <BigActionButton onClick={() => navigate(SITEMAP.HOME)}>Kembali ke Beranda</BigActionButton>
         </Content>
         <Footer />
       </PageWrapper>
