@@ -18,7 +18,7 @@ export default class Footer extends React.Component {
             EN
           </Switch>
         </Switcher>
-        <a href="" target="_blank">
+        <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
           <Help src={HelpIcon} />
         </a>
       </Wrapper>
