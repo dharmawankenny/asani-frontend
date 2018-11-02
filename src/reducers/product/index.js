@@ -149,12 +149,8 @@ export function purchaseProduct(productId) {
     dispatch(loadingPurchase());
     const response = await apiCalls.postLoan(productId);
 
-    if (response && response.data) {
-      if (response.data.data) {
-        dispatch(purchaseProductSuccess(response.data.data));
-      } else {
-        dispatch(purchaseProductSuccess(response.data));
-      }
+    if (response && response.data && response.data.status === 1) {
+      dispatch(purchaseProductSuccess(response.data));
     } else {
       dispatch(purchaseProductError('Error Purchasing Product'));
     }

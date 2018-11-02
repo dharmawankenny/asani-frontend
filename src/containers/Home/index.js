@@ -331,6 +331,7 @@ export default class Home extends React.Component {
                   resetPurchase={this.props.productActions.resetPurchase}
                   purchaseLoading={this.props.product.purchaseLoading}
                   purchaseSuccess={this.props.product.purchaseLoaded}
+                  updateLoans={this.props.loanActions.getActiveLoans}
                 />
               )}
             {this.props.product.loaded &&

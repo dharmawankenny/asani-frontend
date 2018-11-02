@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment-timezone';
 import isEmpty from 'lodash/isEmpty';
+import swal from 'sweetalert';
 
 import ChevronDownIcon from '../assets/chevron_down.svg';
 import CloseIcon from '../assets/close.svg';
@@ -32,7 +33,7 @@ export default class ProductDetailModal extends React.Component {
       document.body.style.overflow = 'hidden';
     }
 
-    if (this.props.purchaseSuccess && !this.props.purchaseSuccess) {
+    if (this.props.purchaseSuccess && !prevProps.purchaseSuccess) {
       swal({
         icon: 'success',
         title: 'Selamat! Pinjaman kamu akan segera diproses, konfirmasi pinjaman akan segera dikirimkan ke WhatsApp kamu!',
@@ -57,6 +58,7 @@ export default class ProductDetailModal extends React.Component {
 
   successfullyPurchasedCallback = () => {
     this.props.resetPurchase();
+    this.props.updateLoans();
     this.props.onClose();
   }
 
