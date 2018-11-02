@@ -4,10 +4,10 @@ import { flex } from '../commons/theme';
 
 export const PageWrapper = styled.div`
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 4rem);
   ${props => flex({ direction: props.vertical ? 'column' : 'row', justify: 'flex-start', align: 'flex-start' })}
   margin: 0;
-  padding: 1.5rem 1.5rem 3rem;
+  padding: 0 1.5rem 3rem;
 
   @media screen and (min-width: ${props => props.theme.breakpoint.tablet}) {
     width: 32rem;
@@ -32,7 +32,7 @@ export const FullSegmentHeader = styled.span`
 
 export const SegmentHeader = styled.span`
   flex: 1;
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 700;
   line-height: 1;
   text-overflow: ellipsis;

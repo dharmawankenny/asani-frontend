@@ -4,10 +4,18 @@ import * as apiCalls from '../../api';
 const LOADING = 'asani/product/LOADING';
 const LOAD_SUCCESS = 'asani/product/LOAD_SUCCESS';
 const LOAD_ERROR = 'asani/product/LOAD_ERROR';
+
 const LOADING_DETAIL = 'asani/product/LOADING_DETAIL';
 const LOAD_DETAIL_SUCCESS = 'asani/product/LOAD_DETAIL_SUCCESS';
 const LOAD_DETAIL_ERROR = 'asani/product/LOAD_DETAIL_ERROR';
 const RESET_DETAIL = 'asani/product/RESET_DETAIL';
+
+const LOADING_PURCHASE = 'asani/product/LOADING_PURCHASE';
+const PURCHASE_PRODUCT_SUCCESS = 'asani/product/PURCHASE_PRODUCT_SUCCESS';
+const PURCHASE_PRODUCT_ERROR = 'asani/product/PURCHASE_PRODUCT_ERROR';
+const RESET_PURCHASE = 'asani/product/RESET_PURCHASE';
+
+const RESET_ALL = 'asani/product/RESET_ALL';
 
 const initialState = {
   products: [],
@@ -15,6 +23,9 @@ const initialState = {
   detailLoading: false,
   detailLoaded: false,
   detailError: null,
+  purchaseLoading: null,
+  purchaseLoaded: false,
+  purchaseError: null,
   loading: false,
   loaded: false,
   error: null,
@@ -36,6 +47,16 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, detailError: action.payload.error, detailLoading: false, detailLoaded: true };
     case RESET_DETAIL:
       return { ...state, detailedProduct: {}, detailLoading: false, detailError: null, detailLoaded: false };
+    case LOADING_PURCHASE:
+      return { ...state, purchaseLoading: true, purchaseError: null, purchaseLoaded: false };
+    case PURCHASE_PRODUCT_SUCCESS:
+      return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: true };
+    case PURCHASE_PRODUCT_ERROR:
+      return { ...state, purchaseError: action.payload.error, purchaseLoading: false, purchaseLoaded: true };
+    case RESET_PURCHASE:
+      return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: false };
+    case RESET_ALL:
+      return { ...initialState };
     default:
       return state;
   }
@@ -69,6 +90,26 @@ export function resetDetail() {
   return { type: RESET_DETAIL };
 }
 
+export function loadingPurchase() {
+  return { type: LOADING_PURCHASE };
+}
+
+export function purchaseProductSuccess(data) {
+  return { type: PURCHASE_PRODUCT_SUCCESS, payload: { data } };
+}
+
+export function purchaseProductError(error) {
+  return { type: PURCHASE_PRODUCT_ERROR, payload: { error } };
+}
+
+export function resetPurchase() {
+  return { type: RESET_PURCHASE };
+}
+
+export function resetAll() {
+  return { type: RESET_ALL };
+}
+
 export function getProducts() {
   return async dispatch => {
     dispatch(loading());
@@ -99,6 +140,23 @@ export function getProductDetail(productId) {
       }
     } else {
       dispatch(loadingDetailError('Error Loading Data'));
+    }
+  };
+}
+
+export function purchaseProduct(productId) {
+  return async dispatch => {
+    dispatch(loadingPurchase());
+    const response = await apiCalls.postLoan(productId);
+
+    if (response && response.data) {
+      if (response.data.data) {
+        dispatch(purchaseProductSuccess(response.data.data));
+      } else {
+        dispatch(purchaseProductSuccess(response.data));
+      }
+    } else {
+      dispatch(purchaseProductError('Error Purchasing Product'));
     }
   };
 }

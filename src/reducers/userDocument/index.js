@@ -11,6 +11,8 @@ const UPLOADING_PROGRESS = 'asani/userDocument/UPLOADING_PROGRESS';
 const UPLOAD_DOC_SUCCESS = 'asani/userDocument/UPLOAD_DOC_SUCCESS';
 const UPLOAD_DOC_ERROR = 'asani/userDocument/UPLOAD_DOC_ERROR';
 
+const RESET_ALL = 'asani/userDocument/RESET_ALL';
+
 const initialState = {
   userDocuments: [],
   loading: false,
@@ -37,18 +39,20 @@ export default function reducer(state = initialState, action = {}) {
     case UPLOAD_DOC_SUCCESS:
       return {
         ...state,
-        userDocuments: [...state.userDocuments].map(doc => {
+        userDocuments: state.userDocuments.map(doc => {
           if (doc.doc_code !== action.payload.docCode) {
             return doc;
           }
 
-          return { ...doc, status: -1 };
+          return { ...doc, status: 0 };
         }),
         uploadProgress: 100,
         uploadFinished: true,
       };
     case UPLOAD_DOC_ERROR:
       return { ...state, error: action.payload.error, uploadProgress: -1, uploadFinished: true };
+    case RESET_ALL:
+      return { ...initialState };
     default:
       return state;
   }
@@ -86,6 +90,10 @@ export function uploadDocError(error) {
   return { type: UPLOAD_DOC_ERROR, payload: { error } };
 }
 
+export function resetAll() {
+  return { type: RESET_ALL };
+}
+
 export function getDocuments() {
   return async dispatch => {
     dispatch(loading());
@@ -110,7 +118,7 @@ export function uploadDocument(file, documentType) {
           response.data.url, file, progress => dispatch(uploadingProgress(Math.round((progress.loaded * 100) / progress.total)))
         );
 
-        if (uploadResponse) {
+        if (uploadResponse && uploadResponse.status >= 200 && uploadResponse.status < 300) {
           const postBackendResponse = await apiCalls.postDocument(documentType, file.name);
 
           if (postBackendResponse && postBackendResponse.data.status && Number(postBackendResponse.data.status) === 1) {

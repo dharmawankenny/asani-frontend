@@ -33,14 +33,15 @@ export default class DocUpload extends React.Component {
         {this.props.progress < 0 && (
           <UploadButton>
             <img src={this.props.userDocument.icon_url} />
-            <h1>Upload {this.props.userDocument.doc_name}</h1>
+            <BigActionButton>Upload {this.props.userDocument.doc_name}</BigActionButton>
             <input ref={this.inputRef} type="file" accept="image/*" id="file-input" onChange={this.handleInputChange} />
           </UploadButton>
         )}
         {this.props.progress >= 0 &&
           !this.props.finished && (
           <ProgressBar progress={this.props.progress}>
-            <h1>Uploading {this.props.progress}%</h1>
+            <img src={this.props.userDocument.icon_url} />
+            <h1>Mengupload {this.props.userDocument.doc_name} - {this.props.progress}%</h1>
             <div>
               <div className="bar" />
               <div className="bg" />
@@ -77,15 +78,7 @@ const UploadButton = styled.div`
     width: 10rem;
     height: 10rem;
     object-fit: contain;
-  }
-
-  h1 {
-    width: 100%;
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-align: center;
-    margin: 1.5rem 0 0;
-    color: ${props => props.theme.color.mainProductBlue};
+    margin: 0 0 2rem;
   }
 
   input[type=file] {
@@ -105,13 +98,19 @@ const ProgressBar = styled.div`
   ${flex()}
   padding: 1.5rem;
 
+  img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: contain;
+  }
+
   h1 {
     width: 100%;
     font-size: 1rem;
     font-weight: 400;
     text-align: center;
-    margin: 0 0 1rem;
-    color: ${props => props.theme.color.N800};
+    margin: 1.5rem 0 1rem;
+    color: ${props => props.theme.color.mainProductBlue};
   }
 
   & > div {
@@ -159,7 +158,7 @@ const FinishedState = styled.div`
   h1 {
     width: 100%;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 400;
     text-align: center;
     margin: 1rem 0;
     color: ${props => props.theme.color.mainProductBlue};

@@ -1,5 +1,6 @@
 import '@babel/polyfill';
 import 'normalize.css';
+import 'moment/locale/id';
 
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -18,10 +19,15 @@ import NotFound from './containers/NotFound';
 
 import { api } from './api';
 
+import { resetAll as resetCreditScore } from './reducers/creditScore';
+import { resetAll as resetLoan } from './reducers/loan';
+import { resetAll as resetProduct } from './reducers/product';
+import { resetAll as resetUserDocument } from './reducers/userDocument';
+
 import configureStore from './store';
 
 moment.tz.setDefault('Asia/Jakarta');
-moment.locale('id-id')
+moment.locale('id');
 
 const store = configureStore();
 
@@ -57,6 +63,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    // force redirection
     if (!this.state.loggedIn && !window.location.pathname.startsWith(SITEMAP.AUTHENTICATION)) {
       navigate(SITEMAP.AUTHENTICATION);
     } else if (this.state.loggedIn && window.location.pathname.startsWith(SITEMAP.AUTHENTICATION)) {
@@ -65,15 +72,27 @@ export default class App extends React.Component {
   }
 
   logIn = async (token) => {
+    // cache token and add auth header
     await localStorage.setItem('asaniMainAuthToken', token);
     api.defaults.headers.common['Authorization'] = `${token}`;
+
+    // log in and redirect
     this.setState({ loggedIn: true });
     navigate(SITEMAP.HOME);
   };
 
   logOut = async () => {
+    // delete cache and remove auth header
     await localStorage.removeItem('asaniMainAuthToken');
     delete api.defaults.headers.common['Authorization'];
+
+    // reset reducers
+    dispatch(resetCreditScore());
+    dispatch(resetLoan());
+    dispatch(resetProduct());
+    dispatch(resetUserDocument());
+
+    // log out and redirect
     this.setState({ loggedIn: false });
     navigate(SITEMAP.AUTHENTICATION);
   };

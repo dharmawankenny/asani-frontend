@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const BigActionButton = styled.button`
   color: ${props => props.theme.color.N0};
-  background: ${props => props.theme.color.mainProductBlue};
+  background: ${props => props.color ? props.theme.color[props.color] : props.theme.color.mainProductBlue};
   width: 100%;
   margin: ${props => props.margin ? props.margin : '0'};
   padding: 1rem;
@@ -13,4 +13,5 @@ export const BigActionButton = styled.button`
   cursor: pointer;
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
+  box-shadow: ${props => props.theme.shadow.dark};
 `;

@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Headroom from 'react-headroom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
@@ -24,7 +26,15 @@ export default class Header extends React.Component {
 
   state = {
     showMenu: false,
+    shouldRenderToDom: false,
   };
+
+  portalDom = document.createElement('div');
+
+  componentDidMount() {
+    document.body.appendChild(this.portalDom);
+    this.setState({ shouldRenderToDom: true });
+  }
 
   componentWillUnmount() {
     document.body.style.overflow = 'auto';
@@ -47,62 +57,74 @@ export default class Header extends React.Component {
   isLinkActive = link => window.location.pathname === link;
 
   render() {
+    // if (this.state.shouldRenderToDom) {
+    //   return ReactDOM.createPortal(
     return (
-      <Wrapper>
-        <Logo onClick={this.navigateTo(SITEMAP.HOME)}>
-          <img src={LogoImg} />
-        </Logo>
-        {this.props.withMenu && (
-          <MenuToggle onClick={this.toggleMenu}>
-            <img src={MenuIcon} />
-          </MenuToggle>
-        )}
-        {this.props.withMenu && (
-          <Menu active={this.state.showMenu}>
-            <Overlay active={this.state.showMenu} onClick={this.toggleMenu} />
-            <Content active={this.state.showMenu}>
-              <ContentAnimationWrapper active={this.state.showMenu}>
-                <NavigationButton
-                  onClick={this.navigateTo(SITEMAP.HOME)}
-                  disabled={this.isLinkActive(SITEMAP.HOME)}
-                >
-                  <img src={HomeIcon} />
-                  <span>Beranda</span>
-                </NavigationButton>
-                <NavigationButton
-                  onClick={this.navigateTo(SITEMAP.CREDIT_SCORE)}
-                  disabled={this.isLinkActive(SITEMAP.CREDIT_SCORE)}
-                >
-                  <img src={CreditScoreIcon} />
-                  <span>Skor Kredit</span>
-                </NavigationButton>
-                <NavigationButton
-                  onClick={this.navigateTo(SITEMAP.LOAN_HISTORY)}
-                  disabled={this.isLinkActive(SITEMAP.LOAN_HISTORY)}
-                >
-                  <img src={LoanHistoryIcon} />
-                  <span>Riwayat</span>
-                </NavigationButton>
-                <AuthConsumer>
-                  {({ logOut }) => (
-                    <NavigationButton onClick={logOut}><img src={LogoutIcon} /><span>Keluar</span></NavigationButton>
-                  )}
-                </AuthConsumer>
-                <FooterWrapper>
-                  <Footer />
-                </FooterWrapper>
-              </ContentAnimationWrapper>
-            </Content>
-          </Menu>
-        )}
-      </Wrapper>
+      <Headroom>
+        <Wrapper>
+          <Logo onClick={this.navigateTo(SITEMAP.HOME)}>
+            <img src={LogoImg} />
+          </Logo>
+          {this.props.withMenu && (
+            <MenuToggle onClick={this.toggleMenu}>
+              <img src={MenuIcon} />
+            </MenuToggle>
+          )}
+          {this.props.withMenu && (
+            <Menu active={this.state.showMenu}>
+              <Overlay active={this.state.showMenu} onClick={this.toggleMenu} />
+              <Content active={this.state.showMenu}>
+                <ContentAnimationWrapper active={this.state.showMenu}>
+                  <NavigationButton
+                    onClick={this.navigateTo(SITEMAP.HOME)}
+                    disabled={this.isLinkActive(SITEMAP.HOME)}
+                  >
+                    <img src={HomeIcon} />
+                    <span>Beranda</span>
+                  </NavigationButton>
+                  <NavigationButton
+                    onClick={this.navigateTo(SITEMAP.CREDIT_SCORE)}
+                    disabled={this.isLinkActive(SITEMAP.CREDIT_SCORE)}
+                  >
+                    <img src={CreditScoreIcon} />
+                    <span>Skor Kredit</span>
+                  </NavigationButton>
+                  <NavigationButton
+                    onClick={this.navigateTo(SITEMAP.LOAN_HISTORY)}
+                    disabled={this.isLinkActive(SITEMAP.LOAN_HISTORY)}
+                  >
+                    <img src={LoanHistoryIcon} />
+                    <span>Riwayat</span>
+                  </NavigationButton>
+                  <AuthConsumer>
+                    {({ logOut }) => (
+                      <NavigationButton onClick={logOut}><img src={LogoutIcon} /><span>Keluar</span></NavigationButton>
+                    )}
+                  </AuthConsumer>
+                  <FooterWrapper>
+                    <Footer />
+                  </FooterWrapper>
+                </ContentAnimationWrapper>
+              </Content>
+            </Menu>
+          )}
+        </Wrapper>
+      </Headroom>
     );
+    //     this.portalDom
+    //   );
+    // }
+
+    // return null;
   }
 }
 
 const Wrapper = styled.div`
   width: 100%;
+  padding: 1.5rem 1.5rem 1rem;
   ${flex({ justify: 'space-between' })}
+  background: ${props => props.theme.color.N0};
+  box-shadow: ${props => props.theme.shadow.dark};
 `;
 
 const Logo = styled.button`
@@ -130,9 +152,9 @@ const MenuToggle = styled.button`
 `;
 
 const Menu = styled.div`
-  position: absolute;
+  position: fixed;
   z-index: 1000;
-  transform: translate3d(0, ${props => props.active ? '0' : '-100%'}, 0);
+  transform: translate3d(0, ${props => props.active ? '0' : '-100vh'}, 0);
   transition: ${props => props.active ? 'none' : '0s ease all 0.25s'};
   width: 100%;
   height: 100%;
@@ -146,7 +168,7 @@ const Overlay = styled.div`
   position: absolute;
   z-index: 1001;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   top: 0;
   left: 0;
   right: 0;

@@ -123,11 +123,11 @@ export const uploadDocument = async (url, file, onUploadProgress) => {
         return data;
       }],
       headers: {
-        'content-type': 'multipart/form-data',
+        'Content-Type': 'binary/octet-stream',
       },
     };
 
-    const response = await api.put(url, formData, opts);
+    const response = await api.put(url, file, opts);
 
     return response;
   } catch (err) {

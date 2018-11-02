@@ -5,6 +5,8 @@ const LOADING = 'asani/creditScore/LOADING';
 const LOAD_SUCCESS = 'asani/creditScore/LOAD_SUCCESS';
 const LOAD_ERROR = 'asani/creditScore/LOAD_ERROR';
 
+const RESET_ALL = 'asani/creditScore/RESET_ALL';
+
 const initialState = {
   data: null,
   loading: false,
@@ -20,6 +22,8 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, data: action.payload.data, loading: false, error: null, loaded: true };
     case LOAD_ERROR:
       return { ...state, error: action.payload.error, loading: false, loaded: true };
+    case RESET_ALL:
+      return { ...initialState };
     default:
       return state;
   }
@@ -35,6 +39,10 @@ export function loadSuccess(data) {
 
 export function loadError(error) {
   return { type: LOAD_ERROR, payload: { error } };
+}
+
+export function resetAll() {
+  return { type: RESET_ALL };
 }
 
 export function getCreditScore() {

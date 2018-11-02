@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 
@@ -13,15 +13,18 @@ import { PageWrapper } from '../../components/PageBuilder';
 export default class NotFound extends React.Component {
   render() {
     return (
-      <PageWrapper vertical>
+      <Fragment>
         <Header />
-        <Content>
-          <h1>404 :(</h1>
-          <h2>Oh Tidak, anda tersesat, halaman yang anda cari tidak tersedia pada Asani :(</h2>
-          <BigActionButton onClick={() => navigate(SITEMAP.HOME)}>Kembali ke Beranda</BigActionButton>
-        </Content>
-        <Footer />
-      </PageWrapper>
+        <PageWrapper vertical>
+          <Header />
+          <Content>
+            <h1>404 :(</h1>
+            <h2>Oh Tidak, anda tersesat, halaman yang anda cari tidak tersedia pada Asani :(</h2>
+            <BigActionButton onClick={() => navigate(SITEMAP.HOME)}>Kembali ke Beranda</BigActionButton>
+          </Content>
+          <Footer />
+        </PageWrapper>
+      </Fragment>
     );
   }
 }

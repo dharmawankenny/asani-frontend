@@ -13,11 +13,6 @@ export default class DocUploadModal extends React.Component {
     userDocument: {},
   };
 
-  state = {
-    showBanks: true,
-    showOutlets: true,
-  };
-
   componentDidUpdate(prevProps) {
     if (!this.props.active && prevProps.active) {
       document.body.style.overflow = 'auto';
@@ -33,9 +28,6 @@ export default class DocUploadModal extends React.Component {
 
     document.body.style.overflow = 'auto';
   }
-
-  toggleBanks = () => this.setState(prevState => ({ showBanks: !prevState.showBanks }));
-  toggleOutlets = () => this.setState(prevState => ({ showOutlets: !prevState.showOutlets }));
 
   render() {
     const { active, onClose, ...docUploadProps } = this.props;

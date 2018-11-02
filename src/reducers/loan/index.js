@@ -4,13 +4,17 @@ import * as apiCalls from '../../api';
 const LOADING = 'asani/loan/LOADING';
 const LOAD_SUCCESS = 'asani/loan/LOAD_SUCCESS';
 const LOAD_ERROR = 'asani/loan/LOAD_ERROR';
+
 const LOADING_ACTIVE = 'asani/loan/LOADING_ACTIVE';
 const LOAD_ACTIVE_SUCCESS = 'asani/loan/LOAD_ACTIVE_SUCCESS';
 const LOAD_ACTIVE_ERROR = 'asani/loan/LOAD_ACTIVE_ERROR';
+
 const LOADING_DETAIL = 'asani/loan/LOADING_DETAIL';
 const LOAD_DETAIL_SUCCESS = 'asani/loan/LOAD_DETAIL_SUCCESS';
 const LOAD_DETAIL_ERROR = 'asani/loan/LOAD_DETAIL_ERROR';
 const RESET_DETAIL = 'asani/loan/RESET_DETAIL';
+
+const RESET_ALL = 'asani/loan/RESET_ALL';
 
 const initialState = {
   loans: [],
@@ -48,6 +52,8 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, detailError: action.payload.error, detailLoading: false, detailLoaded: true };
     case RESET_DETAIL:
       return { ...state, detailedLoan: {}, detailLoading: false, detailError: null, detailLoaded: false };
+    case RESET_ALL:
+      return { ...initialState };
     default:
       return state;
   }
@@ -91,6 +97,10 @@ export function loadingDetailError(error) {
 
 export function resetDetail() {
   return { type: RESET_DETAIL };
+}
+
+export function resetAll() {
+  return { type: RESET_ALL };
 }
 
 export function getLoans() {

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import styled from 'styled-components';
 
 import { flex } from '../commons/theme';
@@ -43,21 +44,19 @@ export default class ProductCard extends React.Component {
     } = this.props.product;
 
     return (
-      <Wrapper onClick={this.props.onClick}>
+      <Wrapper onClick={this.props.onClick} disabled={isLocked}>
         <ProductName locked={isLocked}>
           <img src={urlProductLogo} />
-          <span>{productType}</span>
         </ProductName>
-        <ProductDetail>
-          <h1>{lenderName}</h1>
-          <h2>Bunga {interestPct}%</h2>
-          <h3>Tenor {tenorDays} hari</h3>
+        <ProductDetail locked={isLocked}>
+          <h1>{productNominal}</h1>
+          <h2>{lenderName}</h2>
+          {isLocked ? (<h3>Skor Minimal {minCreditScore}</h3>) : (<h3>Pasti Cair</h3>)}
         </ProductDetail>
         <ProductPrice locked={isLocked}>
-          {isLocked ? (<h3><img src={LockIcon} /> Skor Minimal {minCreditScore}</h3>) : (<h3>Pasti Cair</h3>)}
           <h1>{printPrice(productPrice)}</h1>
-          <span>{productType} {productNominal}</span>
-          <h2>Pilih ></h2>
+          <span>Bayar {moment().locale('id').add(tenorDays, 'days').fromNow()}</span>
+          <h2>{isLocked ? (<Fragment><img src={LockIcon} /><span> Terkunci</span></Fragment>) : 'Pilih >'}</h2>
         </ProductPrice>
       </Wrapper>
     );
@@ -74,9 +73,9 @@ const Wrapper = styled.button`
 `;
 
 const ProductName = styled.div`
-  width: calc(17.5% - 0.5rem);
+  width: calc(15% - 0.5rem);
   ${props => props.locked && 'filter: grayscale(100%);'}
-  ${flex({ direction: 'column' })}
+  ${flex({ direction: 'column', justify: 'center' })}
 
   img {
     width: 2.5rem;
@@ -90,46 +89,51 @@ const ProductName = styled.div`
     font-weight: 700;
     margin: 0;
     color: ${props => props.theme.color.mainProductBlue};
+    text-align: center;
   }
 `;
 
 const ProductDetail = styled.div`
-  width: calc(35% - 0.75rem);
+  width: calc(45% - 0.75rem);
   margin: 0 1rem 0 1.25rem;
-  ${flex({ align: 'center' })}
+  ${flex({ justify: 'flex-start' })}
 
   h1,
   h2,
   h3 {
     width: 100%;
     text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     color: ${props => props.theme.color.N800};
   }
 
   h1 {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 700;
-    margin: 0 0 0.375rem;
+    line-height: 1.125;
+    margin: 0 0 0.25rem;
   }
 
   h2 {
     font-size: 0.75rem;
     font-weight: 400;
-    margin: 0 0 0.125rem;
+    margin: 0 0 0.25rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   h3 {
+    width: auto;
     font-size: 0.75rem;
-    font-weight: 400;
-    margin: 0;
+    font-weight: 700;
+    margin: 0 0 0.125rem;
+    color: ${props => props.locked ? props.theme.color.R300 : props.theme.color.G300};
+    ${flex({ justify: 'flex-start' })}
   }
 `;
 
 const ProductPrice = styled.div`
-  width: calc(47.5% - 1rem);
+  width: calc(40% - 1rem);
   ${flex()}
 
   h1,
@@ -160,14 +164,14 @@ const ProductPrice = styled.div`
     background: ${props => props.locked ? props.theme.color.N100 : props.theme.color.mainProductBlue};
     box-shadow: ${props => props.theme.shadow.base};
     text-align: center;
-  }
+    ${flex()}
 
-  h3 {
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin: 0 0 0.125rem;
-    color: ${props => props.locked ? props.theme.color.R300 : props.theme.color.G300};
-    ${flex({ justify: 'flex-start' })}
+    span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-weight: 700;
+    }
 
     img {
       height: 0.875rem;
@@ -176,7 +180,14 @@ const ProductPrice = styled.div`
     }
   }
 
-  span {
+  h3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 0 0 0.125rem;
+    color: ${props => props.locked ? props.theme.color.R300 : props.theme.color.G300};
+  }
+
+  & > span {
     width: 100%;
     text-align: left;
     font-size: 0.75rem;

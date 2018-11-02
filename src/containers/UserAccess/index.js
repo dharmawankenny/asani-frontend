@@ -175,68 +175,70 @@ export default class UserAccess extends React.Component {
 
   render() {
     return (
-      <PageWrapper vertical>
+      <Fragment>
         <Header />
-        <Content>
-          <h1>
-            {this.state.step === 0 && 'Cek skor kredit kamu GRATIS.\nTemukan pinjaman terbaikmu!'}
-            {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
-          </h1>
-          {this.state.step === 0 && (
-            <Fragment>
-              <Input
-                label="Nomor WhatsApp Kamu"
-                prefix="+62"
-                type="tel"
-                placeholder="8XXXXXXXXX"
-                value={this.state.telNumber}
-                error={this.state.telNumberError}
-                onChange={evt => this.setTelNumber(evt.target.value)}
-              />
-              <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" >
-                {!this.state.loading && 'Masuk / Daftar'}
-                {this.state.loading && (
-                  <Spinner color="N0" />
-                )}
-              </BigActionButton>
-            </Fragment>
-          )}
-          {this.state.step === 1 && (
-            <Fragment>
-              <Input
-                label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
-                type="number"
-                placeholder="XXXX"
-                value={this.state.otpCode}
-                error={this.state.otpCodeError}
-                onChange={evt => this.setOtpCode(evt.target.value)}
-              />
-              <AuthConsumer>
-                {({ logIn }) => (
-                  <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" >
-                    {!this.state.loading && 'Verifikasi Kode OTP'}
-                    {this.state.loading && (
-                      <Spinner color="N0" />
-                    )}
-                  </BigActionButton>
-                )}
-              </AuthConsumer>
-              {this.state.retryTimer > 0 && (
-                <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
-              )}
-              {this.state.retryTimer === 0 && (
-                <RetryButton onClick={this.state.loading ? null : this.toRetryOTP}>
-                  {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
+        <PageWrapper vertical>
+          <Content>
+            <h1>
+              {this.state.step === 0 && 'Cek skor kredit kamu GRATIS.\nTemukan pinjaman terbaikmu!'}
+              {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
+            </h1>
+            {this.state.step === 0 && (
+              <Fragment>
+                <Input
+                  label="Nomor WhatsApp Kamu"
+                  prefix="+62"
+                  type="tel"
+                  placeholder="8XXXXXXXXX"
+                  value={this.state.telNumber}
+                  error={this.state.telNumberError}
+                  onChange={evt => this.setTelNumber(evt.target.value)}
+                />
+                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" >
+                  {!this.state.loading && 'Masuk / Daftar'}
                   {this.state.loading && (
                     <Spinner color="N0" />
                   )}
-                </RetryButton>
-              )}
-            </Fragment>
-          )}
-        </Content>
-        <Footer />
-      </PageWrapper>
+                </BigActionButton>
+              </Fragment>
+            )}
+            {this.state.step === 1 && (
+              <Fragment>
+                <Input
+                  label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
+                  type="number"
+                  placeholder="XXXX"
+                  value={this.state.otpCode}
+                  error={this.state.otpCodeError}
+                  onChange={evt => this.setOtpCode(evt.target.value)}
+                />
+                <AuthConsumer>
+                  {({ logIn }) => (
+                    <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" >
+                      {!this.state.loading && 'Verifikasi Kode OTP'}
+                      {this.state.loading && (
+                        <Spinner color="N0" />
+                      )}
+                    </BigActionButton>
+                  )}
+                </AuthConsumer>
+                {this.state.retryTimer > 0 && (
+                  <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
+                )}
+                {this.state.retryTimer === 0 && (
+                  <RetryButton onClick={this.state.loading ? null : this.toRetryOTP}>
+                    {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
+                    {this.state.loading && (
+                      <Spinner color="N0" />
+                    )}
+                  </RetryButton>
+                )}
+              </Fragment>
+            )}
+          </Content>
+          <Footer />
+        </PageWrapper>
+      </Fragment>
     );
   }
 }
