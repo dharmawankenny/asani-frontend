@@ -356,25 +356,10 @@ export default class Home extends React.Component {
             )}
           <Loans>
             <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
-            <Filter active={this.state.showFilterModal}>
-              <button onClick={this.toggleFilter} id="asani-actions-open-filter">
-                Sortir: <strong>{this.printSortQuery()}</strong>, Filter: <strong>{this.printFilter()}</strong>
-              </button>
-              <div>
-                <div className="overlay" onClick={this.toggleFilter} />
-                <div className="content">
+            {this.props.product.loaded &&
+              this.props.product.products.length > 0 && (
+                <Filter>
                   <div>
-                    <h3>Sortir</h3>
-                    {Home.SORT_QUERIES.map(sq => (
-                      <button
-                        className={classNames('item', { active: this.state.sortQuery === sq })}
-                        onClick={this.setSortQuery(sq)}
-                        id={`asani-actions-set-filter-sort-to-${sq}`}
-                      >
-                        {sq}
-                      </button>
-                    ))}
-                    <h3>Filter</h3>
                     <button
                       className={classNames('item', { active: this.isAllProductQueryEnabled(this.state.productQuery) })}
                       onClick={this.toggleAllProduct}
@@ -382,7 +367,7 @@ export default class Home extends React.Component {
                     >
                       Semua Produk
                     </button>
-                    {Object.keys(this.state.productQuery).map(product => (
+                      {Object.keys(this.state.productQuery).map(product => (
                       <button
                         className={classNames('item', {
                           active: this.state.productQuery[product],
@@ -394,11 +379,9 @@ export default class Home extends React.Component {
                         {product}
                       </button>
                     ))}
-                    <BigActionButton onClick={this.toggleFilter}>Tutup Filter</BigActionButton>
                   </div>
-                </div>
-              </div>
-            </Filter>
+                </Filter>
+              )}
             {this.props.product.loading && (
               <SpinnerWrapper>
                 <Spinner color="N800" />
@@ -493,104 +476,34 @@ const Loans = styled.div`
 
 const Filter = styled.div`
   width: 100%;
-  ${flex()}
-  margin: 0 0 1rem;
-
-  & > button {
-    display: block;
-    width: 100%;
-    font-size: 0.85rem;
-    font-width: 400;
-    line-height: 1.25;
-    margin: 0;
-    padding: 0;
-    color: ${props => props.theme.color.N300};
-    text-align: left;
-
-    strong {
-      font-weight: 700;
-      text-decoration: underline;
-      color: ${props => props.theme.color.N800};
-    }
-  }
+  height: 2rem;
+  margin: 0.25rem 0 1rem;
+  white-space: nowrap;
+  overflow: auto;
 
   & > div {
-    position: fixed;
-    z-index: 3000;
-    transform: translate3d(0, ${props => props.active ? '0' : '100%'}, 0);
-    transition: ${props => props.active ? 'none' : '0s ease all 0.25s'};
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    display: inline-block;
 
-    .overlay {
-      position: absolute;
-      z-index: 1001;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: ${props => props.theme.color.N800};
-      opacity: ${props => props.active ? '0.75' : '0'};
-      transition: 0.25s ease all;
-    }
+    button {
+      font-size: 0.75rem;
+      font-weight: 400;
+      padding: 0.375rem;
+      margin: 0 0.5rem 0 0;
+      box-shadow: ${props => props.theme.shadow.base};
+      border-radius: ${props => props.theme.borderRadius};
 
-    .content {
-      position: absolute;
-      z-index: 1002;
-      width: 100%;
-      max-height: 75%;
-      overflow: auto;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: ${props => props.theme.color.N0};
-      transform: translate3d(0, ${props => props.active ? '0' : '100%'}, 0);
-      transition: 0.25s ease all;
-      padding: 1.5rem;
+      &.active {
+        color: ${props => props.theme.color.N0};
+        background: ${props => props.theme.color.mainProductBlue};
+      }
 
-      & > div {
-        width: 100%;
-        ${flex({ justify: 'flex-start' })}
-        opacity: ${props => props.active ? '1' : '0'};
-        transition: ${props => props.active ? '0.125s ease all 0.125s' : 'none'};
+      &.grayscaled {
+        color: ${props => props.theme.color.N800};
+        background: ${props => props.theme.color.N0};
+      }
 
-        h3 {
-          width: 100%;
-          margin: 0 0 1rem;
-          font-size: 1rem;
-          font-weight: 400;
-          text-align: left;
-          color: ${props => props.theme.color.N300};
-        }
-
-        .item {
-          width: 100%;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.875rem;
-          font-weight: 400;
-          ${flex({ justify: 'flex-start' })}
-          border: 1px solid ${props => props.theme.color.N40};
-          color: ${props => props.theme.color.N300};
-          border-radius: ${props => props.theme.borderRadius};
-
-          &.active {
-            color: ${props => props.theme.color.N0};
-            background: ${props => props.theme.color.mainProductBlue};
-            border-color: ${props => props.theme.color.mainProductBlue};
-          }
-
-          &.grayscaled {
-            color: ${props => props.theme.color.N300};
-            background: ${props => props.theme.color.N40};
-            border-color: ${props => props.theme.color.N40};
-          }
-        }
+      &:last-of-type {
+        margin: 0;
       }
     }
   }
