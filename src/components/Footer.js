@@ -10,14 +10,14 @@ export default class Footer extends React.Component {
   render() {
     return (
       <Wrapper>
-        <Switcher>
+        {/* <Switcher>
           <Switch active>
             ID
           </Switch>
           <Switch>
             EN
           </Switch>
-        </Switcher>
+        </Switcher> */}
         <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
           <Help src={HelpIcon} />
         </a>
@@ -28,7 +28,7 @@ export default class Footer extends React.Component {
 
 const Wrapper = styled.div`
   width: 100%;
-  ${flex({ justify: 'space-between' })}
+  ${flex({ justify: 'flex-end' })}
 
   a {
     ${flex()}
