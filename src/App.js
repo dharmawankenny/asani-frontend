@@ -97,10 +97,10 @@ export default class App extends React.Component {
     delete api.defaults.headers.common['Authorization'];
 
     // reset reducers
-    dispatch(resetCreditScore());
-    dispatch(resetLoan());
-    dispatch(resetProduct());
-    dispatch(resetUserDocument());
+    store.dispatch(resetCreditScore());
+    store.dispatch(resetLoan());
+    store.dispatch(resetProduct());
+    store.dispatch(resetUserDocument());
 
     // log out and redirect
     this.setState({ loggedIn: false });

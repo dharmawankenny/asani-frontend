@@ -33,9 +33,8 @@ export default class ProductCard extends React.Component {
     const {
       productId,
       lenderName,
-      productPrice,
+      totalPrice,
       productNominal,
-      productType,
       minCreditScore,
       tenorDays,
       interestPct,
@@ -49,12 +48,12 @@ export default class ProductCard extends React.Component {
           <img src={urlProductLogo} />
         </ProductName>
         <ProductDetail locked={isLocked}>
-          <h1>{productType} {productNominal}</h1>
-          <h2>{lenderName}</h2>
+          <h1>{productNominal}</h1>
+          <h2>oleh {lenderName}</h2>
           {isLocked ? (<h3>Skor Minimal {minCreditScore}</h3>) : (<h3>Pasti Cair</h3>)}
         </ProductDetail>
         <ProductPrice locked={isLocked}>
-          <h1>{printPrice(productPrice)}</h1>
+          <h1>{printPrice(totalPrice)}</h1>
           <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
           <h2>{isLocked ? (<Fragment><img src={LockIcon} /><span> Terkunci</span></Fragment>) : 'Pilih >'}</h2>
         </ProductPrice>
@@ -69,13 +68,13 @@ const Wrapper = styled.button`
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
   padding: 0.75rem;
-  ${flex({ justify: 'flex-start', align: 'stretch' })}
+  ${flex({ justify: 'flex-start' })}
 `;
 
 const ProductName = styled.div`
   width: calc(15% - 0.5rem);
   ${props => props.locked && 'filter: grayscale(100%);'}
-  ${flex({ direction: 'column', justify: 'center' })}
+  ${flex()}
   pointer-events: none;
 
   img {

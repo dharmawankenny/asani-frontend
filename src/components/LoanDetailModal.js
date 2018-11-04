@@ -129,6 +129,7 @@ export default class LoanDetailModal extends React.Component {
                       <h1>Pembayaran Via Transfer Bank</h1>
                       <img src={ChevronDownIcon} />
                     </button>
+                    <p>Pembayaran anda akan kami salurkan ke rekening pemberi pinjaman</p>
                     {banks.map(bank => (
                       <div>
                         <LabelValue>
@@ -324,6 +325,10 @@ const SummaryInfo = styled.div`
   width: 100%;
   padding: 0.75rem 1.5rem;
 
+  span {
+    font-weight: 700;
+  }
+
   & > div {
     margin: 0 0 0.5rem;
 
@@ -363,6 +368,19 @@ const Toggler = styled.div`
       transform: rotate(${props => props.active ? '180deg' : '0deg'});
       transition: 0.25s ease all;
     }
+  }
+
+  p {
+    width: 100%;
+    max-height: ${props => props.active ? '20rem' : '0'};
+    opacity: ${props => props.active ? '1' : '0'};
+    transition: ${props => props.active ? '0.125s ease max-height, 0.125s ease opacity 0.125s' : '0.125s ease max-height 0.125s, 0.125s ease opacity'};
+    pointer-events: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: ${props => props.theme.color.N300};
+    margin: 0.5rem 0;
   }
 
   & > div {

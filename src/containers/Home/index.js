@@ -87,6 +87,10 @@ export default class Home extends React.Component {
       this.props.productActions.getProducts();
     }
 
+    if (this.props.product.loaded && this.props.product.products.length > 0) {
+      this.updateFilterStructure(this.props.product.products);
+    }
+
     if (!this.props.loan.activeLoansLoading && !this.props.loan.activeLoansLoaded) {
       this.props.loanActions.getActiveLoans();
     }
@@ -127,13 +131,22 @@ export default class Home extends React.Component {
   toggleProductQuery = productKey => () => {
     this.setState(prevState => {
       if (this.isAllProductQueryEnabled(prevState.productQuery)) {
-        const newProductQuery = { ...prevState.productQuery}
+        const newProductQuery = { ...prevState.productQuery };
         Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
 
         return {
           productQuery: {
             ...newProductQuery,
             [productKey]: true,
+          },
+        };
+      } else if (this.isAllProductQueryNotEnabled({ ...prevState.productQuery, [productKey]: false })) {
+        const newProductQuery = { ...prevState.productQuery };
+        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true );
+
+        return {
+          productQuery: {
+            ...newProductQuery,
           },
         };
       }
@@ -148,6 +161,7 @@ export default class Home extends React.Component {
   };
 
   isAllProductQueryEnabled = productQuery => Object.values(productQuery).every(flag => flag);
+  isAllProductQueryNotEnabled = productQuery => Object.values(productQuery).every(flag => !flag);
 
   toggleAllProduct = () => {
     this.setState(prevState => {
@@ -414,7 +428,9 @@ export default class Home extends React.Component {
                   resetPurchase={this.props.productActions.resetPurchase}
                   purchaseLoading={this.props.product.purchaseLoading}
                   purchaseSuccess={this.props.product.purchaseLoaded}
+                  purchaseError={this.props.product.purchaseError}
                   updateLoans={this.props.loanActions.getActiveLoans}
+                  hasActiveLoans={this.props.loan.activeLoansLoaded && this.props.loan.activeLoans && this.props.loan.activeLoans.length > 0}
                 />
               )}
             {this.props.product.loaded &&

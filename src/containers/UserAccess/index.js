@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import swal from 'sweetalert';
 
+import BgImage from '../../assets/bg.png';
+
 import { flex } from '../../commons/theme';
 
 import { BigActionButton } from '../../components/Buttons';
@@ -176,7 +178,7 @@ export default class UserAccess extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header stopNavigation />
+        <Header stopNavigation naked />
         <PageWrapper vertical>
           <Content>
             <h1>
@@ -238,10 +240,23 @@ export default class UserAccess extends React.Component {
           </Content>
           <Footer />
         </PageWrapper>
+        <Background src={BgImage} />
       </Fragment>
     );
   }
 }
+
+const Background = styled.img`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100;
+  z-index: -1;
+  opacity: 0.5;
+`;
 
 const Content = styled.div`
   width: 100%;

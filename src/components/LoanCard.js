@@ -58,8 +58,7 @@ export default class LoanCard extends React.Component {
       loanId,
       note,
       paymentTime,
-      productPrice,
-      productType,
+      totalBill,
       productNominal,
       status,
       tenorDays,
@@ -75,13 +74,13 @@ export default class LoanCard extends React.Component {
           <img src={urlProductLogo} />
         </LoanProduct>
         <LoanDetail>
-          <h1>{productType} {productNominal}</h1>
-          <h2>{printPrice(productPrice)}</h2>
+          <h1>{productNominal}</h1>
+          <h2>{printPrice(totalBill)}</h2>
           <h3>oleh {lenderName}</h3>
         </LoanDetail>
         <LoanPayment>
           {Number(status.status) === 0 && (
-            <h5>{note ? note : 'Catatan belum tersedia'}</h5>
+            <h5>{note ? note : 'Dalam proses verifikasi maksimal 30 menit pada hari dan jam kerja.'}</h5>
           )}
           {Number(status.status) === 2 && (
             <Fragment>
@@ -111,7 +110,7 @@ const Wrapper = styled.button`
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
   padding: 0.75rem;
-  ${flex({ justify: 'flex-start', align: 'flex-start' })}
+  ${flex({ justify: 'flex-start' })}
 `;
 
 const LoanHeader = styled.div`
@@ -237,7 +236,7 @@ const LoanPayment = styled.div`
   h5,
   h6 {
     width: 100%;
-    font-size: 0.825rem;
+    font-size: 0.75rem;
     font-weight: 400;
     line-height: 1.25;
     margin: 0;

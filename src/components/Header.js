@@ -65,15 +65,17 @@ export default class Header extends React.Component {
     //   return ReactDOM.createPortal(
     return (
       <Headroom>
-        <Wrapper>
-          <Logo onClick={this.navigateTo(SITEMAP.HOME)}>
-            <img src={LogoImg} />
-          </Logo>
-          {this.props.withMenu && (
-            <MenuToggle onClick={this.toggleMenu}>
-              <img src={MenuIcon} />
-            </MenuToggle>
-          )}
+        <Wrapper naked={this.props.naked}>
+          <LogoMenu>
+            <Logo onClick={this.navigateTo(SITEMAP.HOME)}>
+              <img src={LogoImg} />
+            </Logo>
+            {this.props.withMenu && (
+              <MenuToggle onClick={this.toggleMenu}>
+                <img src={MenuIcon} />
+              </MenuToggle>
+            )}
+          </LogoMenu>
           {this.props.withMenu && (
             <Menu active={this.state.showMenu}>
               <Overlay active={this.state.showMenu} onClick={this.toggleMenu} />
@@ -125,10 +127,17 @@ export default class Header extends React.Component {
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 1.5rem 1.5rem 1rem;
+  padding: ${props => props.naked ? '1.5rem' : '1rem 1.5rem 0.75rem'};
   ${flex({ justify: 'space-between' })}
-  background: ${props => props.theme.color.N0};
-  box-shadow: ${props => props.theme.shadow.dark};
+  background: ${props => props.naked ? 'none' : props.theme.color.N0};
+  box-shadow: ${props => props.naked ? 'none' : props.theme.shadow.dark};
+`;
+
+const LogoMenu = styled.div`
+  width: 100%;
+  max-width: 32rem;
+  margin: 0 auto;
+  ${flex({ justify: 'space-between' })}
 `;
 
 const Logo = styled.button`
