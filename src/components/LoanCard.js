@@ -60,6 +60,7 @@ export default class LoanCard extends React.Component {
       paymentTime,
       productPrice,
       productType,
+      productNominal,
       status,
       tenorDays,
       urlProductLogo,
@@ -67,31 +68,34 @@ export default class LoanCard extends React.Component {
 
     return (
       <Wrapper onClick={this.props.onClick}>
-        <LoanProduct color={STATUS_COLOR_MAP[Number(status.status)]}>
-          <img src={urlProductLogo} />
+        <LoanHeader color={STATUS_COLOR_MAP[Number(status.status)]}>
           <span>{status.description}</span>
+        </LoanHeader>
+        <LoanProduct>
+          <img src={urlProductLogo} />
         </LoanProduct>
         <LoanDetail>
-          <h2>{lenderName}</h2>
-          <h3>{productType}</h3>
-          <h1>{printPrice(productPrice)}</h1>
+          <h1>{productType} {productNominal}</h1>
+          <h2>{printPrice(productPrice)}</h2>
+          <h3>oleh {lenderName}</h3>
         </LoanDetail>
         <LoanPayment>
           {Number(status.status) === 0 && (
-            <Fragment>
-              <h4>Peminjaman anda sedang diproses oleh tim kami, mohon menunggu</h4>
-            </Fragment>
+            <h5>{note ? note : 'Catatan belum tersedia'}</h5>
           )}
           {Number(status.status) === 2 && (
             <Fragment>
               <h3>Alasan</h3>
-              <h4>{note}</h4>
+              <h6>{note ? note : 'Catatan belum tersedia'}</h6>
             </Fragment>
           )}
-          {(Number(status.status) !== 0 && Number(status.status) !== 2) && (
+          {Number(status.status) === 3 && (
+            <h4>{note ? note : 'Catatan belum tersedia'}</h4>
+          )}
+          {(Number(status.status) > 0 && Number(status.status) < 2) && (
             <Fragment>
               <h3>Jatuh Tempo</h3>
-              <h2><img src={ClockIcon} />{moment(dueTime).fromNow()}</h2>
+              <h2>{moment(dueTime).fromNow()}</h2>
               <h1>Lunaskan ></h1>
             </Fragment>
           )}
@@ -107,11 +111,28 @@ const Wrapper = styled.button`
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
   padding: 0.75rem;
-  ${flex({ justify: 'flex-start', align: 'stretch' })}
+  ${flex({ justify: 'flex-start', align: 'flex-start' })}
+`;
+
+const LoanHeader = styled.div`
+  width: calc(100% + 1.5rem);
+  margin: -0.75rem -0.75rem 0.5rem;
+  padding: 0.375rem 0.75rem;
+  color: ${props => props.theme.color.N0};
+  background: ${props => props.theme.color[props.color]};
+  ${flex({ justify: 'flex-start' })}
+  border-radius: ${props => props.theme.borderRadius} ${props => props.theme.borderRadius} 0 0;
+
+  span {
+    font-size: 0.825rem;
+    font-weight: 700;
+    text-align: left;
+  }
 `;
 
 const LoanProduct = styled.div`
-  width: calc(17.5% - 0.5rem);
+  width: calc(15% - 0.5rem);
+  ${props => props.locked && 'filter: grayscale(100%);'}
   ${flex({ direction: 'column' })}
 
   img {
@@ -120,18 +141,11 @@ const LoanProduct = styled.div`
     object-fit: contain;
     margin: 0 0 0.25rem;
   }
-
-  span {
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin: 0;
-    color: ${props => props.theme.color[props.color]};
-  }
 `;
 
 const LoanDetail = styled.div`
-  width: calc(45% - 1rem);
-  margin: 0 1rem;
+  width: calc(45% - 0.75rem);
+  margin: 0 1rem 0 1.25rem;
   ${flex()}
 
   h1,
@@ -139,9 +153,6 @@ const LoanDetail = styled.div`
   h3 {
     width: 100%;
     text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     color: ${props => props.theme.color.N800};
   }
 
@@ -154,19 +165,25 @@ const LoanDetail = styled.div`
   h2 {
     font-size: 0.875rem;
     font-weight: 700;
-    margin: 0 0 0.125rem;
+    margin: 0.25rem 0 0.125rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   h3 {
     font-size: 0.75rem;
     font-weight: 400;
-    margin: 0 0 0.5rem;
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     color: ${props => props.theme.color.N300};
   }
 `;
 
 const LoanPayment = styled.div`
-  width: calc(37.5% - 0.5rem);
+  width: calc(40% - 1rem);
   ${flex()}
 
   h1,
@@ -212,14 +229,28 @@ const LoanPayment = styled.div`
     color: ${props => props.theme.color.N300};
   }
 
-  h4 {
+  h4,
+  h5,
+  h6 {
     width: 100%;
-    font-size: 0.75rem;
+    font-size: 0.825rem;
     font-weight: 400;
     line-height: 1.25;
     margin: 0;
     text-align: left;
-    color: ${props => props.theme.color.Y300};
     text-transform: capitalize;
+  }
+
+  h4 {
+    font-weight: 700;
+    color: ${props => props.theme.color.G300};
+  }
+
+  h5 {
+    color: ${props => props.theme.color.Y300};
+  }
+
+  h6 {
+    color: ${props => props.theme.color.R300};
   }
 `;

@@ -81,3 +81,15 @@ input {
   border: none;
   outline: none;
 }
+
+.headroom {
+  z-index: 2000 !important;
+}
+
+.headroom-wrapper {
+  width: 100%;
+}
+
+.headroom--unfixed {
+  width: 100%;
+}

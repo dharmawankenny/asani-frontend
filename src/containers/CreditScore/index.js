@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -32,6 +32,9 @@ import {
   SegmentContext,
   SegmentHeader,
   FullSegmentHeader,
+  ProgressBar,
+  ProgressSegment,
+  ArrowMarker,
   SegmentAction,
   SegmentDescription,
   SpinnerWrapper,
@@ -64,6 +67,10 @@ export default class CreditScore extends React.Component {
       this.props.creditScoreActions.getCreditScore();
     }
 
+    if (!this.props.creditScore.scoreRangeLoading && !this.props.creditScore.scoreRangeLoaded) {
+      this.props.creditScoreActions.getScoreRange();
+    }
+
     if (!this.props.userDocument.loading && !this.props.userDocument.loaded) {
       this.props.userDocumentActions.getDocuments();
     }
@@ -72,14 +79,14 @@ export default class CreditScore extends React.Component {
   openDocumentUploader = focusedDoc => this.setState({ focusedDoc });
   closeDocumentUploader = () => this.setState({ focusedDoc: {} });
 
-  getDocumentActionIcon = doc => Number(doc.status) === -1 ? doc.icon_url : CreditScore.ICON_MAP[Number(doc.status)];
+  getDocumentActionIcon = doc => CreditScore.ICON_MAP[Number(doc.status)];
 
   calculateCurrentProgress = () => {
     if (this.props.creditScore.loaded && this.props.creditScore.data && this.props.creditScore.data.credit_score) {
-      return calculatePercentage(this.props.creditScore.data.credit_score);
+      return calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary());
     }
 
-    return calculatePercentage(200);
+    return calculatePercentage(200, this.getLowerBoundary(), this.getUpperBoundary());
   };
 
   userDataDocumentAction = doc => () => {
@@ -116,102 +123,155 @@ export default class CreditScore extends React.Component {
     this.props.userDocumentActions.uploadingReset();
   };
 
+  getLowerBoundary = () => {
+    if (this.props.creditScore.scoreRangeLoaded && this.props.creditScore.scoreRange.length > 0) {
+      let lowerBoundary = DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY;
+
+      this.props.creditScore.scoreRange.forEach(sr => {
+        if (Number(sr.lower_bounds) <= lowerBoundary) {
+          lowerBoundary = Number(sr.lower_bounds);
+        }
+      });
+
+      return lowerBoundary;
+    }
+
+    return DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY;
+  };
+
+  getUpperBoundary = () => {
+    if (this.props.creditScore.scoreRangeLoaded && this.props.creditScore.scoreRange.length > 0) {
+      let upperBoundary = DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY;
+
+      this.props.creditScore.scoreRange.forEach(sr => {
+        if (Number(sr.upper_bounds) >= upperBoundary) {
+          upperBoundary = Number(sr.upper_bounds);
+        }
+      });
+
+      return upperBoundary;
+    }
+
+    return DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY;
+  };
+
   render() {
     return (
-      <PageWrapper>
+      <Fragment>
         <Header withMenu />
-        <Dashboard>
-          <ScoreProgress>
-            <SegmentContext>
-              <SegmentHeader>Skor kredit kamu</SegmentHeader>
-              <SegmentAction onClick={() => navigate(SITEMAP.WHAT_IS_CREDIT_SCORE)}>Apa itu skor kredit? ></SegmentAction>
-            </SegmentContext>
-            <DocUploadModal
-              active={!isEmpty(this.state.focusedDoc)}
-              userDocument={this.state.focusedDoc}
-              onClose={this.closeDocumentUploader}
-              upload={this.props.userDocumentActions.uploadDocument}
-              progress={this.props.userDocument.uploadProgress}
-              finished={this.props.userDocument.uploadFinished}
-              finishedText="Oke"
-              finishedCallback={this.successfullyUploadedCallback}
-            />
-            {this.props.creditScore.loading && (
+        <PageWrapper>
+          <Dashboard>
+            <ScoreProgress>
+              <SegmentContext>
+                <SegmentHeader>Skor kredit kamu</SegmentHeader>
+                <SegmentAction onClick={() => navigate(SITEMAP.WHAT_IS_CREDIT_SCORE)}>Apa itu skor kredit? ></SegmentAction>
+              </SegmentContext>
+              <DocUploadModal
+                active={!isEmpty(this.state.focusedDoc)}
+                userDocument={this.state.focusedDoc}
+                onClose={this.closeDocumentUploader}
+                upload={this.props.userDocumentActions.uploadDocument}
+                progress={this.props.userDocument.uploadProgress}
+                finished={this.props.userDocument.uploadFinished}
+                finishedText="Oke"
+                finishedCallback={this.successfullyUploadedCallback}
+              />
+              {this.props.creditScore.loaded &&
+                this.props.creditScore.data && (
+                  <Current progress={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary())} levelColor={this.props.creditScore.data.color}>
+                    <div>
+                      <h1>{this.props.creditScore.data.credit_score}</h1>
+                      <h3>{this.props.creditScore.data.level}</h3>
+                    </div>
+                  </Current>
+                )}
+              {(this.props.creditScore.loading || this.props.creditScore.scoreRangeLoading)  && (
+                <SpinnerWrapper>
+                  <Spinner color="N800" />
+                </SpinnerWrapper>
+              )}
+              {this.props.creditScore.scoreRangeLoaded &&
+                this.props.creditScore.scoreRange.length > 0 && (
+                  <Progress>
+                    <ProgressBar
+                      progress={this.calculateCurrentProgress()}
+                      levelColor={this.props.creditScore.loaded && this.props.creditScore.data ? this.props.creditScore.data.color : '#36B37E'}
+                    >
+                      <span>{this.getLowerBoundary()}</span>
+                      <div>
+                        {this.props.creditScore.scoreRange.map((scoreRange, index) => (
+                          <ProgressSegment
+                            zIndex={this.props.creditScore.scoreRange.length - index}
+                            length={calculatePercentage((Number(scoreRange.upper_bounds + 1) - Number(scoreRange.lower_bounds)) + this.getLowerBoundary(), this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                            color={scoreRange.color}
+                            offset={calculatePercentage(scoreRange.lower_bounds, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                            leftRadius={index === 0}
+                            rightRadius={index === this.props.creditScore.scoreRange.length - 1}
+                          />
+                        ))}
+                        <ProgressSegment
+                          zIndex={this.props.creditScore.scoreRange.length + 2}
+                          length={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                          color={this.props.creditScore.data.color}
+                          opacity={1}
+                          fullRadius
+                        />
+                        <ArrowMarker progress={this.calculateCurrentProgress()} invert><img src={ArrowIcon} /></ArrowMarker>
+                        <ArrowMarker progress={calculatePercentage(300, this.getLowerBoundary(), this.getUpperBoundary())}><img src={ArrowIcon} /></ArrowMarker>
+                        <ArrowMarker progress={calculatePercentage(600, this.getLowerBoundary(), this.getUpperBoundary())}><img src={ArrowIcon} /></ArrowMarker>
+                        <ArrowMarker progress={calculatePercentage(700, this.getLowerBoundary(), this.getUpperBoundary())}><img src={ArrowIcon} /></ArrowMarker>
+                        <ArrowMarker progress={calculatePercentage(800, this.getLowerBoundary(), this.getUpperBoundary())}><img src={ArrowIcon} /></ArrowMarker>
+                      </div>
+                      <span>{this.getUpperBoundary()}</span>
+                    </ProgressBar>
+                    <ProgressMarkers>
+                      <ProgressMarker progress={calculatePercentage(300, this.getLowerBoundary(), this.getUpperBoundary())}>
+                        <img src={ProgressDigitalIcon} />
+                        <span>Digital</span>
+                      </ProgressMarker>
+                      <ProgressMarker progress={calculatePercentage(600, this.getLowerBoundary(), this.getUpperBoundary())}>
+                        <img src={ProgressElectronicIcon} />
+                        <span>Elektronik</span>
+                      </ProgressMarker>
+                      <ProgressMarker progress={calculatePercentage(700, this.getLowerBoundary(), this.getUpperBoundary())}>
+                        <img src={ProgressCarIcon} />
+                        <span>Mobil</span>
+                      </ProgressMarker>
+                      <ProgressMarker progress={calculatePercentage(800, this.getLowerBoundary(), this.getUpperBoundary())}>
+                        <img src={ProgressHomeIcon} />
+                        <span>Rumah</span>
+                      </ProgressMarker>
+                    </ProgressMarkers>
+                  </Progress>
+                )}
+            </ScoreProgress>
+          </Dashboard>
+          <UserData>
+            <FullSegmentHeader>Tingkatkan skor kredit kamu</FullSegmentHeader>
+            <SegmentDescription>
+              Upload dokumen-dokumen dan lakukan aksi-aksi rekomendasi dari kami dibawah ini
+            </SegmentDescription>
+            <UserDataAction onClick={() => navigate(SITEMAP.HOME)}>
+              <img src={LoanHistoryIcon} />
+              <span>Ambil dan Lunasi Pinjaman</span>
+            </UserDataAction>
+            {this.props.userDocument.loading && (
               <SpinnerWrapper>
                 <Spinner color="N800" />
               </SpinnerWrapper>
             )}
-            {this.props.creditScore.loaded &&
-              this.props.creditScore.data && (
-                <Current progress={calculatePercentage(this.props.creditScore.data.credit_score)} levelColor={this.props.creditScore.data.color}>
-                  <div>
-                    <h1>{this.props.creditScore.data.credit_score}</h1>
-                    <h3>{this.props.creditScore.data.level}</h3>
-                  </div>
-                </Current>
-              )}
-            <Progress>
-              <ProgressBar
-                progress={this.calculateCurrentProgress()}
-                levelColor={this.props.creditScore.loaded && this.props.creditScore.data ? this.props.creditScore.data.color : '#36B37E'}
-              >
-                <span>{DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY}</span>
-                <span>{DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY}</span>
-                <div>
-                  <div className="bg" />
-                  <div className="bar" />
-                  <ArrowMarker progress={this.calculateCurrentProgress()} invert><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={calculatePercentage(300)}><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={calculatePercentage(600)}><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={calculatePercentage(700)}><img src={ArrowIcon} /></ArrowMarker>
-                  <ArrowMarker progress={calculatePercentage(800)}><img src={ArrowIcon} /></ArrowMarker>
-                </div>
-              </ProgressBar>
-              <ProgressMarkers>
-                <ProgressMarker progress={calculatePercentage(300)}>
-                  <img src={ProgressDigitalIcon} />
-                  <span>Digital</span>
-                </ProgressMarker>
-                <ProgressMarker progress={calculatePercentage(600)}>
-                  <img src={ProgressElectronicIcon} />
-                  <span>Elektronik</span>
-                </ProgressMarker>
-                <ProgressMarker progress={calculatePercentage(700)}>
-                  <img src={ProgressCarIcon} />
-                  <span>Mobil</span>
-                </ProgressMarker>
-                <ProgressMarker progress={calculatePercentage(800)}>
-                  <img src={ProgressHomeIcon} />
-                  <span>Rumah</span>
-                </ProgressMarker>
-              </ProgressMarkers>
-            </Progress>
-          </ScoreProgress>
-        </Dashboard>
-        <UserData>
-          <FullSegmentHeader>Tingkatkan skor kredit kamu</FullSegmentHeader>
-          <SegmentDescription>
-            Upload dokumen-dokumen dan lakukan aksi-aksi rekomendasi dari kami dibawah ini
-          </SegmentDescription>
-          <UserDataAction onClick={() => navigate(SITEMAP.HOME)}>
-            <img src={LoanHistoryIcon} />
-            <span>Lunaskan Pinjaman</span>
-          </UserDataAction>
-          {this.props.userDocument.loading && (
-            <SpinnerWrapper>
-              <Spinner color="N800" />
-            </SpinnerWrapper>
-          )}
-          {this.props.userDocument.loaded &&
-            this.props.userDocument.userDocuments &&
-            this.props.userDocument.userDocuments.map(doc => (
-              <UserDataAction onClick={this.userDataDocumentAction(doc)}>
-                <img src={this.getDocumentActionIcon(doc)} />
-                <span>Upload {doc.doc_name}</span>
-              </UserDataAction>
-            ))}
-        </UserData>
-      </PageWrapper>
+            {this.props.userDocument.loaded &&
+              this.props.userDocument.userDocuments &&
+              this.props.userDocument.userDocuments.map(doc => (
+                <UserDataAction onClick={this.userDataDocumentAction(doc)}>
+                  <img src={doc.icon_url} />
+                  <span>Upload {doc.doc_name}</span>
+                  {Number(doc.status) !== -1 && <img src={this.getDocumentActionIcon(doc)} />}
+                </UserDataAction>
+              ))}
+          </UserData>
+        </PageWrapper>
+      </Fragment>
     );
   }
 }
@@ -228,7 +288,9 @@ const ScoreProgress = styled.div`
 `;
 
 const Current = styled.div`
-  width: 100%;
+  width: calc(100% - 4rem);
+  position: relative;
+  margin: 0 auto 1rem;
   ${flex({ justify: 'flex-start' })}
 
   h2 {
@@ -276,65 +338,12 @@ const Progress = styled.div`
   margin: 0.5rem 0 0;
 `;
 
-const ProgressBar = styled.div`
-  width: 100%;
-  ${flex({ justify: 'space-between' })}
-
-  & > div {
-    width: 100%;
-    height: 0.75rem;
-    border-radius: ${props => props.theme.borderRadius};
-    position: relative;
-
-    .bar,
-    .bg {
-      position: absolute;
-      height: 100%;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      background: ${props => props.levelColor};
-      border-radius: ${props => props.theme.borderRadius};
-    }
-
-    .bar {
-      z-index: 2;
-      width: ${props => props.progress}%;
-    }
-
-    .bg {
-      z-index: 1;
-      right: 0;
-      opacity: 0.25;
-    }
-  }
-
-  span {
-    font-size: 0.875rem;
-    margin: 0 0 0.5rem;
-    color: ${props => props.theme.color.N300};
-  }
-`;
-
-const ArrowMarker = styled.div`
-  position: absolute;
-  ${props => props.invert ? 'top: -0.125rem;' : 'bottom: -0.125rem;'}
-  left: ${props => props.progress}%;
-  transform: translate3d(-50%, ${props => props.invert ? '-100%' : '100%'}, 0)${props => props.invert && ' rotate(180deg)'};
-  padding: 0;
-  ${flex()}
-
-  img {
-    width: 0.5rem;
-    height: auto;
-  }
-`;
-
 const ProgressMarkers = styled.div`
-  width: 100%;
+  width: calc(100% - 4rem);
   height: 5rem;
   ${flex({ justify: 'flex-start' })}
   margin: 0.25rem 0 0;
+  position: relative;
 `;
 
 const ProgressMarker = styled.div`
@@ -388,11 +397,12 @@ const UserDataAction = styled.button`
     height: 1.75rem;
     width: 1.75rem;
     object-fit: contain;
-    margin: 0 0.5rem 0 0;
+    margin: 0;
   }
 
   span {
     flex: 1;
+    margin: 0 0.75rem;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1;

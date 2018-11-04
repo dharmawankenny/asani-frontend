@@ -6,6 +6,12 @@ import classNames from 'classnames';
 import { navigate } from '@reach/router';
 import isEmpty from 'lodash/isEmpty';
 
+import ArrowIcon from '../../assets/progress_arrow.svg';
+
+import {
+  DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY,
+  DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY,
+} from '../../commons/constants';
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
 import { calculatePercentage } from '../../commons/utils';
@@ -14,11 +20,15 @@ import { BigActionButton } from '../../components/Buttons';
 import Header from '../../components/Header';
 import LoanCard from '../../components/LoanCard';
 import LoanDetailModal from '../../components/LoanDetailModal';
+import ProductDetailModal from '../../components/ProductDetailModal';
 import {
   PageWrapper,
   SegmentContext,
   SegmentHeader,
   FullSegmentHeader,
+  ProgressBar,
+  ProgressSegment,
+  ArrowMarker,
   SegmentAction,
   SegmentDescription,
   SpinnerWrapper,
@@ -32,20 +42,22 @@ import { Consumer as AuthConsumer } from '../../contexts/auth';
 import * as creditScoreActions from '../../reducers/creditScore';
 import * as productActions from '../../reducers/product';
 import * as loanActions from '../../reducers/loan';
+import * as userDocumentActions from '../../reducers/userDocument';
 
 @connect(
-  state => ({ creditScore: state.creditScore, product: state.product, loan: state.loan }),
+  state => ({ ...state }),
   dispatch => ({
     creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
     productActions: bindActionCreators(productActions, dispatch),
     loanActions: bindActionCreators(loanActions, dispatch),
+    userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
   })
 )
 export default class Home extends React.Component {
   static SORT_QUERIES = [
     'Pasti Cair',
     'Nilai Kredit Tertinggi',
-    'Bunga Terendah',
+    // 'Bunga Terendah',
     'Tenor Terlama',
   ];
 
@@ -67,6 +79,10 @@ export default class Home extends React.Component {
       this.props.creditScoreActions.getCreditScore();
     }
 
+    if (!this.props.creditScore.scoreRangeLoading && !this.props.creditScore.scoreRangeLoaded) {
+      this.props.creditScoreActions.getScoreRange();
+    }
+
     if (!this.props.product.loading && !this.props.product.loaded) {
       this.props.productActions.getProducts();
     }
@@ -74,6 +90,24 @@ export default class Home extends React.Component {
     if (!this.props.loan.activeLoansLoading && !this.props.loan.activeLoansLoaded) {
       this.props.loanActions.getActiveLoans();
     }
+
+    if (!this.props.userDocument.loading && !this.props.userDocument.loaded) {
+      this.props.userDocumentActions.getDocuments();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.product.loaded && this.props.product.products.length > 0 && !prevProps.product.loaded && prevProps.product.products.length === 0) {
+      this.updateFilterStructure(this.props.product.products);
+    }
+  }
+
+  updateFilterStructure(products) {
+    const filters = {};
+
+    products.forEach(product => filters[product.productType] = true);
+
+    this.setState({ productQuery: { ...filters } })
   }
 
   toggleFilter = () => {
@@ -121,125 +155,270 @@ export default class Home extends React.Component {
     this.props.loanActions.getLoanDetail(loanId);
   };
 
+  onProductClick = productId => () => {
+    this.props.productActions.getProductDetail(productId);
+  };
+
+  compareByUnlocked = (a, b) => {
+    if (Number(a.isLocked) < Number(b.isLocked)) {
+      return -1;
+    } else if (Number(a.isLocked) > Number(b.isLocked)) {
+      return 1;
+    }
+
+    return 0;
+  };
+
+  compareAscending = key => (a, b) => {
+    if (Number(a[key]) < Number(b[key])) {
+      return -1;
+    } else if (Number(a[key]) > Number(b[key])) {
+      return 1;
+    }
+
+    return 0;
+  };
+
+  compareDescending = key => (a, b) => {
+    if (Number(a[key]) < Number(b[key])) {
+      return 1;
+    } else if (Number(a[key]) > Number(b[key])) {
+      return -1;
+    }
+
+    return 0;
+  };
+
+  applyFilter = productList => {
+    let sortFunction = this.compareAscending('isLocked');
+
+    if (this.state.sortQuery === Home.SORT_QUERIES[1]) {
+      sortFunction = this.compareDescending('productPrice');
+    // } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
+    //   sortFunction = this.compareAscending('interestPct');
+    } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
+      sortFunction = this.compareDescending('tenorDays');
+    }
+
+    return productList
+      .filter(product => this.state.productQuery[product.productType])
+      .sort(sortFunction);
+  };
+
+  printSortQuery = () => this.state.sortQuery;
+  printFilter = () => {
+    if (this.isAllProductQueryEnabled(this.state.productQuery)) {
+      return 'Semua Produk';
+    }
+
+    return Object.keys(this.state.productQuery).reduce((res, cur) => {
+      if (this.state.productQuery[cur]) {
+        if (res === '') {
+          res = cur;
+        } else {
+          res = `${res}, ${cur}`;
+        }
+      }
+
+      return res;
+    }, '')
+  };
+
+  getLowerBoundary = () => {
+    if (this.props.creditScore.scoreRangeLoaded && this.props.creditScore.scoreRange.length > 0) {
+      let lowerBoundary = DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY;
+
+      this.props.creditScore.scoreRange.forEach(sr => {
+        if (Number(sr.lower_bounds) <= lowerBoundary) {
+          lowerBoundary = Number(sr.lower_bounds);
+        }
+      });
+
+      return lowerBoundary;
+    }
+
+    return DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY;
+  };
+
+  getUpperBoundary = () => {
+    if (this.props.creditScore.scoreRangeLoaded && this.props.creditScore.scoreRange.length > 0) {
+      let upperBoundary = DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY;
+
+      this.props.creditScore.scoreRange.forEach(sr => {
+        if (Number(sr.upper_bounds) >= upperBoundary) {
+          upperBoundary = Number(sr.upper_bounds);
+        }
+      });
+
+      return upperBoundary;
+    }
+
+    return DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY;
+  };
+
   render() {
     return (
-      <PageWrapper>
+      <Fragment>
         <Header withMenu />
-        <CreditScoreSummary>
-          <SegmentContext>
-            <SegmentHeader>Skor kredit kamu</SegmentHeader>
-            <SegmentAction onClick={() => navigate(SITEMAP.CREDIT_SCORE)}>Info lebih lanjut ></SegmentAction>
-          </SegmentContext>
-          {this.props.creditScore.loading && (
-            <SpinnerWrapper>
-              <Spinner color="N800" />
-            </SpinnerWrapper>
-          )}
-          {this.props.creditScore.loaded &&
-            this.props.creditScore.data && (
-              <Fragment>
-                <h1>{this.props.creditScore.data.credit_score}</h1>
-                <h2 style={{ color: this.props.creditScore.data.color }}>{this.props.creditScore.data.level}</h2>
-                <ProgressBar progress={calculatePercentage(this.props.creditScore.data.credit_score)} levelColor={this.props.creditScore.data.color}>
-                  <div className="bg" />
-                  <div className="bar" />
-                </ProgressBar>
-              </Fragment>
-            )}
-        </CreditScoreSummary>
-        {this.props.loan.activeLoansLoaded &&
-          this.props.loan.activeLoans &&
-          this.props.loan.activeLoans.length > 0 && (
-          <Loans>
+        <PageWrapper>
+          <CreditScoreSummary onClick={() => navigate(SITEMAP.CREDIT_SCORE)}>
             <SegmentContext>
-              <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
-              <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
+              <SegmentHeader>Skor kredit kamu</SegmentHeader>
+              <SegmentAction>Info lebih lanjut ></SegmentAction>
             </SegmentContext>
-            {this.props.loan.activeLoans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
-          </Loans>
-        )}
-        {this.props.loan.activeLoansLoaded &&
-          this.props.loan.activeLoans &&
-          this.props.loan.activeLoans.length > 0 && (
-            <LoanDetailModal
-              active={!isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading}
-              loading={this.props.loan.detailLoading}
-              loaded={this.props.loan.detailLoaded}
-              loanDetail={this.props.loan.detailedLoan}
-              onClose={this.props.loanActions.resetDetail}
-            />
+            {(this.props.creditScore.loading || this.props.creditScore.scoreRangeLoading) && (
+              <SpinnerWrapper>
+                <Spinner color="N800" />
+              </SpinnerWrapper>
+            )}
+            {this.props.creditScore.loaded &&
+              this.props.creditScore.data &&
+              this.props.creditScore.scoreRangeLoaded &&
+              this.props.creditScore.scoreRange.length > 0 && (
+                <Fragment>
+                  <h1>{this.props.creditScore.data.credit_score}</h1>
+                  <h2 style={{ color: this.props.creditScore.data.color }}>{this.props.creditScore.data.level}</h2>
+                  <ProgressBarWrapper>
+                    <ProgressBar>
+                      <div>
+                        {this.props.creditScore.scoreRange.map((scoreRange, index) => (
+                          <ProgressSegment
+                            zIndex={this.props.creditScore.scoreRange.length - index}
+                            length={calculatePercentage((Number(scoreRange.upper_bounds + 1) - Number(scoreRange.lower_bounds)) + this.getLowerBoundary(), this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                            color={scoreRange.color}
+                            offset={calculatePercentage(scoreRange.lower_bounds, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                            leftRadius={index === 0}
+                            rightRadius={index === this.props.creditScore.scoreRange.length - 1}
+                          />
+                        ))}
+                        <ProgressSegment
+                          zIndex={this.props.creditScore.scoreRange.length + 2}
+                          length={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                          color={this.props.creditScore.data.color}
+                          opacity={1}
+                          fullRadius
+                        />
+                      </div>
+                    </ProgressBar>
+                  </ProgressBarWrapper>
+                </Fragment>
+              )}
+          </CreditScoreSummary>
+          {this.props.loan.activeLoansLoaded &&
+            this.props.loan.activeLoans &&
+            this.props.loan.activeLoans.length > 0 && (
+            <Loans>
+              {/* <SegmentContext>
+                <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
+                <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
+              </SegmentContext> */}
+              {this.props.loan.activeLoans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
+            </Loans>
           )}
-        <Loans>
-          <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
-          <Filter active={this.state.showFilterModal}>
-            <button onClick={this.toggleFilter}>
-              <SegmentDescription>
-                Sortir: <strong>Pasti Cair</strong>, Filter: <strong>Semua Produk</strong>
-              </SegmentDescription>
-            </button>
-            <div>
-              <div className="overlay" onClick={this.toggleFilter} />
-              <div className="content">
-                <div>
-                  <h3>Sortir</h3>
-                  {Home.SORT_QUERIES.map(sq => (
+          {this.props.loan.activeLoansLoaded &&
+            this.props.loan.activeLoans &&
+            this.props.loan.activeLoans.length > 0 && (
+              <LoanDetailModal
+                active={!isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading}
+                loading={this.props.loan.detailLoading}
+                loaded={this.props.loan.detailLoaded}
+                loanDetail={this.props.loan.detailedLoan}
+                onClose={this.props.loanActions.resetDetail}
+              />
+            )}
+          <Loans>
+            <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
+            <Filter active={this.state.showFilterModal}>
+              <button onClick={this.toggleFilter}>
+                Sortir: <strong>{this.printSortQuery()}</strong>, Filter: <strong>{this.printFilter()}</strong>
+              </button>
+              <div>
+                <div className="overlay" onClick={this.toggleFilter} />
+                <div className="content">
+                  <div>
+                    <h3>Sortir</h3>
+                    {Home.SORT_QUERIES.map(sq => (
+                      <button
+                        className={classNames('item', { active: this.state.sortQuery === sq })}
+                        onClick={this.setSortQuery(sq)}
+                      >
+                        {sq}
+                      </button>
+                    ))}
+                    <h3>Filter</h3>
                     <button
-                      className={classNames('item', { active: this.state.sortQuery === sq })}
-                      onClick={this.setSortQuery(sq)}
+                      className={classNames('item', { active: this.isAllProductQueryEnabled(this.state.productQuery) })}
+                      onClick={this.toggleAllProduct}
                     >
-                      {sq}
+                      Semua Produk
                     </button>
-                  ))}
-                  <h3>Filter</h3>
-                  <button
-                    className={classNames('item', { active: this.isAllProductQueryEnabled(this.state.productQuery) })}
-                    onClick={this.toggleAllProduct}
-                  >
-                    Semua Produk
-                  </button>
-                  {Object.keys(this.state.productQuery).map(product => (
-                    <button
-                      className={classNames('item', {
-                        active: this.state.productQuery[product],
-                        grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
-                      })}
-                      onClick={this.toggleProductQuery(product)}
-                    >
-                      {product}
-                    </button>
-                  ))}
-                  <BigActionButton onClick={this.toggleFilter}>Tutup Filter</BigActionButton>
+                    {Object.keys(this.state.productQuery).map(product => (
+                      <button
+                        className={classNames('item', {
+                          active: this.state.productQuery[product],
+                          grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
+                        })}
+                        onClick={this.toggleProductQuery(product)}
+                      >
+                        {product}
+                      </button>
+                    ))}
+                    <BigActionButton onClick={this.toggleFilter}>Tutup Filter</BigActionButton>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Filter>
-          {this.props.product.loading && (
-            <SpinnerWrapper>
-              <Spinner color="N800" />
-            </SpinnerWrapper>
-          )}
-          {this.props.product.loaded &&
-            this.props.product.products &&
-            this.props.product.products.map(product => (
-              <ProductCard product={product} />
-            ))}
-          {this.props.product.loaded &&
-            this.props.product.products &&
-            this.props.product.products.length === 0 && (
-              <EmptyWrapper>
-                Mohon Maaf, sepertinya tidak ada pinjaman terbaik untuk kamu saat ini, tunggu pembaharuan selanjutnya ya!
-              </EmptyWrapper>
+            </Filter>
+            {this.props.product.loading && (
+              <SpinnerWrapper>
+                <Spinner color="N800" />
+              </SpinnerWrapper>
             )}
-        </Loans>
-      </PageWrapper>
+            {this.props.product.loaded &&
+              this.props.product.products.length > 0 &&
+              this.applyFilter(this.props.product.products).map(product => (
+                <ProductCard product={product} onClick={this.onProductClick(product.productId)} />
+              ))}
+            {this.props.product.loaded &&
+              this.props.product.products && (
+                <ProductDetailModal
+                  active={!isEmpty(this.props.product.detailedProduct) || this.props.product.detailLoading}
+                  loading={this.props.product.detailLoading}
+                  loaded={this.props.product.detailLoaded}
+                  productDetail={this.props.product.detailedProduct}
+                  onClose={() => {
+                    this.props.productActions.resetDetail();
+                    this.props.userDocumentActions.uploadingReset();
+                  }}
+                  uploadDocument={this.props.userDocumentActions.uploadDocument}
+                  resetUploader={this.props.userDocumentActions.uploadingReset}
+                  uploadProgress={this.props.userDocument.uploadProgress}
+                  uploadFinished={this.props.userDocument.uploadFinished}
+                  purchase={this.props.productActions.purchaseProduct}
+                  resetPurchase={this.props.productActions.resetPurchase}
+                  purchaseLoading={this.props.product.purchaseLoading}
+                  purchaseSuccess={this.props.product.purchaseLoaded}
+                  updateLoans={this.props.loanActions.getActiveLoans}
+                />
+              )}
+            {this.props.product.loaded &&
+              this.props.product.products &&
+              this.props.product.products.length === 0 && (
+                <EmptyWrapper>
+                  Mohon Maaf, sepertinya tidak ada pinjaman terbaik untuk kamu saat ini, tunggu pembaharuan selanjutnya ya!
+                </EmptyWrapper>
+              )}
+          </Loans>
+        </PageWrapper>
+      </Fragment>
     );
   }
 }
 
-const CreditScoreSummary = styled.div`
+const CreditScoreSummary = styled.button`
   width: 100%;
   margin: 3rem 0 0;
   ${flex({ justify: 'space-between' })}
+  text-align: left;
 
   h1 {
     font-size: 3rem;
@@ -260,35 +439,9 @@ const CreditScoreSummary = styled.div`
   }
 `;
 
-const ProgressBar = styled.div`
+const ProgressBarWrapper = styled.div`
   width: 100%;
-  height: 0.75rem;
-  margin: 0.5rem 0 0;
-  border-radius: ${props => props.theme.borderRadius};
-  position: relative;
-  box-shadow: ${props => props.theme.shadow.base};
-
-  .bar,
-  .bg {
-    position: absolute;
-    height: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background: ${props => props.levelColor};
-    border-radius: ${props => props.theme.borderRadius};
-  }
-
-  .bar {
-    z-index: 2;
-    width: ${props => props.progress}%;
-  }
-
-  .bg {
-    z-index: 1;
-    right: 0;
-    opacity: 0.25;
-  }
+  margin: 1rem 0 0;
 `;
 
 const Loans = styled.div`
@@ -311,10 +464,20 @@ const Filter = styled.div`
   margin: 0 0 1rem;
 
   & > button {
+    display: block;
     width: 100%;
+    font-size: 0.85rem;
+    font-width: 400;
+    line-height: 1.25;
+    margin: 0;
+    padding: 0;
+    color: ${props => props.theme.color.N300};
+    text-align: left;
 
     strong {
-      font-weight: 400;
+      font-weight: 700;
+      text-decoration: underline;
+      color: ${props => props.theme.color.N800};
     }
   }
 

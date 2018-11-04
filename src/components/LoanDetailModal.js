@@ -93,10 +93,18 @@ export default class LoanDetailModal extends React.Component {
               this.props.loanDetail &&
               !isEmpty(this.props.loanDetail) && (
                 <Fragment>
-                  <InfoPrompt color="G300" margin="0 auto">
-                    <img src={ImproveIcon} />
-                    <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
-                  </InfoPrompt>
+                  {(!dueTime || moment(dueTime).isBefore(moment())) && (
+                    <InfoPrompt color="G300" margin="0 auto">
+                      <img src={ImproveIcon} />
+                      <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
+                    </InfoPrompt>
+                  )}
+                  {dueTime && moment(dueTime).isSameOrAfter(moment()) && (
+                    <InfoPrompt color="R300" margin="1.5rem auto 3rem">
+                      <img src={SadIcon} />
+                      <span>Semakin terlambat kamu membayar tagihan, skor kredit kamu akan semakin memburuk!</span>
+                    </InfoPrompt>
+                  )}
                   <SummaryInfo>
                     <ProductLogo src={urlProductLogo} />
                     <LabelValue>
@@ -172,11 +180,11 @@ export default class LoanDetailModal extends React.Component {
                     </LabelValue>
                     <LabelValue>
                       <span>Tanggal Cair</span>
-                      <span>{disburseTime ? moment(disburseTime).locale(id).format('DD MMM YYYY') : '-'}</span>
+                      <span>{disburseTime ? moment(disburseTime).format('DD MMM YYYY') : '-'}</span>
                     </LabelValue>
                     <LabelValue>
                       <span>Tanggal Jatuh Tempo</span>
-                      <span>{dueTime ? moment(dueTime).locale(id).format('DD MMM YYYY') : '-'}</span>
+                      <span>{dueTime ? moment(dueTime).format('DD MMM YYYY') : '-'}</span>
                     </LabelValue>
                     <LabelValue>
                       <span>% Bunga</span>
@@ -195,10 +203,6 @@ export default class LoanDetailModal extends React.Component {
                       <span>{Number(penalty) === 0 ? '0' : printPrice(Number(penalty))}</span>
                     </LabelValue>
                   </DetailedInfo>
-                  <InfoPrompt color="R300" margin="1.5rem auto 3rem">
-                    <img src={SadIcon} />
-                    <span>Semakin terlambat kamu membayar tagihan, skor kredit kamu akan semakin memburuk!</span>
-                  </InfoPrompt>
                 </Fragment>
               )}
           </ContentAnimationWrapper>
@@ -291,17 +295,14 @@ const ProductLogo = styled.img`
 `;
 
 const LabelValue = styled.div`
-  ${flex({ justify: 'flex-start' })}
+  ${flex({ justify: 'flex-start', align: 'flex-start' })}
   width: 100%;
 
   span {
     font-size: 0.875rem;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.25;
     text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     ${flex({ justify: 'flex-start' })}
 
     :nth-child(1) {
@@ -387,7 +388,7 @@ const Toggler = styled.div`
 const DetailedInfo = styled.div`
   ${flex({ justify: 'flex-start' })}
   width: 100%;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.5rem 3rem;
 
   & > div {
     margin: 0 0 0.5rem;

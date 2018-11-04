@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -20,6 +20,7 @@ import {
   SegmentAction,
   SegmentDescription,
   SpinnerWrapper,
+  EmptyWrapper,
 } from '../../components/PageBuilder';
 import Spinner from '../../components/Spinner';
 
@@ -44,40 +45,42 @@ export default class LoanHistory extends React.Component {
 
   render() {
     return (
-      <PageWrapper>
+      <Fragment>
         <Header withMenu />
-        <History>
-          <FullSegmentHeader>Riwayat Peminjaman</FullSegmentHeader>
-          <SegmentDescription>Berikut adalah daftar peminjaman yang sudah atau sedang kamu lakukan</SegmentDescription>
-          {this.props.loan.loading && (
-            <SpinnerWrapper>
-              <Spinner color="N800" />
-            </SpinnerWrapper>
-          )}
-          {this.props.loan.loaded &&
-            this.props.loan.loans &&
-            this.props.loan.loans.length > 0 &&
-            this.props.loan.loans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
-          {this.props.loan.loaded &&
+        <PageWrapper>
+          <History>
+            <FullSegmentHeader>Riwayat Peminjaman</FullSegmentHeader>
+            <SegmentDescription>Berikut adalah daftar peminjaman yang sudah atau sedang kamu lakukan</SegmentDescription>
+            {this.props.loan.loading && (
+              <SpinnerWrapper>
+                <Spinner color="N800" />
+              </SpinnerWrapper>
+            )}
+            {this.props.loan.loaded &&
               this.props.loan.loans &&
-              this.props.loan.loans.length > 0 && (
-              <LoanDetailModal
-                active={!isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading}
-                loading={this.props.loan.detailLoading}
-                loaded={this.props.loan.detailLoaded}
-                loanDetail={this.props.loan.detailedLoan}
-                onClose={this.props.loanActions.resetDetail}
-              />
-            )}
-          {this.props.loan.loaded &&
-            this.props.loan.loans &&
-            this.props.loan.loans.length === 0 && (
-              <EmptyWrapper>
-                Anda belum pernah melakukan pinjaman, ajukan pinjaman sekarang juga dan naikan skor kredit anda!
-              </EmptyWrapper>
-            )}
-        </History>
-      </PageWrapper>
+              this.props.loan.loans.length > 0 &&
+              this.props.loan.loans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
+            {this.props.loan.loaded &&
+                this.props.loan.loans &&
+                this.props.loan.loans.length > 0 && (
+                <LoanDetailModal
+                  active={!isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading}
+                  loading={this.props.loan.detailLoading}
+                  loaded={this.props.loan.detailLoaded}
+                  loanDetail={this.props.loan.detailedLoan}
+                  onClose={this.props.loanActions.resetDetail}
+                />
+              )}
+            {this.props.loan.loaded &&
+              this.props.loan.loans &&
+              this.props.loan.loans.length === 0 && (
+                <EmptyWrapper>
+                  Anda belum pernah melakukan pinjaman, ajukan pinjaman sekarang juga dan naikan skor kredit anda!
+                </EmptyWrapper>
+              )}
+          </History>
+        </PageWrapper>
+      </Fragment>
     );
   }
 }
