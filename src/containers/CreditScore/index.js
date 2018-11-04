@@ -108,7 +108,7 @@ export default class CreditScore extends React.Component {
       swal({
         icon: 'error',
         title: 'Ada kesalahan dalam dokumen yang kamu upload',
-        text: doc.notes,
+        text: doc.note,
         button: 'Upload ulang dokumen',
       }).then(value => {
         if (value) {
@@ -405,7 +405,7 @@ const UserDataAction = styled.button`
     margin: 0 0.75rem;
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.125;
     color: ${props => props.theme.color.N800};
     text-align: left;
     text-overflow: ellipsis;
