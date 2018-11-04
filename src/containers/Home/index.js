@@ -87,6 +87,10 @@ export default class Home extends React.Component {
       this.props.productActions.getProducts();
     }
 
+    if (this.props.product.loaded && this.props.product.products.length > 0) {
+      this.updateFilterStructure(this.props.product.products);
+    }
+
     if (!this.props.loan.activeLoansLoading && !this.props.loan.activeLoansLoaded) {
       this.props.loanActions.getActiveLoans();
     }
@@ -125,15 +129,39 @@ export default class Home extends React.Component {
   setSortQuery = sortQuery => () => this.setState({ sortQuery });
 
   toggleProductQuery = productKey => () => {
-    this.setState(prevState => ({
-      productQuery: {
-        ...prevState.productQuery,
-        [productKey]: !prevState.productQuery[productKey],
-      },
-    }));
+    this.setState(prevState => {
+      if (this.isAllProductQueryEnabled(prevState.productQuery)) {
+        const newProductQuery = { ...prevState.productQuery };
+        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
+
+        return {
+          productQuery: {
+            ...newProductQuery,
+            [productKey]: true,
+          },
+        };
+      } else if (this.isAllProductQueryNotEnabled({ ...prevState.productQuery, [productKey]: false })) {
+        const newProductQuery = { ...prevState.productQuery };
+        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true );
+
+        return {
+          productQuery: {
+            ...newProductQuery,
+          },
+        };
+      }
+
+      return {
+        productQuery: {
+          ...prevState.productQuery,
+          [productKey]: !prevState.productQuery[productKey],
+        },
+      };
+    });
   };
 
   isAllProductQueryEnabled = productQuery => Object.values(productQuery).every(flag => flag);
+  isAllProductQueryNotEnabled = productQuery => Object.values(productQuery).every(flag => !flag);
 
   toggleAllProduct = () => {
     this.setState(prevState => {
@@ -329,7 +357,7 @@ export default class Home extends React.Component {
           <Loans>
             <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
             <Filter active={this.state.showFilterModal}>
-              <button onClick={this.toggleFilter}>
+              <button onClick={this.toggleFilter} id="asani-actions-open-filter">
                 Sortir: <strong>{this.printSortQuery()}</strong>, Filter: <strong>{this.printFilter()}</strong>
               </button>
               <div>
@@ -341,6 +369,7 @@ export default class Home extends React.Component {
                       <button
                         className={classNames('item', { active: this.state.sortQuery === sq })}
                         onClick={this.setSortQuery(sq)}
+                        id={`asani-actions-set-filter-sort-to-${sq}`}
                       >
                         {sq}
                       </button>
@@ -349,6 +378,7 @@ export default class Home extends React.Component {
                     <button
                       className={classNames('item', { active: this.isAllProductQueryEnabled(this.state.productQuery) })}
                       onClick={this.toggleAllProduct}
+                      id="asani-actions-set-filter-type-to-all"
                     >
                       Semua Produk
                     </button>
@@ -359,6 +389,7 @@ export default class Home extends React.Component {
                           grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
                         })}
                         onClick={this.toggleProductQuery(product)}
+                        id={`asani-actions-set-filter-type-to-${product}`}
                       >
                         {product}
                       </button>
@@ -397,7 +428,9 @@ export default class Home extends React.Component {
                   resetPurchase={this.props.productActions.resetPurchase}
                   purchaseLoading={this.props.product.purchaseLoading}
                   purchaseSuccess={this.props.product.purchaseLoaded}
+                  purchaseError={this.props.product.purchaseError}
                   updateLoans={this.props.loanActions.getActiveLoans}
+                  hasActiveLoans={this.props.loan.activeLoansLoaded && this.props.loan.activeLoans && this.props.loan.activeLoans.length > 0}
                 />
               )}
             {this.props.product.loaded &&

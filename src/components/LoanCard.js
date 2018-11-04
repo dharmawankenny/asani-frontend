@@ -58,30 +58,32 @@ export default class LoanCard extends React.Component {
       loanId,
       note,
       paymentTime,
-      productPrice,
-      productType,
+      paymentMethod,
+      totalBill,
       productNominal,
       status,
       tenorDays,
       urlProductLogo,
     } = this.props.loan;
 
+    const dueTimeString = moment(dueTime).fromNow();
+
     return (
-      <Wrapper onClick={this.props.onClick}>
-        <LoanHeader color={STATUS_COLOR_MAP[Number(status.status)]}>
+      <Wrapper onClick={this.props.onClick} id="asani-actions-view-loan-detail">
+        <LoanHeader color={status.color}>
           <span>{status.description}</span>
         </LoanHeader>
         <LoanProduct>
           <img src={urlProductLogo} />
         </LoanProduct>
         <LoanDetail>
-          <h1>{productType} {productNominal}</h1>
-          <h2>{printPrice(productPrice)}</h2>
+          <h1>{productNominal}</h1>
+          <h2>{printPrice(totalBill)}</h2>
           <h3>oleh {lenderName}</h3>
         </LoanDetail>
-        <LoanPayment>
+        <LoanPayment color={status.color}>
           {Number(status.status) === 0 && (
-            <h5>{note ? note : 'Catatan belum tersedia'}</h5>
+            <h5>{note ? note : 'Dalam proses verifikasi maksimal 30 menit pada hari dan jam kerja.'}</h5>
           )}
           {Number(status.status) === 2 && (
             <Fragment>
@@ -90,12 +92,16 @@ export default class LoanCard extends React.Component {
             </Fragment>
           )}
           {Number(status.status) === 3 && (
-            <h4>{note ? note : 'Catatan belum tersedia'}</h4>
+            <Fragment>
+              <h3>Lunas Pada</h3>
+              <h4>{moment(paymentTime).format('DD MMM YYYY')}</h4>
+              <span>Melalui {paymentMethod}</span>
+            </Fragment>
           )}
           {(Number(status.status) > 0 && Number(status.status) < 2) && (
             <Fragment>
               <h3>Jatuh Tempo</h3>
-              <h2>{moment(dueTime).fromNow()}</h2>
+              <h2>{`${dueTimeString.charAt(0).toUpperCase()}${dueTimeString.slice(1)}`}</h2>
               <h1>Lunaskan ></h1>
             </Fragment>
           )}
@@ -111,7 +117,7 @@ const Wrapper = styled.button`
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
   padding: 0.75rem;
-  ${flex({ justify: 'flex-start', align: 'flex-start' })}
+  ${flex({ justify: 'flex-start' })}
 `;
 
 const LoanHeader = styled.div`
@@ -119,9 +125,10 @@ const LoanHeader = styled.div`
   margin: -0.75rem -0.75rem 0.5rem;
   padding: 0.375rem 0.75rem;
   color: ${props => props.theme.color.N0};
-  background: ${props => props.theme.color[props.color]};
+  background: ${props => props.color};
   ${flex({ justify: 'flex-start' })}
   border-radius: ${props => props.theme.borderRadius} ${props => props.theme.borderRadius} 0 0;
+  pointer-events: none;
 
   span {
     font-size: 0.825rem;
@@ -134,6 +141,7 @@ const LoanProduct = styled.div`
   width: calc(15% - 0.5rem);
   ${props => props.locked && 'filter: grayscale(100%);'}
   ${flex({ direction: 'column' })}
+  pointer-events: none;
 
   img {
     width: 2.5rem;
@@ -147,6 +155,7 @@ const LoanDetail = styled.div`
   width: calc(45% - 0.75rem);
   margin: 0 1rem 0 1.25rem;
   ${flex()}
+  pointer-events: none;
 
   h1,
   h2,
@@ -185,6 +194,7 @@ const LoanDetail = styled.div`
 const LoanPayment = styled.div`
   width: calc(40% - 1rem);
   ${flex()}
+  pointer-events: none;
 
   h1,
   h2,
@@ -213,6 +223,7 @@ const LoanPayment = styled.div`
     font-weight: 400;
     margin: 0 0 0.5rem;
     ${flex({ justify: 'flex-start' })}
+    font-weight: 700;
 
     img {
       width: 0.875rem;
@@ -233,24 +244,26 @@ const LoanPayment = styled.div`
   h5,
   h6 {
     width: 100%;
-    font-size: 0.825rem;
+    font-size: 0.75rem;
     font-weight: 400;
     line-height: 1.25;
     margin: 0;
     text-align: left;
     text-transform: capitalize;
+    color: ${props => props.color};
   }
 
   h4 {
+    font-size: 0.875rem;
     font-weight: 700;
-    color: ${props => props.theme.color.G300};
   }
 
-  h5 {
-    color: ${props => props.theme.color.Y300};
-  }
-
-  h6 {
-    color: ${props => props.theme.color.R300};
+  span {
+    width: 100%;
+    font-size: 0.65rem;
+    line-height: 1.125;
+    text-align: left;
+    margin: 0.125rem 0 0;
+    color: ${props => props.theme.color.N300};
   }
 `;

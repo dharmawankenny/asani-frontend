@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import swal from 'sweetalert';
 
+import BgImage from '../../assets/bg.png';
+
 import { flex } from '../../commons/theme';
 
 import { BigActionButton } from '../../components/Buttons';
@@ -176,7 +178,7 @@ export default class UserAccess extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header stopNavigation />
+        <Header stopNavigation naked />
         <PageWrapper vertical>
           <Content>
             <h1>
@@ -194,7 +196,7 @@ export default class UserAccess extends React.Component {
                   error={this.state.telNumberError}
                   onChange={evt => this.setTelNumber(evt.target.value)}
                 />
-                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" >
+                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
                   {!this.state.loading && 'Masuk / Daftar'}
                   {this.state.loading && (
                     <Spinner color="N0" />
@@ -206,7 +208,7 @@ export default class UserAccess extends React.Component {
               <Fragment>
                 <Input
                   label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
-                  type="number"
+                  type="text"
                   placeholder="XXXX"
                   value={this.state.otpCode}
                   error={this.state.otpCodeError}
@@ -214,7 +216,7 @@ export default class UserAccess extends React.Component {
                 />
                 <AuthConsumer>
                   {({ logIn }) => (
-                    <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" >
+                    <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" id="asani-actions-verify-otp">
                       {!this.state.loading && 'Verifikasi Kode OTP'}
                       {this.state.loading && (
                         <Spinner color="N0" />
@@ -226,7 +228,7 @@ export default class UserAccess extends React.Component {
                   <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
                 )}
                 {this.state.retryTimer === 0 && (
-                  <RetryButton onClick={this.state.loading ? null : this.toRetryOTP}>
+                  <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
                     {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
                     {this.state.loading && (
                       <Spinner color="N0" />
@@ -238,10 +240,23 @@ export default class UserAccess extends React.Component {
           </Content>
           <Footer />
         </PageWrapper>
+        <Background src={BgImage} />
       </Fragment>
     );
   }
 }
+
+const Background = styled.img`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100;
+  z-index: -1;
+  opacity: 0.5;
+`;
 
 const Content = styled.div`
   width: 100%;

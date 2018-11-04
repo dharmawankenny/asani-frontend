@@ -69,6 +69,7 @@ const InputWrapper = styled.div`
   ${flex({ justify: 'flex-start', align: 'stretch' })}
   border: 1px solid ${props => props.theme.color.N40};
   border-radius: ${props => props.theme.borderRadius};
+  background: ${props => props.theme.color.N0};
 
   input {
     flex: 1;

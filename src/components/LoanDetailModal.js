@@ -57,6 +57,7 @@ export default class LoanDetailModal extends React.Component {
       rejectTime,
       dueTime,
       paymentTime,
+      paymentMethod,
       note,
       productType,
       lenderName,
@@ -82,7 +83,7 @@ export default class LoanDetailModal extends React.Component {
           <ContentAnimationWrapper active={this.props.active} loading={this.props.loading}>
             <Header>
               <h1>Detil Peminjaman</h1>
-              <button onClick={this.props.onClose}><img src={CloseIcon} /></button>
+              <button onClick={this.props.onClose} id="asani-actions-close-loan-detail"><img src={CloseIcon} /></button>
             </Header>
             {this.props.loading && (
               <SpinnerWrapper>
@@ -93,14 +94,20 @@ export default class LoanDetailModal extends React.Component {
               this.props.loanDetail &&
               !isEmpty(this.props.loanDetail) && (
                 <Fragment>
-                  {(!dueTime || moment(dueTime).isBefore(moment())) && (
+                  {paymentTime && (
                     <InfoPrompt color="G300" margin="0 auto">
                       <img src={ImproveIcon} />
                       <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
                     </InfoPrompt>
                   )}
-                  {dueTime && moment(dueTime).isSameOrAfter(moment()) && (
-                    <InfoPrompt color="R300" margin="1.5rem auto 3rem">
+                  {!paymentTime && dueTime && moment(dueTime).isSameOrAfter(moment()) && (
+                    <InfoPrompt color="G300" margin="0 auto">
+                      <img src={ImproveIcon} />
+                      <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
+                    </InfoPrompt>
+                  )}
+                  {!paymentTime && dueTime && moment(dueTime).isBefore(moment()) && (
+                    <InfoPrompt color="R300" margin="0 auto">
                       <img src={SadIcon} />
                       <span>Semakin terlambat kamu membayar tagihan, skor kredit kamu akan semakin memburuk!</span>
                     </InfoPrompt>
@@ -129,6 +136,7 @@ export default class LoanDetailModal extends React.Component {
                       <h1>Pembayaran Via Transfer Bank</h1>
                       <img src={ChevronDownIcon} />
                     </button>
+                    <p>Pembayaran anda akan kami salurkan ke rekening pemberi pinjaman</p>
                     {banks.map(bank => (
                       <div>
                         <LabelValue>
@@ -187,9 +195,17 @@ export default class LoanDetailModal extends React.Component {
                       <span>{dueTime ? moment(dueTime).format('DD MMM YYYY') : '-'}</span>
                     </LabelValue>
                     <LabelValue>
+                      <span>Tanggal Pelunasan</span>
+                      <span>{paymentTime ? moment(paymentTime).format('DD MMM YYYY') : '-'}</span>
+                    </LabelValue>
+                    <LabelValue>
+                      <span>Metode Pelunasan</span>
+                      <span>{paymentMethod ? paymentMethod : '-'}</span>
+                    </LabelValue>
+                    {/* <LabelValue>
                       <span>% Bunga</span>
                       <span>{interestPct}%</span>
-                    </LabelValue>
+                    </LabelValue> */}
                     <LabelValue>
                       <span>Nominal Bunga</span>
                       <span>{printPrice(interestAmount)}</span>
@@ -284,6 +300,7 @@ const Header = styled.div`
     img {
       width: 1rem;
       height: 1rem;
+      pointer-events: none;
     }
   }
 `;
@@ -309,6 +326,7 @@ const LabelValue = styled.div`
       width: calc(37.5% - 0.5rem);
       color: ${props => props.theme.color.N300};
       margin: 0 1rem 0 0;
+      line-height: 1.125;
     }
 
     :nth-child(2) {
@@ -323,6 +341,10 @@ const SummaryInfo = styled.div`
   width: 100%;
   padding: 0.75rem 1.5rem;
 
+  span {
+    font-weight: 700;
+  }
+
   & > div {
     margin: 0 0 0.5rem;
 
@@ -336,17 +358,17 @@ const Toggler = styled.div`
   ${flex({ justify: 'flex-start' })}
   width: 100%;
   padding: 0.75rem 1.5rem;
+  margin: 0;
 
   button {
     width: 100%;
     border-bottom: 1px solid ${props => props.theme.color.N40};
-    margin: 0 0 0.5rem;
     padding: 0 0 0.5rem;
     ${flex({ justify: 'flex-start' })}
 
     h1 {
       flex: 1;
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 400;
       text-align: left;
       line-height: 1;
@@ -362,6 +384,19 @@ const Toggler = styled.div`
       transform: rotate(${props => props.active ? '180deg' : '0deg'});
       transition: 0.25s ease all;
     }
+  }
+
+  p {
+    width: 100%;
+    max-height: ${props => props.active ? '20rem' : '0'};
+    opacity: ${props => props.active ? '1' : '0'};
+    transition: ${props => props.active ? '0.125s ease max-height, 0.125s ease opacity 0.125s' : '0.125s ease max-height 0.125s, 0.125s ease opacity'};
+    pointer-events: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: ${props => props.theme.color.N300};
+    margin: ${props => props.active ? '0.5rem 0' : '0'};
   }
 
   & > div {

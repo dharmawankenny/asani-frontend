@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import isEmpty from 'lodash/isEmpty';
 import swal from 'sweetalert';
 
@@ -36,7 +36,21 @@ export default class ProductDetailModal extends React.Component {
     if (this.props.purchaseSuccess && !prevProps.purchaseSuccess) {
       swal({
         icon: 'success',
-        title: 'Selamat! Pinjaman kamu akan segera diproses, konfirmasi pinjaman akan segera dikirimkan ke WhatsApp kamu!',
+        title: 'Pengajuan pinjaman berhasil!',
+        text: 'Pinjaman kamu akan segera diproses, konfirmasi pinjaman akan segera dikirimkan ke WhatsApp kamu!',
+        button: 'Oke, saya mengerti.',
+      }).then(value => {
+        if (value) {
+          this.successfullyPurchasedCallback();
+        }
+      });
+    }
+
+    if (this.props.purchaseError && !prevProps.purchaseError) {
+      swal({
+        icon: 'error',
+        title: 'Pengajuan pinjaman gagal :(',
+        text: 'Sepertinya kamu sudah memiliki pinjaman aktif, kamu hanya bisa memiliki satu pinjaman aktif pada suatu waktu.',
         button: 'Oke, saya mengerti.',
       }).then(value => {
         if (value) {
@@ -68,6 +82,7 @@ export default class ProductDetailModal extends React.Component {
       lenderName,
       productPrice,
       productNominal,
+      productDesc,
       tenorDays,
       interestPct,
       interestAmount,
@@ -85,7 +100,7 @@ export default class ProductDetailModal extends React.Component {
           <ContentAnimationWrapper active={this.props.active} loading={this.props.loading}>
             <Header>
               <h1>Detil Peminjaman</h1>
-              <button onClick={this.props.onClose}><img src={CloseIcon} /></button>
+              <button onClick={this.props.onClose} id="asani-actions-close-product-detail"><img src={CloseIcon} /></button>
             </Header>
             {this.props.loading && (
               <SpinnerWrapper>
@@ -141,10 +156,9 @@ export default class ProductDetailModal extends React.Component {
                 <Fragment>
                   <SummaryInfo>
                     <ProductLogo src={urlProductLogo} />
-                    <BillValue>
-                      <span>Total Tagihan</span>
-                      <span>{printPrice(totalBill)}</span>
-                    </BillValue>
+                    {productDesc && (
+                      <Info><span>{productDesc}</span></Info>
+                    )}
                     <LabelValue>
                       <span>Pemberi pinjaman</span>
                       <span>{lenderName}</span>
@@ -154,17 +168,17 @@ export default class ProductDetailModal extends React.Component {
                       <span>{productType}</span>
                     </LabelValue>
                     <LabelValue>
+                      <span>Harga Produk</span>
+                      <span>{printPrice(productPrice)}</span>
+                    </LabelValue>
+                    <LabelValue>
                       <span>Nominal</span>
                       <span>{productNominal}</span>
                     </LabelValue>
-                    <LabelValue>
-                      <span>Tenor</span>
-                      <span>{tenorDays} Hari</span>
-                    </LabelValue>
-                    <LabelValue>
+                    {/* <LabelValue>
                       <span>% Bunga</span>
                       <span>{interestPct}%</span>
-                    </LabelValue>
+                    </LabelValue> */}
                     <LabelValue>
                       <span>Nominal Bunga</span>
                       <span>{printPrice(interestAmount)}</span>
@@ -173,11 +187,17 @@ export default class ProductDetailModal extends React.Component {
                       <span>Admin Fee</span>
                       <span>{Number(adminFee) === 0 ? '0' : printPrice(Number(adminFee))}</span>
                     </LabelValue>
+                    <BillValue>
+                      <span>Total Tagihan</span>
+                      <span>{printPrice(totalBill)}</span>
+                      <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
+                    </BillValue>
                   </SummaryInfo>
-                  <InfoPrompt color="G300" margin="0 auto">
+                  <InfoPrompt color="G300" margin="0 auto 1.5rem">
                     <img src={ImproveIcon} />
                     <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
                   </InfoPrompt>
+                  <Info align="center"><span>Dengan menekan tombol ambil pinjaman, saya setuju dengan detail pinjaman di atas.</span></Info>
                 </Fragment>
               )}
               {this.props.loaded &&
@@ -185,7 +205,11 @@ export default class ProductDetailModal extends React.Component {
                 !isEmpty(this.props.productDetail) &&
                 this.state.currentStep === docRequired.length && (
                   <ActionButtonWrapper>
-                    <BigActionButton color="G300" onClick={() => this.props.purchase(this.props.productDetail.productId)} disabled={this.props.purchaseLoading}>
+                    <BigActionButton
+                      color={this.props.hasActiveLoans ? 'N300' : 'G300'}
+                      onClick={() => this.props.purchase(this.props.productDetail.productId)}
+                      disabled={this.props.purchaseLoading} id={`asani-actions-purchase-product-${productType}`}
+                    >
                       {!this.props.purchaseLoading && 'Ambil Pinjaman'}
                       {this.props.purchaseLoading && (
                         <Spinner color="N0" />
@@ -250,7 +274,7 @@ const SpinnerWrapper = styled.div`
 const ActionButtonWrapper = styled.div`
   width: 100%;
   padding: 0 1.5rem;
-  margin: 2rem 0;
+  margin: 0.5rem 0 2rem;
 `;
 
 const DocUploadWrapper = styled.div`
@@ -285,6 +309,7 @@ const Header = styled.div`
     img {
       width: 1rem;
       height: 1rem;
+      pointer-events: none;
     }
   }
 `;
@@ -380,13 +405,12 @@ const InfoPrompt = styled.div`
 const BillValue = styled.div`
   ${flex({ justify: 'flex-start' })}
   width: 100%;
-  margin: 0 0 2rem;
+  margin: 1.5rem 0 0;
 
   span {
     width: 100%;
     font-size: 0.875rem;
     font-weight: 400;
-    line-height: 1;
     text-align: left;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -403,11 +427,16 @@ const BillValue = styled.div`
       font-size: 1.5rem;
       font-weight: 700;
     }
+
+    :nth-child(3) {
+      color: ${props => props.theme.color.N300};
+      margin: 0.25rem 0 0;
+    }
   }
 `;
 
 const LabelValue = styled.div`
-  ${flex({ justify: 'flex-start' })}
+  ${flex({ justify: 'flex-start', align: 'flex-start' })}
   width: 100%;
   margin: 0 0 0.5rem;
 
@@ -418,23 +447,38 @@ const LabelValue = styled.div`
   span {
     font-size: 0.875rem;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.25;
     text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     ${flex({ justify: 'flex-start' })}
 
     :nth-child(1) {
       width: calc(37.5% - 0.5rem);
       color: ${props => props.theme.color.N300};
       margin: 0 1rem 0 0;
+      line-height: 1.125;
     }
 
     :nth-child(2) {
       width: calc(62.5% - 0.5rem);
       color: ${props => props.theme.color.N800};
     }
+  }
+`;
+
+const Info = styled.div`
+  ${flex({ justify: 'flex-start' })}
+  width: calc(100% - 3rem);
+  padding: 0;
+  margin: 0.5rem auto;
+  color: ${props => props.theme.color.N300};
+
+  span {
+    width: 100%;
+    font-size: 0.875rem;
+    font-weight: 400;
+    text-align: ${props => props.align ? props.align : 'left'};
+    line-height: 1.25;
+    color: ${props => props.theme.color.N300};
   }
 `;
 

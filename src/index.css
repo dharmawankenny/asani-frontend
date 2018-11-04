@@ -93,3 +93,62 @@ input {
 .headroom--unfixed {
   width: 100%;
 }
+
+.swal-modal {
+  width: calc(100% - 3rem);
+  max-width: 32rem;
+}
+
+.swal-icon {
+  width: 5rem;
+  height: 5rem;
+  margin: 1rem auto;
+}
+
+.swal-title {
+  font-size: 1.25rem;
+  padding: 0 1rem;
+  color: #172B4D;
+  margin: 0 0 1rem;
+}
+
+.swal-overlay {
+  background: rgba(23, 43, 77, 0.75);
+}
+
+.swal-text {
+  font-size: 0.875rem;
+  padding: 0 1rem;
+  color: #5E6C84;
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+.swal-footer {
+  padding: 0 1rem 0.75rem;
+}
+
+.swal-button-container {
+  margin: 0 0 0.5rem;
+  width: 100%;
+}
+
+.swal-button-container:last-of-type {
+  margin: 0;
+}
+
+
+.swal-button {
+  width: 100%;
+  margin: 0;
+  background-color: #172B4D;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.0675rem 0.5rem 0 rgba(9, 30, 66, 0.15);
+}
+
+.swal-button:hover {
+  background-color: #42526E;
+}

@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { navigate } from '@reach/router';
 import styled from 'styled-components';
 
+import SITEMAP from '../commons/sitemap';
 import { flex } from '../commons/theme';
 import { printPrice } from '../commons/utils';
 
@@ -29,13 +31,32 @@ export default class ProductCard extends React.Component {
     product: {},
   };
 
+  showNotEnoughPointPrompt = () => {
+    swal({
+      icon: 'error',
+      title: 'Skor kredit anda tidak cukup :(',
+      text: `Skor kredit anda masih dibawah skor minimal untuk mengajukan peminjaman ini, yaitu sebanyak ${this.props.product.minCreditScore} poin, tingkatkan skor kredit kamu untuk mengakses pinjaman ini`,
+      buttons: {
+        how: 'Cari tahu cara meningkatkan skor kredit kamu',
+        ok: 'Oke, lihat pinjaman yang lain',
+      },
+    }).then(value => {
+      switch (value) {
+        case 'how':
+          navigate(SITEMAP.CREDIT_SCORE);
+          return true;
+        default:
+          return true;
+      }
+    });
+  }
+
   render() {
     const {
       productId,
       lenderName,
-      productPrice,
+      totalPrice,
       productNominal,
-      productType,
       minCreditScore,
       tenorDays,
       interestPct,
@@ -44,17 +65,17 @@ export default class ProductCard extends React.Component {
     } = this.props.product;
 
     return (
-      <Wrapper onClick={this.props.onClick} disabled={isLocked}>
+      <Wrapper onClick={isLocked ? this.showNotEnoughPointPrompt : this.props.onClick} id="asani-actions-view-product-detail">
         <ProductName locked={isLocked}>
           <img src={urlProductLogo} />
         </ProductName>
         <ProductDetail locked={isLocked}>
-          <h1>{productType} {productNominal}</h1>
-          <h2>{lenderName}</h2>
+          <h1>{productNominal}</h1>
+          <h2>oleh {lenderName}</h2>
           {isLocked ? (<h3>Skor Minimal {minCreditScore}</h3>) : (<h3>Pasti Cair</h3>)}
         </ProductDetail>
         <ProductPrice locked={isLocked}>
-          <h1>{printPrice(productPrice)}</h1>
+          <h1>{printPrice(totalPrice)}</h1>
           <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
           <h2>{isLocked ? (<Fragment><img src={LockIcon} /><span> Terkunci</span></Fragment>) : 'Pilih >'}</h2>
         </ProductPrice>
@@ -69,19 +90,21 @@ const Wrapper = styled.button`
   box-shadow: ${props => props.theme.shadow.base};
   border-radius: ${props => props.theme.borderRadius};
   padding: 0.75rem;
-  ${flex({ justify: 'flex-start', align: 'stretch' })}
+  ${flex({ justify: 'flex-start' })}
 `;
 
 const ProductName = styled.div`
   width: calc(15% - 0.5rem);
   ${props => props.locked && 'filter: grayscale(100%);'}
-  ${flex({ direction: 'column', justify: 'center' })}
+  ${flex()}
+  pointer-events: none;
 
   img {
     width: 2.5rem;
     height: 2.5rem;
     object-fit: contain;
     margin: 0 0 0.25rem;
+    pointer-events: none;
   }
 `;
 
@@ -89,6 +112,7 @@ const ProductDetail = styled.div`
   width: calc(45% - 0.75rem);
   margin: 0 1rem 0 1.25rem;
   ${flex({ justify: 'flex-start' })}
+  pointer-events: none;
 
   h1,
   h2,
@@ -96,6 +120,7 @@ const ProductDetail = styled.div`
     width: 100%;
     text-align: left;
     color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
+    pointer-events: none;
   }
 
   h1 {
@@ -127,6 +152,7 @@ const ProductDetail = styled.div`
 const ProductPrice = styled.div`
   width: calc(40% - 1rem);
   ${flex()}
+  pointer-events: none;
 
   h1,
   h2,
@@ -138,6 +164,7 @@ const ProductPrice = styled.div`
     white-space: nowrap;
     color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
     text-align: left;
+    pointer-events: none;
   }
 
   h1 {
@@ -186,5 +213,6 @@ const ProductPrice = styled.div`
     margin: 0 0 0.25rem;
     color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
     text-align: left;
+    pointer-events: none;
   }
 `;

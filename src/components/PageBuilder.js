@@ -4,15 +4,11 @@ import { flex } from '../commons/theme';
 
 export const PageWrapper = styled.div`
   width: 100%;
+  max-width: 32rem;
+  padding: 0 1.5rem 3rem;
+  margin: 0 auto;
   min-height: calc(100vh - 4rem);
   ${props => flex({ direction: props.vertical ? 'column' : 'row', justify: 'flex-start', align: 'flex-start' })}
-  margin: 0;
-  padding: 0 1.5rem 3rem;
-
-  @media screen and (min-width: ${props => props.theme.breakpoint.tablet}) {
-    width: 32rem;
-    margin: 0 auto;
-  }
 `;
 
 export const SegmentContext = styled.div`
