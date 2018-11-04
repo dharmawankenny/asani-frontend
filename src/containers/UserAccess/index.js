@@ -194,7 +194,7 @@ export default class UserAccess extends React.Component {
                   error={this.state.telNumberError}
                   onChange={evt => this.setTelNumber(evt.target.value)}
                 />
-                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" >
+                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
                   {!this.state.loading && 'Masuk / Daftar'}
                   {this.state.loading && (
                     <Spinner color="N0" />
@@ -214,7 +214,7 @@ export default class UserAccess extends React.Component {
                 />
                 <AuthConsumer>
                   {({ logIn }) => (
-                    <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" >
+                    <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" id="asani-actions-verify-otp">
                       {!this.state.loading && 'Verifikasi Kode OTP'}
                       {this.state.loading && (
                         <Spinner color="N0" />
@@ -226,7 +226,7 @@ export default class UserAccess extends React.Component {
                   <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
                 )}
                 {this.state.retryTimer === 0 && (
-                  <RetryButton onClick={this.state.loading ? null : this.toRetryOTP}>
+                  <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
                     {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
                     {this.state.loading && (
                       <Spinner color="N0" />
