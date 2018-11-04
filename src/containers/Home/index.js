@@ -261,10 +261,10 @@ export default class Home extends React.Component {
       <Fragment>
         <Header withMenu />
         <PageWrapper>
-          <CreditScoreSummary>
+          <CreditScoreSummary onClick={() => navigate(SITEMAP.CREDIT_SCORE)}>
             <SegmentContext>
               <SegmentHeader>Skor kredit kamu</SegmentHeader>
-              <SegmentAction onClick={() => navigate(SITEMAP.CREDIT_SCORE)}>Info lebih lanjut ></SegmentAction>
+              <SegmentAction>Info lebih lanjut ></SegmentAction>
             </SegmentContext>
             {(this.props.creditScore.loading || this.props.creditScore.scoreRangeLoading) && (
               <SpinnerWrapper>
@@ -406,10 +406,11 @@ export default class Home extends React.Component {
   }
 }
 
-const CreditScoreSummary = styled.div`
+const CreditScoreSummary = styled.button`
   width: 100%;
   margin: 3rem 0 0;
   ${flex({ justify: 'space-between' })}
+  text-align: left;
 
   h1 {
     font-size: 3rem;
