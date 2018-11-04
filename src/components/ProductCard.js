@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { navigate } from '@reach/router';
 import styled from 'styled-components';
 
+import SITEMAP from '../commons/sitemap';
 import { flex } from '../commons/theme';
 import { printPrice } from '../commons/utils';
 
@@ -29,6 +31,26 @@ export default class ProductCard extends React.Component {
     product: {},
   };
 
+  showNotEnoughPointPrompt = () => {
+    swal({
+      icon: 'error',
+      title: 'Skor kredit anda tidak cukup :(',
+      text: `Skor kredit anda masih dibawah skor minimal untuk mengajukan peminjaman ini, yaitu sebanyak ${this.props.product.minCreditScore} poin, tingkatkan skor kredit kamu untuk mengakses pinjaman ini`,
+      buttons: {
+        how: 'Cari tahu cara meningkatkan skor kredit kamu',
+        ok: 'Oke, lihat pinjaman yang lain',
+      },
+    }).then(value => {
+      switch (value) {
+        case 'how':
+          navigate(SITEMAP.CREDIT_SCORE);
+          return true;
+        default:
+          return true;
+      }
+    });
+  }
+
   render() {
     const {
       productId,
@@ -43,7 +65,7 @@ export default class ProductCard extends React.Component {
     } = this.props.product;
 
     return (
-      <Wrapper onClick={this.props.onClick} disabled={isLocked} id="asani-actions-view-product-detail">
+      <Wrapper onClick={isLocked ? this.showNotEnoughPointPrompt : this.props.onClick} id="asani-actions-view-product-detail">
         <ProductName locked={isLocked}>
           <img src={urlProductLogo} />
         </ProductName>
