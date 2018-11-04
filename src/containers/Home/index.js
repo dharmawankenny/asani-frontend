@@ -125,12 +125,26 @@ export default class Home extends React.Component {
   setSortQuery = sortQuery => () => this.setState({ sortQuery });
 
   toggleProductQuery = productKey => () => {
-    this.setState(prevState => ({
-      productQuery: {
-        ...prevState.productQuery,
-        [productKey]: !prevState.productQuery[productKey],
-      },
-    }));
+    this.setState(prevState => {
+      if (this.isAllProductQueryEnabled(prevState.productQuery)) {
+        const newProductQuery = { ...prevState.productQuery}
+        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
+
+        return {
+          productQuery: {
+            ...newProductQuery,
+            [productKey]: true,
+          },
+        };
+      }
+
+      return {
+        productQuery: {
+          ...prevState.productQuery,
+          [productKey]: !prevState.productQuery[productKey],
+        },
+      };
+    });
   };
 
   isAllProductQueryEnabled = productQuery => Object.values(productQuery).every(flag => flag);
@@ -329,7 +343,7 @@ export default class Home extends React.Component {
           <Loans>
             <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
             <Filter active={this.state.showFilterModal}>
-              <button onClick={this.toggleFilter}>
+              <button onClick={this.toggleFilter} id="asani-actions-open-filter">
                 Sortir: <strong>{this.printSortQuery()}</strong>, Filter: <strong>{this.printFilter()}</strong>
               </button>
               <div>
@@ -341,6 +355,7 @@ export default class Home extends React.Component {
                       <button
                         className={classNames('item', { active: this.state.sortQuery === sq })}
                         onClick={this.setSortQuery(sq)}
+                        id={`asani-actions-set-filter-sort-to-${sq}`}
                       >
                         {sq}
                       </button>
@@ -349,6 +364,7 @@ export default class Home extends React.Component {
                     <button
                       className={classNames('item', { active: this.isAllProductQueryEnabled(this.state.productQuery) })}
                       onClick={this.toggleAllProduct}
+                      id="asani-actions-set-filter-type-to-all"
                     >
                       Semua Produk
                     </button>
@@ -359,6 +375,7 @@ export default class Home extends React.Component {
                           grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
                         })}
                         onClick={this.toggleProductQuery(product)}
+                        id={`asani-actions-set-filter-type-to-${product}`}
                       >
                         {product}
                       </button>

@@ -44,7 +44,7 @@ export default class ProductCard extends React.Component {
     } = this.props.product;
 
     return (
-      <Wrapper onClick={this.props.onClick} disabled={isLocked}>
+      <Wrapper onClick={this.props.onClick} disabled={isLocked} id="asani-actions-view-product-detail">
         <ProductName locked={isLocked}>
           <img src={urlProductLogo} />
         </ProductName>
@@ -76,12 +76,14 @@ const ProductName = styled.div`
   width: calc(15% - 0.5rem);
   ${props => props.locked && 'filter: grayscale(100%);'}
   ${flex({ direction: 'column', justify: 'center' })}
+  pointer-events: none;
 
   img {
     width: 2.5rem;
     height: 2.5rem;
     object-fit: contain;
     margin: 0 0 0.25rem;
+    pointer-events: none;
   }
 `;
 
@@ -89,6 +91,7 @@ const ProductDetail = styled.div`
   width: calc(45% - 0.75rem);
   margin: 0 1rem 0 1.25rem;
   ${flex({ justify: 'flex-start' })}
+  pointer-events: none;
 
   h1,
   h2,
@@ -96,6 +99,7 @@ const ProductDetail = styled.div`
     width: 100%;
     text-align: left;
     color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
+    pointer-events: none;
   }
 
   h1 {
@@ -127,6 +131,7 @@ const ProductDetail = styled.div`
 const ProductPrice = styled.div`
   width: calc(40% - 1rem);
   ${flex()}
+  pointer-events: none;
 
   h1,
   h2,
@@ -138,6 +143,7 @@ const ProductPrice = styled.div`
     white-space: nowrap;
     color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
     text-align: left;
+    pointer-events: none;
   }
 
   h1 {
@@ -186,5 +192,6 @@ const ProductPrice = styled.div`
     margin: 0 0 0.25rem;
     color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
     text-align: left;
+    pointer-events: none;
   }
 `;

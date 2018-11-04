@@ -85,7 +85,7 @@ export default class ProductDetailModal extends React.Component {
           <ContentAnimationWrapper active={this.props.active} loading={this.props.loading}>
             <Header>
               <h1>Detil Peminjaman</h1>
-              <button onClick={this.props.onClose}><img src={CloseIcon} /></button>
+              <button onClick={this.props.onClose} id="asani-actions-close-product-detail"><img src={CloseIcon} /></button>
             </Header>
             {this.props.loading && (
               <SpinnerWrapper>
@@ -185,7 +185,7 @@ export default class ProductDetailModal extends React.Component {
                 !isEmpty(this.props.productDetail) &&
                 this.state.currentStep === docRequired.length && (
                   <ActionButtonWrapper>
-                    <BigActionButton color="G300" onClick={() => this.props.purchase(this.props.productDetail.productId)} disabled={this.props.purchaseLoading}>
+                    <BigActionButton color="G300" onClick={() => this.props.purchase(this.props.productDetail.productId)} disabled={this.props.purchaseLoading} id={`asani-actions-purchase-product-${productType}`}>
                       {!this.props.purchaseLoading && 'Ambil Pinjaman'}
                       {this.props.purchaseLoading && (
                         <Spinner color="N0" />
@@ -285,6 +285,7 @@ const Header = styled.div`
     img {
       width: 1rem;
       height: 1rem;
+      pointer-events: none;
     }
   }
 `;

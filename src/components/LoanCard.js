@@ -67,7 +67,7 @@ export default class LoanCard extends React.Component {
     } = this.props.loan;
 
     return (
-      <Wrapper onClick={this.props.onClick}>
+      <Wrapper onClick={this.props.onClick} id="asani-actions-view-loan-detail">
         <LoanHeader color={STATUS_COLOR_MAP[Number(status.status)]}>
           <span>{status.description}</span>
         </LoanHeader>
@@ -122,6 +122,7 @@ const LoanHeader = styled.div`
   background: ${props => props.theme.color[props.color]};
   ${flex({ justify: 'flex-start' })}
   border-radius: ${props => props.theme.borderRadius} ${props => props.theme.borderRadius} 0 0;
+  pointer-events: none;
 
   span {
     font-size: 0.825rem;
@@ -134,6 +135,7 @@ const LoanProduct = styled.div`
   width: calc(15% - 0.5rem);
   ${props => props.locked && 'filter: grayscale(100%);'}
   ${flex({ direction: 'column' })}
+  pointer-events: none;
 
   img {
     width: 2.5rem;
@@ -147,6 +149,7 @@ const LoanDetail = styled.div`
   width: calc(45% - 0.75rem);
   margin: 0 1rem 0 1.25rem;
   ${flex()}
+  pointer-events: none;
 
   h1,
   h2,
@@ -185,6 +188,7 @@ const LoanDetail = styled.div`
 const LoanPayment = styled.div`
   width: calc(40% - 1rem);
   ${flex()}
+  pointer-events: none;
 
   h1,
   h2,

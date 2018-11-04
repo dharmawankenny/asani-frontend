@@ -82,7 +82,7 @@ export default class LoanDetailModal extends React.Component {
           <ContentAnimationWrapper active={this.props.active} loading={this.props.loading}>
             <Header>
               <h1>Detil Peminjaman</h1>
-              <button onClick={this.props.onClose}><img src={CloseIcon} /></button>
+              <button onClick={this.props.onClose} id="asani-actions-close-loan-detail"><img src={CloseIcon} /></button>
             </Header>
             {this.props.loading && (
               <SpinnerWrapper>
@@ -284,6 +284,7 @@ const Header = styled.div`
     img {
       width: 1rem;
       height: 1rem;
+      pointer-events: none;
     }
   }
 `;
