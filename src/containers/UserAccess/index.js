@@ -208,7 +208,7 @@ export default class UserAccess extends React.Component {
               <Fragment>
                 <Input
                   label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
-                  type="number"
+                  type="text"
                   placeholder="XXXX"
                   value={this.state.otpCode}
                   error={this.state.otpCodeError}
