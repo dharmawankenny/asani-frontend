@@ -16,7 +16,6 @@ export default class NotFound extends React.Component {
       <Fragment>
         <Header />
         <PageWrapper vertical>
-          <Header />
           <Content>
             <h1>404 :(</h1>
             <h2>Oh Tidak, anda tersesat, halaman yang anda cari tidak tersedia pada Asani :(</h2>

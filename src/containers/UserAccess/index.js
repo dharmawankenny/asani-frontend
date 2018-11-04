@@ -176,7 +176,7 @@ export default class UserAccess extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header />
+        <Header stopNavigation />
         <PageWrapper vertical>
           <Content>
             <h1>

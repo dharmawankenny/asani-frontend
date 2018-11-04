@@ -137,12 +137,15 @@ export const ProgressSegment = styled.div`
   position: absolute;
   height: 100%;
   top: 0;
-  left: 0;
+  left: ${props => props.offset ? `${props.offset}%` : '0'};
   bottom: 0;
-  border-radius: ${props => props.theme.borderRadius};
   z-index: ${props => props.zIndex};
   width: ${props => props.length}%;
   background: ${props => props.color ? props.color : props.theme.color.mainProductBlue};
+  opacity: ${props => props.opacity ? props.opacity : '0.125'};
+  ${props => props.leftRadius && `border-radius: ${props.theme.borderRadius} 0 0 ${props.theme.borderRadius};`}
+  ${props => props.rightRadius && `border-radius: 0 ${props.theme.borderRadius} ${props.theme.borderRadius} 0;`}
+  ${props => props.fullRadius && `border-radius: ${props.theme.borderRadius};`}
 `;
 
 export const ArrowMarker = styled.div`

@@ -31,6 +31,16 @@ moment.locale('id');
 
 const store = configureStore();
 
+api.interceptors.response.use(res => res, err => {
+  if (err.response && err.response.status === 401) {
+    localStorage.removeItem('asaniMainAuthToken');
+    delete api.defaults.headers.common['Authorization'];
+    window.location.reload();
+  } else {
+    return Promise.reject(err);
+  }
+});
+
 const UnAuthenticated = ({ auth, componentKey, ...rest }) => {
   if (!auth) {
     const Component = UNAUTHENTICATED_PAGES[componentKey];

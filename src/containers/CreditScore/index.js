@@ -199,14 +199,23 @@ export default class CreditScore extends React.Component {
                     >
                       <span>{this.getLowerBoundary()}</span>
                       <div>
-                        <div className="bg" />
                         {this.props.creditScore.scoreRange.map((scoreRange, index) => (
                           <ProgressSegment
                             zIndex={this.props.creditScore.scoreRange.length - index}
-                            length={calculatePercentage(scoreRange.upper_bounds, this.getLowerBoundary(), this.getUpperBoundary())}
+                            length={calculatePercentage((Number(scoreRange.upper_bounds + 1) - Number(scoreRange.lower_bounds)) + this.getLowerBoundary(), this.getLowerBoundary(), this.getUpperBoundary(), true)}
                             color={scoreRange.color}
+                            offset={calculatePercentage(scoreRange.lower_bounds, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                            leftRadius={index === 0}
+                            rightRadius={index === this.props.creditScore.scoreRange.length - 1}
                           />
                         ))}
+                        <ProgressSegment
+                          zIndex={this.props.creditScore.scoreRange.length + 2}
+                          length={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                          color={this.props.creditScore.data.color}
+                          opacity={1}
+                          fullRadius
+                        />
                         <ArrowMarker progress={this.calculateCurrentProgress()} invert><img src={ArrowIcon} /></ArrowMarker>
                         <ArrowMarker progress={calculatePercentage(300, this.getLowerBoundary(), this.getUpperBoundary())}><img src={ArrowIcon} /></ArrowMarker>
                         <ArrowMarker progress={calculatePercentage(600, this.getLowerBoundary(), this.getUpperBoundary())}><img src={ArrowIcon} /></ArrowMarker>

@@ -57,7 +57,7 @@ export default class Home extends React.Component {
   static SORT_QUERIES = [
     'Pasti Cair',
     'Nilai Kredit Tertinggi',
-    'Bunga Terendah',
+    // 'Bunga Terendah',
     'Tenor Terlama',
   ];
 
@@ -194,9 +194,9 @@ export default class Home extends React.Component {
 
     if (this.state.sortQuery === Home.SORT_QUERIES[1]) {
       sortFunction = this.compareDescending('productPrice');
+    // } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
+    //   sortFunction = this.compareAscending('interestPct');
     } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
-      sortFunction = this.compareAscending('interestPct');
-    } else if (this.state.sortQuery === Home.SORT_QUERIES[3]) {
       sortFunction = this.compareDescending('tenorDays');
     }
 
@@ -281,15 +281,23 @@ export default class Home extends React.Component {
                   <ProgressBarWrapper>
                     <ProgressBar>
                       <div>
-                        <div className="bg" />
                         {this.props.creditScore.scoreRange.map((scoreRange, index) => (
                           <ProgressSegment
                             zIndex={this.props.creditScore.scoreRange.length - index}
-                            length={calculatePercentage(scoreRange.upper_bounds, this.getLowerBoundary(), this.getUpperBoundary())}
+                            length={calculatePercentage((Number(scoreRange.upper_bounds + 1) - Number(scoreRange.lower_bounds)) + this.getLowerBoundary(), this.getLowerBoundary(), this.getUpperBoundary(), true)}
                             color={scoreRange.color}
+                            offset={calculatePercentage(scoreRange.lower_bounds, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                            leftRadius={index === 0}
+                            rightRadius={index === this.props.creditScore.scoreRange.length - 1}
                           />
                         ))}
-                        <ArrowMarker progress={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary())} invert><img src={ArrowIcon} /></ArrowMarker>
+                        <ProgressSegment
+                          zIndex={this.props.creditScore.scoreRange.length + 2}
+                          length={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary(), true)}
+                          color={this.props.creditScore.data.color}
+                          opacity={1}
+                          fullRadius
+                        />
                       </div>
                     </ProgressBar>
                   </ProgressBarWrapper>
@@ -366,7 +374,7 @@ export default class Home extends React.Component {
               </SpinnerWrapper>
             )}
             {this.props.product.loaded &&
-              this.props.product.products &&
+              this.props.product.products.length > 0 &&
               this.applyFilter(this.props.product.products).map(product => (
                 <ProductCard product={product} onClick={this.onProductClick(product.productId)} />
               ))}

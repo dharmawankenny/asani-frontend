@@ -95,7 +95,7 @@ export default class LoanCard extends React.Component {
           {(Number(status.status) > 0 && Number(status.status) < 2) && (
             <Fragment>
               <h3>Jatuh Tempo</h3>
-              <h2><img src={ClockIcon} />{moment(dueTime).fromNow()}</h2>
+              <h2>{moment(dueTime).fromNow()}</h2>
               <h1>Lunaskan ></h1>
             </Fragment>
           )}

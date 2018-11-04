@@ -12,7 +12,7 @@ const LOAD_SCORE_RANGE_ERROR = 'asani/creditScore/LOAD_SCORE_RANGE_ERROR';
 const RESET_ALL = 'asani/creditScore/RESET_ALL';
 
 const initialState = {
-  data: null,
+  data: {},
   loading: false,
   loaded: false,
   error: null,

@@ -52,7 +52,11 @@ export default class Header extends React.Component {
     });
   };
 
-  navigateTo = to => () => navigate(to);
+  navigateTo = to => () => {
+    if (!this.props.stopNavigation) {
+      navigate(to);
+    }
+  };
 
   isLinkActive = link => window.location.pathname === link;
 

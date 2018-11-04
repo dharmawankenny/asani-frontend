@@ -95,7 +95,7 @@ const ProductDetail = styled.div`
   h3 {
     width: 100%;
     text-align: left;
-    color: ${props => props.theme.color.N800};
+    color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
   }
 
   h1 {
@@ -136,7 +136,7 @@ const ProductPrice = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    color: ${props => props.theme.color.N800};
+    color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
     text-align: left;
   }
 
@@ -184,7 +184,7 @@ const ProductPrice = styled.div`
     text-align: left;
     font-size: 0.75rem;
     margin: 0 0 0.25rem;
-    color: ${props => props.theme.color.N800};
+    color: ${props => props.locked ? props.theme.color.N100 : props.theme.color.N800};
     text-align: left;
   }
 `;
