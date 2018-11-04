@@ -49,13 +49,13 @@ export default class ProductCard extends React.Component {
           <img src={urlProductLogo} />
         </ProductName>
         <ProductDetail locked={isLocked}>
-          <h1>{productNominal}</h1>
+          <h1>{productType} {productNominal}</h1>
           <h2>{lenderName}</h2>
           {isLocked ? (<h3>Skor Minimal {minCreditScore}</h3>) : (<h3>Pasti Cair</h3>)}
         </ProductDetail>
         <ProductPrice locked={isLocked}>
           <h1>{printPrice(productPrice)}</h1>
-          <span>Bayar {moment().locale('id').add(tenorDays, 'days').fromNow()}</span>
+          <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
           <h2>{isLocked ? (<Fragment><img src={LockIcon} /><span> Terkunci</span></Fragment>) : 'Pilih >'}</h2>
         </ProductPrice>
       </Wrapper>
@@ -82,14 +82,6 @@ const ProductName = styled.div`
     height: 2.5rem;
     object-fit: contain;
     margin: 0 0 0.25rem;
-  }
-
-  span {
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin: 0;
-    color: ${props => props.theme.color.mainProductBlue};
-    text-align: center;
   }
 `;
 

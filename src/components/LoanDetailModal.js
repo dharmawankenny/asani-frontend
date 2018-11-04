@@ -180,11 +180,11 @@ export default class LoanDetailModal extends React.Component {
                     </LabelValue>
                     <LabelValue>
                       <span>Tanggal Cair</span>
-                      <span>{disburseTime ? moment(disburseTime).locale(id).format('DD MMM YYYY') : '-'}</span>
+                      <span>{disburseTime ? moment(disburseTime).format('DD MMM YYYY') : '-'}</span>
                     </LabelValue>
                     <LabelValue>
                       <span>Tanggal Jatuh Tempo</span>
-                      <span>{dueTime ? moment(dueTime).locale(id).format('DD MMM YYYY') : '-'}</span>
+                      <span>{dueTime ? moment(dueTime).format('DD MMM YYYY') : '-'}</span>
                     </LabelValue>
                     <LabelValue>
                       <span>% Bunga</span>
@@ -295,13 +295,13 @@ const ProductLogo = styled.img`
 `;
 
 const LabelValue = styled.div`
-  ${flex({ justify: 'flex-start' })}
+  ${flex({ justify: 'flex-start', align: 'flex-start' })}
   width: 100%;
 
   span {
     font-size: 0.875rem;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.25;
     text-align: left;
     ${flex({ justify: 'flex-start' })}
 

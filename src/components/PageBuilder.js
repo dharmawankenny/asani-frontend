@@ -82,3 +82,79 @@ export const EmptyWrapper = styled.p`
   text-align: center;
   color: ${props => props.theme.color.N300};
 `;
+
+export const ProgressBar = styled.div`
+  width: 100%;
+  ${flex({ justify: 'space-between' })}
+
+  span {
+    width: 2rem;
+    font-size: 0.875rem;
+    margin: 0;
+    color: ${props => props.theme.color.N300};
+
+    &:first-of-type {
+      text-align: left;
+    }
+
+    &:last-of-type {
+      text-align: right;
+    }
+  }
+
+  & > div {
+    flex: 1;
+    margin: 0;
+    height: 0.75rem;
+    border-radius: ${props => props.theme.borderRadius};
+    position: relative;
+
+    .bar,
+    .bg {
+      position: absolute;
+      height: 100%;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background: ${props => props.levelColor};
+      border-radius: ${props => props.theme.borderRadius};
+    }
+
+    .bar {
+      z-index: 2;
+      width: ${props => props.progress}%;
+    }
+
+    .bg {
+      z-index: 0;
+      right: 0;
+      opacity: 0.25;
+    }
+  }
+`;
+
+export const ProgressSegment = styled.div`
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: ${props => props.theme.borderRadius};
+  z-index: ${props => props.zIndex};
+  width: ${props => props.length}%;
+  background: ${props => props.color ? props.color : props.theme.color.mainProductBlue};
+`;
+
+export const ArrowMarker = styled.div`
+  position: absolute;
+  ${props => props.invert ? 'top: -0.125rem;' : 'bottom: -0.125rem;'}
+  left: ${props => props.progress}%;
+  transform: translate3d(-50%, ${props => props.invert ? '-100%' : '100%'}, 0)${props => props.invert && ' rotate(180deg)'};
+  padding: 0;
+  ${flex()}
+
+  img {
+    width: 0.5rem;
+    height: auto;
+  }
+`;

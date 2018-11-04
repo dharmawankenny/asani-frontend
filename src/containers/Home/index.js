@@ -6,6 +6,12 @@ import classNames from 'classnames';
 import { navigate } from '@reach/router';
 import isEmpty from 'lodash/isEmpty';
 
+import ArrowIcon from '../../assets/progress_arrow.svg';
+
+import {
+  DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY,
+  DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY,
+} from '../../commons/constants';
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
 import { calculatePercentage } from '../../commons/utils';
@@ -20,6 +26,9 @@ import {
   SegmentContext,
   SegmentHeader,
   FullSegmentHeader,
+  ProgressBar,
+  ProgressSegment,
+  ArrowMarker,
   SegmentAction,
   SegmentDescription,
   SpinnerWrapper,
@@ -68,6 +77,10 @@ export default class Home extends React.Component {
   componentDidMount() {
     if (!this.props.creditScore.loading && !this.props.creditScore.loaded) {
       this.props.creditScoreActions.getCreditScore();
+    }
+
+    if (!this.props.creditScore.scoreRangeLoading && !this.props.creditScore.scoreRangeLoaded) {
+      this.props.creditScoreActions.getScoreRange();
     }
 
     if (!this.props.product.loading && !this.props.product.loaded) {
@@ -209,7 +222,39 @@ export default class Home extends React.Component {
 
       return res;
     }, '')
-  }
+  };
+
+  getLowerBoundary = () => {
+    if (this.props.creditScore.scoreRangeLoaded && this.props.creditScore.scoreRange.length > 0) {
+      let lowerBoundary = DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY;
+
+      this.props.creditScore.scoreRange.forEach(sr => {
+        if (Number(sr.lower_bounds) <= lowerBoundary) {
+          lowerBoundary = Number(sr.lower_bounds);
+        }
+      });
+
+      return lowerBoundary;
+    }
+
+    return DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY;
+  };
+
+  getUpperBoundary = () => {
+    if (this.props.creditScore.scoreRangeLoaded && this.props.creditScore.scoreRange.length > 0) {
+      let upperBoundary = DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY;
+
+      this.props.creditScore.scoreRange.forEach(sr => {
+        if (Number(sr.upper_bounds) >= upperBoundary) {
+          upperBoundary = Number(sr.upper_bounds);
+        }
+      });
+
+      return upperBoundary;
+    }
+
+    return DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY;
+  };
 
   render() {
     return (
@@ -221,20 +266,33 @@ export default class Home extends React.Component {
               <SegmentHeader>Skor kredit kamu</SegmentHeader>
               <SegmentAction onClick={() => navigate(SITEMAP.CREDIT_SCORE)}>Info lebih lanjut ></SegmentAction>
             </SegmentContext>
-            {this.props.creditScore.loading && (
+            {(this.props.creditScore.loading || this.props.creditScore.scoreRangeLoading) && (
               <SpinnerWrapper>
                 <Spinner color="N800" />
               </SpinnerWrapper>
             )}
             {this.props.creditScore.loaded &&
-              this.props.creditScore.data && (
+              this.props.creditScore.data &&
+              this.props.creditScore.scoreRangeLoaded &&
+              this.props.creditScore.scoreRange.length > 0 && (
                 <Fragment>
                   <h1>{this.props.creditScore.data.credit_score}</h1>
                   <h2 style={{ color: this.props.creditScore.data.color }}>{this.props.creditScore.data.level}</h2>
-                  <ProgressBar progress={calculatePercentage(this.props.creditScore.data.credit_score)} levelColor={this.props.creditScore.data.color}>
-                    <div className="bg" />
-                    <div className="bar" />
-                  </ProgressBar>
+                  <ProgressBarWrapper>
+                    <ProgressBar>
+                      <div>
+                        <div className="bg" />
+                        {this.props.creditScore.scoreRange.map((scoreRange, index) => (
+                          <ProgressSegment
+                            zIndex={this.props.creditScore.scoreRange.length - index}
+                            length={calculatePercentage(scoreRange.upper_bounds, this.getLowerBoundary(), this.getUpperBoundary())}
+                            color={scoreRange.color}
+                          />
+                        ))}
+                        <ArrowMarker progress={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary())} invert><img src={ArrowIcon} /></ArrowMarker>
+                      </div>
+                    </ProgressBar>
+                  </ProgressBarWrapper>
                 </Fragment>
               )}
           </CreditScoreSummary>
@@ -242,10 +300,10 @@ export default class Home extends React.Component {
             this.props.loan.activeLoans &&
             this.props.loan.activeLoans.length > 0 && (
             <Loans>
-              <SegmentContext>
+              {/* <SegmentContext>
                 <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
                 <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
-              </SegmentContext>
+              </SegmentContext> */}
               {this.props.loan.activeLoans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
             </Loans>
           )}
@@ -372,35 +430,9 @@ const CreditScoreSummary = styled.div`
   }
 `;
 
-const ProgressBar = styled.div`
+const ProgressBarWrapper = styled.div`
   width: 100%;
-  height: 0.75rem;
-  margin: 0.5rem 0 0;
-  border-radius: ${props => props.theme.borderRadius};
-  position: relative;
-  box-shadow: ${props => props.theme.shadow.base};
-
-  .bar,
-  .bg {
-    position: absolute;
-    height: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background: ${props => props.levelColor};
-    border-radius: ${props => props.theme.borderRadius};
-  }
-
-  .bar {
-    z-index: 2;
-    width: ${props => props.progress}%;
-  }
-
-  .bg {
-    z-index: 1;
-    right: 0;
-    opacity: 0.25;
-  }
+  margin: 1rem 0 0;
 `;
 
 const Loans = styled.div`

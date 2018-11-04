@@ -39,7 +39,16 @@ export const getCreditScore = async () => {
   } catch (err) {
     return err.response;
   }
-}
+};
+
+export const getScoreRange = async () => {
+  try {
+    const response = await api.get('/get_score/');
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+};
 
 export const getProducts = async () => {
   try {
