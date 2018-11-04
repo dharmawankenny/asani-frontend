@@ -67,7 +67,7 @@ export default class LoanCard extends React.Component {
 
     return (
       <Wrapper onClick={this.props.onClick} id="asani-actions-view-loan-detail">
-        <LoanHeader color={STATUS_COLOR_MAP[Number(status.status)]}>
+        <LoanHeader color={status.color}>
           <span>{status.description}</span>
         </LoanHeader>
         <LoanProduct>
@@ -78,7 +78,7 @@ export default class LoanCard extends React.Component {
           <h2>{printPrice(totalBill)}</h2>
           <h3>oleh {lenderName}</h3>
         </LoanDetail>
-        <LoanPayment>
+        <LoanPayment color={status.color}>
           {Number(status.status) === 0 && (
             <h5>{note ? note : 'Dalam proses verifikasi maksimal 30 menit pada hari dan jam kerja.'}</h5>
           )}
@@ -118,7 +118,7 @@ const LoanHeader = styled.div`
   margin: -0.75rem -0.75rem 0.5rem;
   padding: 0.375rem 0.75rem;
   color: ${props => props.theme.color.N0};
-  background: ${props => props.theme.color[props.color]};
+  background: ${props => props.color};
   ${flex({ justify: 'flex-start' })}
   border-radius: ${props => props.theme.borderRadius} ${props => props.theme.borderRadius} 0 0;
   pointer-events: none;
@@ -242,18 +242,10 @@ const LoanPayment = styled.div`
     margin: 0;
     text-align: left;
     text-transform: capitalize;
+    color: ${props => props.color};
   }
 
   h4 {
     font-weight: 700;
-    color: ${props => props.theme.color.G300};
-  }
-
-  h5 {
-    color: ${props => props.theme.color.Y300};
-  }
-
-  h6 {
-    color: ${props => props.theme.color.R300};
   }
 `;

@@ -175,10 +175,10 @@ export default class ProductDetailModal extends React.Component {
                       <span>Nominal</span>
                       <span>{productNominal}</span>
                     </LabelValue>
-                    <LabelValue>
+                    {/* <LabelValue>
                       <span>% Bunga</span>
                       <span>{interestPct}%</span>
-                    </LabelValue>
+                    </LabelValue> */}
                     <LabelValue>
                       <span>Nominal Bunga</span>
                       <span>{printPrice(interestAmount)}</span>
@@ -436,7 +436,7 @@ const BillValue = styled.div`
 `;
 
 const LabelValue = styled.div`
-  ${flex({ justify: 'flex-start' })}
+  ${flex({ justify: 'flex-start', align: 'flex-start' })}
   width: 100%;
   margin: 0 0 0.5rem;
 
@@ -447,17 +447,15 @@ const LabelValue = styled.div`
   span {
     font-size: 0.875rem;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.25;
     text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     ${flex({ justify: 'flex-start' })}
 
     :nth-child(1) {
       width: calc(37.5% - 0.5rem);
       color: ${props => props.theme.color.N300};
       margin: 0 1rem 0 0;
+      line-height: 1.125;
     }
 
     :nth-child(2) {

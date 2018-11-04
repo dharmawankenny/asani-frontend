@@ -57,6 +57,7 @@ export default class LoanDetailModal extends React.Component {
       rejectTime,
       dueTime,
       paymentTime,
+      paymentMethod,
       note,
       productType,
       lenderName,
@@ -93,14 +94,14 @@ export default class LoanDetailModal extends React.Component {
               this.props.loanDetail &&
               !isEmpty(this.props.loanDetail) && (
                 <Fragment>
-                  {(!dueTime || moment(dueTime).isBefore(moment())) && (
+                  {paymentTime && (
                     <InfoPrompt color="G300" margin="0 auto">
                       <img src={ImproveIcon} />
                       <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
                     </InfoPrompt>
                   )}
-                  {dueTime && moment(dueTime).isSameOrAfter(moment()) && (
-                    <InfoPrompt color="R300" margin="1.5rem auto 3rem">
+                  {!paymentTime && dueTime && moment(dueTime).isSameOrAfter(moment()) && (
+                    <InfoPrompt color="R300" margin="0 auto">
                       <img src={SadIcon} />
                       <span>Semakin terlambat kamu membayar tagihan, skor kredit kamu akan semakin memburuk!</span>
                     </InfoPrompt>
@@ -188,9 +189,17 @@ export default class LoanDetailModal extends React.Component {
                       <span>{dueTime ? moment(dueTime).format('DD MMM YYYY') : '-'}</span>
                     </LabelValue>
                     <LabelValue>
+                      <span>Tanggal Pelunasan</span>
+                      <span>{paymentTime ? moment(paymentTime).format('DD MMM YYYY') : '-'}</span>
+                    </LabelValue>
+                    <LabelValue>
+                      <span>Metode Pelunasan</span>
+                      <span>{paymentMethod ? paymentMethod : '-'}</span>
+                    </LabelValue>
+                    {/* <LabelValue>
                       <span>% Bunga</span>
                       <span>{interestPct}%</span>
-                    </LabelValue>
+                    </LabelValue> */}
                     <LabelValue>
                       <span>Nominal Bunga</span>
                       <span>{printPrice(interestAmount)}</span>
@@ -311,6 +320,7 @@ const LabelValue = styled.div`
       width: calc(37.5% - 0.5rem);
       color: ${props => props.theme.color.N300};
       margin: 0 1rem 0 0;
+      line-height: 1.125;
     }
 
     :nth-child(2) {
@@ -342,17 +352,17 @@ const Toggler = styled.div`
   ${flex({ justify: 'flex-start' })}
   width: 100%;
   padding: 0.75rem 1.5rem;
+  margin: 0;
 
   button {
     width: 100%;
     border-bottom: 1px solid ${props => props.theme.color.N40};
-    margin: 0 0 0.5rem;
     padding: 0 0 0.5rem;
     ${flex({ justify: 'flex-start' })}
 
     h1 {
       flex: 1;
-      font-size: 1rem;
+      font-size: 0.875rem;
       font-weight: 400;
       text-align: left;
       line-height: 1;
@@ -380,7 +390,7 @@ const Toggler = styled.div`
     font-weight: 400;
     line-height: 1.25;
     color: ${props => props.theme.color.N300};
-    margin: 0.5rem 0;
+    margin: ${props => props.active ? '0.5rem 0' : '0'};
   }
 
   & > div {
