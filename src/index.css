@@ -142,3 +142,7 @@ input {
   border-radius: 0.25rem;
   box-shadow: 0 0.0675rem 0.5rem 0 rgba(9, 30, 66, 0.15);
 }
+
+.swal-button:hover {
+  background-color: #42526E;
+}

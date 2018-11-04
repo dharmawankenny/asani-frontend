@@ -58,12 +58,15 @@ export default class LoanCard extends React.Component {
       loanId,
       note,
       paymentTime,
+      paymentMethod,
       totalBill,
       productNominal,
       status,
       tenorDays,
       urlProductLogo,
     } = this.props.loan;
+
+    const dueTimeString = moment(dueTime).fromNow();
 
     return (
       <Wrapper onClick={this.props.onClick} id="asani-actions-view-loan-detail">
@@ -89,12 +92,16 @@ export default class LoanCard extends React.Component {
             </Fragment>
           )}
           {Number(status.status) === 3 && (
-            <h4>{note ? note : 'Catatan belum tersedia'}</h4>
+            <Fragment>
+              <h3>Lunas Pada</h3>
+              <h4>{moment(paymentTime).format('DD MMM YYYY')}</h4>
+              <span>Melalui {paymentMethod}</span>
+            </Fragment>
           )}
           {(Number(status.status) > 0 && Number(status.status) < 2) && (
             <Fragment>
               <h3>Jatuh Tempo</h3>
-              <h2>{moment(dueTime).fromNow()}</h2>
+              <h2>{`${dueTimeString.charAt(0).toUpperCase()}${dueTimeString.slice(1)}`}</h2>
               <h1>Lunaskan ></h1>
             </Fragment>
           )}
@@ -216,6 +223,7 @@ const LoanPayment = styled.div`
     font-weight: 400;
     margin: 0 0 0.5rem;
     ${flex({ justify: 'flex-start' })}
+    font-weight: 700;
 
     img {
       width: 0.875rem;
@@ -246,6 +254,16 @@ const LoanPayment = styled.div`
   }
 
   h4 {
+    font-size: 0.875rem;
     font-weight: 700;
+  }
+
+  span {
+    width: 100%;
+    font-size: 0.65rem;
+    line-height: 1.125;
+    text-align: left;
+    margin: 0.125rem 0 0;
+    color: ${props => props.theme.color.N300};
   }
 `;
