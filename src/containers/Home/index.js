@@ -130,33 +130,33 @@ export default class Home extends React.Component {
 
   toggleProductQuery = productKey => () => {
     this.setState(prevState => {
-      if (this.isAllProductQueryEnabled(prevState.productQuery)) {
-        const newProductQuery = { ...prevState.productQuery };
-        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
-
-        return {
-          productQuery: {
-            ...newProductQuery,
-            [productKey]: true,
-          },
-        };
-      } else if (this.isAllProductQueryNotEnabled({ ...prevState.productQuery, [productKey]: false })) {
-        const newProductQuery = { ...prevState.productQuery };
-        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true );
-
-        return {
-          productQuery: {
-            ...newProductQuery,
-          },
-        };
-      }
+      // if (this.isAllProductQueryEnabled(prevState.productQuery)) {
+      const newProductQuery = { ...prevState.productQuery };
+      Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
 
       return {
         productQuery: {
-          ...prevState.productQuery,
-          [productKey]: !prevState.productQuery[productKey],
+          ...newProductQuery,
+          [productKey]: true,
         },
       };
+      // } else if (this.isAllProductQueryNotEnabled({ ...prevState.productQuery, [productKey]: false })) {
+      //   const newProductQuery = { ...prevState.productQuery };
+      //   Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true );
+
+      //   return {
+      //     productQuery: {
+      //       ...newProductQuery,
+      //     },
+      //   };
+      // }
+
+      // return {
+      //   productQuery: {
+      //     ...prevState.productQuery,
+      //     [productKey]: !prevState.productQuery[productKey],
+      //   },
+      // };
     });
   };
 
@@ -478,6 +478,7 @@ const Filter = styled.div`
   width: 100%;
   height: 2rem;
   margin: 0.25rem 0 1rem;
+  padding: 0.125rem 0;
   white-space: nowrap;
   overflow: auto;
 
