@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // TODO change PREFIX_API_URL to development server
-let PREFIX_API_URL = 'https://asani-backend-app.herokuapp.com';
+let PREFIX_API_URL = 'http://localhost:8000';
 // let PREFIX_API_URL = 'http://localhost:8080';
 
 if (process.env.NODE_ENV === 'production') {
@@ -106,15 +106,7 @@ export const getDocuments = async () => {
 
 export const signDocument = async (fileName, fileType) => {
   try {
-    const response = await api.post(`${PREFIX_API_URL}/sign-s3/`, { fileName, fileType }, {
-      transformRequest: [(data, headers) => {
-        delete headers.common['Authorization'];
-        return JSON.stringify(data);
-      }],
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await api.post(`${PREFIX_API_URL}/sign-s3/`, { fileName, fileType });
     return response;
   } catch (err) {
     return err.response;
