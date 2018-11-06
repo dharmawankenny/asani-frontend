@@ -15,6 +15,8 @@ import Spinner from '../../components/Spinner';
 
 import { Consumer as AuthConsumer } from '../../contexts/auth';
 
+import HelpIcon from '../../assets/help.svg';
+
 import {
   postSendOTP,
   postCheckOTPLogin,
@@ -186,13 +188,18 @@ export default class UserAccess extends React.Component {
         <PageWrapper vertical>
           <Content>
             <h1>
-              {this.state.step === 0 && 'Cek skor kredit kamu GRATIS.\nTemukan pinjaman terbaikmu!'}
+              {this.state.step === 0 && 'Beli Voucher Game dan Pulsa Sekarang, Bayarnya Nanti!'}
               {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
             </h1>
             {this.state.step === 0 && (
               <Fragment>
+				<Subheader>
+				  <h5>
+					Nomor WhatsApp Kamu
+				  </h5>
+				</Subheader>
                 <Input
-                  label="Nomor WhatsApp Kamu"
+                  label=""
                   prefix="+62"
                   type="tel"
                   placeholder="8XXXXXXXXX"
@@ -210,8 +217,13 @@ export default class UserAccess extends React.Component {
             )}
             {this.state.step === 1 && (
               <Fragment>
+				<Subheader>
+				  <h5>
+					4 Angka Kode OTP Yang Diberikan Via WhatsApp
+				  </h5>
+				</Subheader>
                 <Input
-                  label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
+                  label=""
                   type="text"
                   placeholder="XXXX"
                   value={this.state.otpCode}
@@ -242,7 +254,15 @@ export default class UserAccess extends React.Component {
               </Fragment>
             )}
           </Content>
-          <Footer />
+			<tr>
+				<td width="60%">
+					<Pttext>&copy; 2018 Asani</Pttext>
+					<Pttext>PT Teknologi Skoring Nusantara</Pttext>
+					<Pttext>Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat</Pttext>
+					<Pttext>Telp: +6281311442228</Pttext>
+				</td>
+				<td><Footer /></td>
+			</tr>
         </PageWrapper>
         <Background src={BgImage} />
       </Fragment>
@@ -250,6 +270,16 @@ export default class UserAccess extends React.Component {
   }
 }
 
+const Subheader = styled.div`
+color: ${props => props.theme.color.N100};
+`
+
+const Pttext = styled.div`
+color: ${props => props.theme.color.N100};
+width: calc(100% - 0.5rem);
+pointer-events: none;
+font-size: 0.75rem;
+`
 const Background = styled.img`
   position: fixed;
   top: 0;
@@ -306,4 +336,11 @@ const RetryButton = styled.button`
   background: ${props => props.theme.color.N300};
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.shadow.base};
+`;
+
+const Help = styled.img`
+  height: 1.5rem;
+  width: auto;
+  margin: 0;
+  padding: 0;
 `;

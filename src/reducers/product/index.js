@@ -149,7 +149,12 @@ export function purchaseProduct(productId) {
     dispatch(loadingPurchase());
     const response = await apiCalls.postLoan(productId);
 
-    if (response && response.data && response.data.status === 1) {
+    if (response.data.status === -1) {
+      swal({
+        text: 'Mohon maaf, sepertinya sedang ada gangguang pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+        icon: 'error',
+      });
+    } else if (response && response.data && response.data.status === 1) {
       dispatch(purchaseProductSuccess(response.data));
     } else {
       dispatch(purchaseProductError('Error Purchasing Product'));
