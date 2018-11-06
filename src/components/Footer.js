@@ -18,8 +18,8 @@ export default class Footer extends React.Component {
             EN
           </Switch>
         </Switcher> */}
-        <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
-		  Bantuan&nbsp;&nbsp;<Help src={HelpIcon} />
+        Bantuan&nbsp;&nbsp;<a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
+          <Help src={HelpIcon} />
         </a>
       </Wrapper>
     );
@@ -32,8 +32,7 @@ const Wrapper = styled.div`
   width: 100%;
   ${flex({ justify: 'flex-end' })}
 
-  a:hover, a:visited, a:link, a:active {
-	text-decoration: none;
+  a {
     ${flex()}
   }
 `;
