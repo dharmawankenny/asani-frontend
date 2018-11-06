@@ -27,7 +27,7 @@ export default class WhatIsACreditScore extends React.Component {
         <Header withMenu />
         <PageWrapper>
           <Blog>
-            {/* <YouTube videoId="j3YQAoN2wGM" opts={{ height: '240', width: window.innerWidth }} /> */}
+            {<YouTube videoId="AV5JXCdYU2Y" opts={{ height: '240', width: window.innerWidth }} /> }
             <BlogTitle margin="1.5rem 0 1rem">
               Skor kredit? apa sih itu?
             </BlogTitle>
