@@ -58,7 +58,7 @@ export default function reducer(state = initialState, action = {}) {
     case PURCHASE_USER_BANNED:
       return { ...state, userBanned: true, purchaseLoading: false, purchaseLoaded: true };
     case RESET_PURCHASE:
-      return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: false };
+      return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: false, userBanned: false };
     case RESET_ALL:
       return { ...initialState };
     default:
