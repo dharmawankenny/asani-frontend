@@ -274,7 +274,7 @@ export default class UserAccess extends React.Component {
 }
 
 const Subheader = styled.div`
-color: ${props => props.theme.color.N100};
+color: ${props => props.theme.color.N300};
 `
 
 const Pttext = styled.div`
