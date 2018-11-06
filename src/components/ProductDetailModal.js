@@ -63,7 +63,7 @@ export default class ProductDetailModal extends React.Component {
       swal({
         icon: 'warning',
         title: 'Ooops akun kamu bermasalah',
-        text: 'Sepertinya kamu akun kamu dalam pengawasan kami. Harap segera hubungi CS.',
+        text: 'Akun kamu dalam pengawasan kami. Harap segera hubungi CS.',
         button: 'Oke, saya mengerti.',
       }).then(value => {
         if (value) {
