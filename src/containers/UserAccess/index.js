@@ -254,6 +254,8 @@ export default class UserAccess extends React.Component {
               </Fragment>
             )}
           </Content>
+		    <h1></h1>
+		    <table>
 			<tr>
 				<td width="60%">
 					<Pttext>&copy; 2018 Asani</Pttext>
@@ -263,6 +265,7 @@ export default class UserAccess extends React.Component {
 				</td>
 				<td><Footer /></td>
 			</tr>
+			</table>
         </PageWrapper>
         <Background src={BgImage} />
       </Fragment>
