@@ -156,14 +156,18 @@ export default class UserAccess extends React.Component {
       console.log(checkOTPLoginResult);
 
       if (checkOTPLoginResult && checkOTPLoginResult.data && checkOTPLoginResult.data.token) {
-        logIn(checkOTPLoginResult.data.token);
-      } else {
+		    logIn(checkOTPLoginResult.data.token);
+      } else if (checkOTPLoginResult.data.result === 2){
+  		  swal({
+    			text: 'Mohon maaf, sepertinya OTP kamu salah. Mohon periksa kembali.',
+    			icon: 'error',
+  		  });
+	    } else {
         swal({
           text: 'Mohon maaf, sepertinya sedang ada gangguang pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
           icon: 'error',
         });
       }
-
       await this.setState({ loading: false });
     }
   };
