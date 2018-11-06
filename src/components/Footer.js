@@ -27,6 +27,7 @@ export default class Footer extends React.Component {
 }
 
 const Wrapper = styled.div`
+  color: ${props => props.theme.color.N200};
   width: 100%;
   ${flex({ justify: 'flex-end' })}
 

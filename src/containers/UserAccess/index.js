@@ -278,7 +278,7 @@ color: ${props => props.theme.color.N100};
 `
 
 const Pttext = styled.div`
-color: ${props => props.theme.color.N100};
+color: ${props => props.theme.color.N200};
 width: calc(100% - 0.5rem);
 pointer-events: none;
 font-size: 0.75rem;
