@@ -94,6 +94,24 @@ export default class LoanDetailModal extends React.Component {
               this.props.loanDetail &&
               !isEmpty(this.props.loanDetail) && (
                 <Fragment>
+                  {paymentTime && (
+                    <InfoPrompt color="G300" margin="0 auto">
+                      <img src={ImproveIcon} />
+                      <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
+                    </InfoPrompt>
+                  )}
+                  {!paymentTime && dueTime && moment(dueTime).isSameOrAfter(moment()) && (
+                    <InfoPrompt color="G300" margin="0 auto">
+                      <img src={ImproveIcon} />
+                      <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
+                    </InfoPrompt>
+                  )}
+                  {!paymentTime && dueTime && moment(dueTime).isBefore(moment()) && (
+                    <InfoPrompt color="R300" margin="0 auto">
+                      <img src={SadIcon} />
+                      <span>Semakin terlambat kamu membayar tagihan, skor kredit kamu akan semakin memburuk!</span>
+                    </InfoPrompt>
+                  )}
                   <SummaryInfo>
                     <ProductLogo src={urlProductLogo} />
                     <LabelValue>
