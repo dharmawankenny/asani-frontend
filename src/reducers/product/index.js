@@ -16,6 +16,7 @@ const PURCHASE_PRODUCT_ERROR = 'asani/product/PURCHASE_PRODUCT_ERROR';
 const RESET_PURCHASE = 'asani/product/RESET_PURCHASE';
 
 const RESET_ALL = 'asani/product/RESET_ALL';
+const PURCHASE_USER_BANNED = 'asani/product/PURCHASE_USER_BANNED';
 
 const initialState = {
   products: [],
@@ -29,6 +30,7 @@ const initialState = {
   loading: false,
   loaded: false,
   error: null,
+  userBanned: false,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -53,8 +55,10 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: true };
     case PURCHASE_PRODUCT_ERROR:
       return { ...state, purchaseError: action.payload.error, purchaseLoading: false, purchaseLoaded: true };
+    case PURCHASE_USER_BANNED:
+      return { ...state, userBanned: true, purchaseLoading: false, purchaseLoaded: true };
     case RESET_PURCHASE:
-      return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: false };
+      return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: false, userBanned: false };
     case RESET_ALL:
       return { ...initialState };
     default:
@@ -84,6 +88,10 @@ export function loadingDetailSuccess(data) {
 
 export function loadingDetailError(error) {
   return { type: LOAD_DETAIL_ERROR, payload: { error } };
+}
+
+export function purchaseUserBanned(error) {
+  return { type: PURCHASE_USER_BANNED, payload: { error } };
 }
 
 export function resetDetail() {
@@ -148,8 +156,14 @@ export function purchaseProduct(productId) {
   return async dispatch => {
     dispatch(loadingPurchase());
     const response = await apiCalls.postLoan(productId);
-
-    if (response && response.data && response.data.status === 1) {
+    console.error(response)
+    if (response.data.status === -1) {
+      dispatch(purchaseUserBanned('Error Purchasing Product'));
+      // swal({
+      //   text: 'Mohon maaf, sepertinya sedang ada gangguang pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+      //   icon: 'error',
+      // });
+    } else if (response && response.data && response.data.status === 1) {
       dispatch(purchaseProductSuccess(response.data));
     } else {
       dispatch(purchaseProductError('Error Purchasing Product'));
