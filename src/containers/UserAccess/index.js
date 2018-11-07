@@ -55,22 +55,22 @@ export default class UserAccess extends React.Component {
 
   static Testimonies = [
     {
-      profileImg: EmptyProfileImg,
+      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi1.png',
       name: 'Ari, 26 tahun',
       testimony: 'Seneng pake produk pulsa di Asani soalnya ga ada bunganya. Walaupun pinjaman, tapi harganya masih normal',
     },
     {
-      profileImg: EmptyProfileImg,
+      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi2.png',
       name: 'Agus, 19 tahun',
       testimony: 'Saya adalah gamer yang kadang butuh voucher games di malam hari. Pake Asani bisa mem-back up dulu, bayarnya paginya',
     },
     {
-      profileImg: EmptyProfileImg,
+      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi3.png',
       name: 'Wahid, 43 tahun',
       testimony: 'Kemarin ngambil kredit motor. Pake skor kreditnya Asani bisa dapet bunga lebih rendah. Karena pihak peminjam ada gambaran dari histori pinjaman sebelumnya',
     },
     {
-      profileImg: EmptyProfileImg,
+      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi4.png',
       name: 'Lusi, 45 tahun',
       testimony: 'Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Responsif dan cepat!',
     },
