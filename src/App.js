@@ -25,7 +25,11 @@ import { resetAll as resetProduct } from './reducers/product';
 import { resetAll as resetUserDocument } from './reducers/userDocument';
 
 import configureStore from './store';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faThumbsUp, faAward, faTrophy, faBan } from '@fortawesome/free-solid-svg-icons'
 
+library.add({ faThumbsUp,faAward, faTrophy, faBan })
 moment.tz.setDefault('Asia/Jakarta');
 moment.locale('id');
 
