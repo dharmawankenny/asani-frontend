@@ -82,6 +82,10 @@ export default class UserAccess extends React.Component {
       answer: 'Asani  adalah perusahaan skor kredit yang menyediakan angka atau nilai yang menunjukkan riwayat pembayaran pinjaman kamu. Asani dapat membantu kamu yang bahkan tidak memiliki catatan keuangan di bank untuk tetap mendapatkan pinjaman.<br /><br />Asani juga bekerja sama dengan partner lenders yang menawarkan pinjaman produk-produk yaitu digital, elektronik, mobil dan rumah khusus buat kamu!<br /><br />Keunggulan Asani: <ol><li>GRATIS cek skor kredit</li><li>Bisa beli sekarang</li><li>bayar nanti</li><li>Semua TANPA bunga dan denda</li><li>Banyak pilihan produk</li></ol>',
     },
     {
+      question: 'Cara pakai asani?',
+      answer: `<ol>${UserAccess.HowToUse.reduce((res, howTo) => `${res}<li>${howTo}</li>`, '')}</ol>`,
+    },
+    {
       question: 'Apakah Asani juga berperan sebagai pihak penyedia pinjaman?',
       answer: 'Tidak, Asani berperan sebagai platform yang menghubungkan antara penyedia pinjaman dan peminjam dana. Asani bekerja sama dengan pihak-pihak lain sebagai penyedia pinjaman yaitu Dompet Kilat dan Danamas.<br /><br />Melalui Asani, kamu dapat melakukan dua hal sekaligus yaitu pinjaman dan cek skor kredit kamu. Jika kamu melakukan pinjaman dan membayar sebelum jatuh tempo, maka skor kredit kamu akan meningkat. Dengan meningkatnya skor kredit, semakin banyak produk-produk yang dapat kamu coba!',
     },
@@ -369,15 +373,6 @@ export default class UserAccess extends React.Component {
                 {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
               </div>
             </Segment>
-            <Segment>
-              <h1>Cara Pakai Asani</h1>
-              <p>Penting buat kamu memahami cara menggunakan Asani terlebih dahulu melalui situs online asani.co.id.</p>
-              <div>
-                <OrderedList>
-                  {UserAccess.HowToUse.map(howTo => <li>{howTo}</li>)}
-                </OrderedList>
-              </div>
-            </Segment>
             <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
               <h1>Testimoni Pelanggan</h1>
               <div>
@@ -607,23 +602,6 @@ const ProductIcon = styled.img`
   }
 `;
 
-const OrderedList = styled.ol`
-  width: 100%;
-  margin: 0.5rem 0 0;
-  padding: 0 0 0 1rem;
-  font-size: 0.875rem;
-  line-height: 1.25;
-  color: ${props => props.theme.color.N500};
-
-  li {
-    margin: 0 0 1rem;
-
-    &:last-of-type {
-      margin: 0;
-    }
-  }
-`;
-
 const Testimony = styled.div`
   width: calc(50% - 1rem);
   margin: 2rem 2rem 0 0;
@@ -709,5 +687,22 @@ const FAQToggler = styled.div`
     line-height: 1.5;
     color: ${props => props.theme.color.N300};
     margin: ${props => props.active ? '0.5rem 0' : '0'};
+
+    ol {
+      width: 100%;
+      margin: 0.5rem 0 0;
+      padding: 0 0 0 1rem;
+      font-size: 0.75rem;
+      line-height: 1.25;
+      color: ${props => props.theme.color.N500};
+
+      li {
+        margin: 0 0 1rem;
+
+        &:last-of-type {
+          margin: 0;
+        }
+      }
+    }
   }
 `;
