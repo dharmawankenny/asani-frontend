@@ -455,7 +455,7 @@ const Content = styled.div`
 
 const MainFocus = styled.div`
   width: 100%;
-  min-height: calc(100vh - 5rem);
+  min-height: calc(100vh - 15rem);
   ${flex({ justify: 'flex-start' })}
 `;
 
