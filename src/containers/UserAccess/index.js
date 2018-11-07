@@ -396,7 +396,7 @@ export default class UserAccess extends React.Component {
           </Content>
 				  <Footer withCopy />
         </PageWrapper>
-        <Background src={BgImage} />
+        {/* <Background src={BgImage} /> */}
       </Fragment>
     );
   }
