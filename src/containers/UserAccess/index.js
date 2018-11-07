@@ -363,12 +363,12 @@ export default class UserAccess extends React.Component {
                 </OurPro>
                 <OurPro margin="1rem 0 0 1rem">
                   <img src={ManyProductsIcon} />
-                  <h2>Banyak pilihan produk pinjaman</h2>
+                  <h2>Banyak pilihan tawaran pinjaman</h2>
                 </OurPro>
               </div>
             </Segment>
             <Segment>
-              <h1>Produk Pinjaman Tersedia</h1>
+              <h1>Tawaran Pinjaman Tersedia</h1>
               <div>
                 {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
               </div>
@@ -586,18 +586,19 @@ const OurPro = styled.div`
 `;
 
 const ProductIcon = styled.img`
-  width: calc((100% - 4.5rem) / 4);
+  width: calc((100% - 6rem) / 5);
   margin: 1.5rem 1.5rem 0 0;
 
   &:nth-of-type(1),
   &:nth-of-type(2),
   &:nth-of-type(3),
-  &:nth-of-type(4) {
+  &:nth-of-type(4),
+  &:nth-of-type(5) {
     margin-top: 0.5rem;
   }
 
   &:last-of-type,
-  &:nth-of-type(4n + 4) {
+  &:nth-of-type(5n + 5) {
     margin-right: 0;
   }
 `;
