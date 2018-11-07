@@ -82,6 +82,11 @@ input {
   outline: none;
 }
 
+li {
+  font-weight: 400;
+  letter-spacing: -0.025rem;
+}
+
 .headroom {
   z-index: 2000 !important;
 }

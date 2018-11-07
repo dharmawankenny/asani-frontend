@@ -44,64 +44,70 @@ export default class UserAccess extends React.Component {
   ];
 
   static HowToUse = [
-    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
-    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
-    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
-    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
-    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    'Masuk/daftar nomor Whatsapp kamu di website asani.co.id.',
+    'Cek kode OTP kamu di chat Whatsapp yang bersifat RAHASIA. Jangan diberitahu kepada siapapun.',
+    'Pilih pinjaman produk dari pemberi pinjaman (lender) yang kamu inginkan.',
+    'Upload dokumen: 1. Foto KTP, 2. Foto foto selfie kamu sambil memegang foto KTP dan harus memperlihatkan dengan jelas wajah dan informasi yang terdapat pada KTP.',
+    'Verifikasi dan persetujuan pinjaman kamu diproses maksimal 30 menit di hari kerja.',
+    'Setelah persetujuan pinjaman selesai, kamu akan mendapatkan produk yang diinginkan.',
+    'Skor kredit kamu akan meningkat setelah kamu mengunggah dokumen atau pinjaman dilunasi!',
   ];
 
   static Testimonies = [
     {
       profileImg: EmptyProfileImg,
-      name: 'John Doe',
-      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      name: 'Ari, 26 tahun',
+      testimony: 'Seneng pake produk pulsa di Asani soalnya ga ada bunganya. Walaupun pinjaman, tapi harganya masih normal',
     },
     {
       profileImg: EmptyProfileImg,
-      name: 'John Doe',
-      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      name: 'Agus, 19 tahun',
+      testimony: 'Saya adalah gamer yang kadang butuh voucher games di malam hari. Pake Asani bisa mem-back up dulu, bayarnya paginya',
     },
     {
       profileImg: EmptyProfileImg,
-      name: 'John Doe',
-      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      name: 'Wahid, 43 tahun',
+      testimony: 'Kemarin ngambil kredit motor. Pake skor kreditnya Asani bisa dapet bunga lebih rendah. Karena pihak peminjam ada gambaran dari histori pinjaman sebelumnya',
     },
     {
       profileImg: EmptyProfileImg,
-      name: 'John Doe',
-      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      name: 'Lusi, 45 tahun',
+      testimony: 'Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Responsif dan cepat!',
     },
   ];
 
   static FAQ = [
     {
-      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
-      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      question: 'Apa itu asani?',
+      answer: 'Asani  adalah perusahaan skor kredit yang menyediakan angka atau nilai yang menunjukkan riwayat pembayaran pinjaman kamu. Asani dapat membantu kamu yang bahkan tidak memiliki catatan keuangan di bank untuk tetap mendapatkan pinjaman.<br /><br />Asani juga bekerja sama dengan partner lenders yang menawarkan pinjaman produk-produk yaitu digital, elektronik, mobil dan rumah khusus buat kamu!<br /><br />Keunggulan Asani: <ol><li>GRATIS cek skor kredit</li><li>Bisa beli sekarang</li><li>bayar nanti</li><li>Semua TANPA bunga dan denda</li><li>Banyak pilihan produk</li></ol>',
     },
     {
-      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
-      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      question: 'Apakah Asani juga berperan sebagai pihak penyedia pinjaman?',
+      answer: 'Tidak, Asani berperan sebagai platform yang menghubungkan antara penyedia pinjaman dan peminjam dana. Asani bekerja sama dengan pihak-pihak lain sebagai penyedia pinjaman yaitu Dompet Kilat dan Danamas.<br /><br />Melalui Asani, kamu dapat melakukan dua hal sekaligus yaitu pinjaman dan cek skor kredit kamu. Jika kamu melakukan pinjaman dan membayar sebelum jatuh tempo, maka skor kredit kamu akan meningkat. Dengan meningkatnya skor kredit, semakin banyak produk-produk yang dapat kamu coba!',
     },
     {
-      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
-      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      question: 'Gimana metode pembayaran tagihan pinjaman di Asani?',
+      answer: 'Kamu bisa membayar pinjaman melalui Rekening BCA 494 305 8698 atas nama PT Asani Teknologi Keuangan  dan Rekening BRI 122 3010 0054 1304 atas Nama PT Asani Teknologi Keuangan.',
     },
     {
-      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
-      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      question: 'Produk-produk apa saja yang bisa dipakai untuk pinjaman pertama?',
+      answer: 'Kalau kamu ingin memulai pinjaman pertama di Asani, minimal skor kredit kamu adalah 400. Jika kamu udah punya skor kredit 400, maka kamu bisa meminjam produk <strong>Pulsa dan Voucher Games</strong> yaitu:<br /><br />Pulsa Telkomsel 10 ribu, Google Play 20K, Steam Rp 8K, Steam Rp 12K, Garena 33 Shell, Mobile Legends 36 Diamond, Lyto 10K Game On, Megaxus 10K Mi Cash, MOL 100 Points dan Unipin Rp 10K.',
     },
     {
-      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
-      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      question: 'Apakah saya bisa meminjam langsung nominal 100,000?',
+      answer: 'Tidak bisa. Pinjaman kamu dimulai dari produk terendah hingga produk tertinggi, sesuai dengan minimal skor kredit yang dimiliki. Jadi, kalian harus mulai dari produk terendah dulu, karena skor kredit yang bagus tidak terjadi dalam satu malam, sehingga dibutuhkan proses.',
     },
     {
-      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
-      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      question: 'Tips meningkatkan skor kredit?',
+      answer: 'Kalau kamu udah cek skor kredit terupdate, dan kategori skor kredit masih rendah, saatnya kami kasih kamu tips dan trik caranya maintain dan meningkatkan skor kredit!<br /><br /><ol><li><strong>Ayo Mulai Lakukan Pinjaman Pertamamu!</strong><br />Salah satu tips untuk meningkatkan skor kredit kamu adalah memulai melakukan pinjaman pertama. Pinjaman pertama bisa kamu lakukan dengan produk pulsa dan voucher games. Detail produknya bisa kamu cek di  asani.co.id/<br /><br /></li><li><Strong>Upload Data Diri yang Sebenarnya</strong><br />Skor kredit dapat kamu gunakan untuk mengajukan kredit motor, kredit mobil, kredit rumah atau kredit apartemen ke bank atau institusi keuangan lainnya. Makanya, dibutuhkan data diri yang sebenarnya atau sesuai dengan data diri kamu.jangan lupa<br /><br /></li><li><strong>Perhatikan Tanggal Jatuh Tempo Pinjaman</strong><br />Sangat penting buat kamu untuk membayar pinjaman sebelum tanggal jatuh tempo. Maka ada baiknya, tanggal jatuh tempo dicatat agar tidak lupa. Selain itu, jangan lupa juga siapkan uang jauh-jauh hari untuk pembayaran pinjaman untuk menghindari kamu menggunakan uangnya untuk kebutuhan lain.</li></ol>',
     },
     {
-      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
-      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+      question: 'Bagaimana jika pembayaran tagihan pinjaman terlambat?',
+      answer: 'Jika kamu membayar tagihan melebihi tanggal jatuh tempo, maka skor kamu akan menurun.',
+    },
+    {
+      question: 'Bagaimana jika terlambat membayar tagihan akan mendapatkan denda atau bunga?',
+      answer: 'Tidak, kamu tidak akan mendapatkan bunga atau denda jika terlambat membayar. Tetapi, jika kamu terlambat atau tidak membayar sama sekali, maka kamu tidak dapat meminjam selama tagihan belum dilunasi.',
     },
   ];
 
@@ -280,7 +286,7 @@ export default class UserAccess extends React.Component {
           <Content>
             <MainFocus>
               <h1>
-                {this.state.step === 0 && 'Beli Voucher Game dan Pulsa Sekarang, Bayarnya Nanti!'}
+                {this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
                 {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
               </h1>
               {this.state.step === 0 && (
@@ -365,13 +371,14 @@ export default class UserAccess extends React.Component {
             </Segment>
             <Segment>
               <h1>Cara Pakai Asani</h1>
+              <p>Penting buat kamu memahami cara menggunakan Asani terlebih dahulu melalui situs online asani.co.id.</p>
               <div>
                 <OrderedList>
                   {UserAccess.HowToUse.map(howTo => <li>{howTo}</li>)}
                 </OrderedList>
               </div>
             </Segment>
-            <Segment>
+            <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
               <h1>Testimoni Pelanggan</h1>
               <div>
                 {UserAccess.Testimonies.map(tst => (
@@ -414,7 +421,7 @@ class FAQItem extends React.Component {
           <h1>{this.props.question}</h1>
           <img src={ChevronBlueIcon} />
         </button>
-        <p>{this.props.answer}</p>
+        <p dangerouslySetInnerHTML={{ __html: this.props.answer }} />
       </FAQToggler>
     );
   }
@@ -546,9 +553,17 @@ const Segment = styled.div`
     text-align: center;
   }
 
+  & > p {
+    font-size: 0.875rem;
+    color: ${props => props.theme.color.N500};
+    margin: -0.5rem 0 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+
   & > div {
     width: 100%;
-    ${flex({ justify: 'center' })}
+    ${props => props.flex ? flex(props.flex) : flex({ justify: 'center' })}
   }
 `;
 
@@ -687,9 +702,7 @@ const FAQToggler = styled.div`
 
   p {
     width: 100%;
-    max-height: ${props => props.active ? '20rem' : '0'};
-    opacity: ${props => props.active ? '1' : '0'};
-    transition: ${props => props.active ? '0.125s ease max-height, 0.125s ease opacity 0.125s' : '0.125s ease max-height 0.125s, 0.125s ease opacity'};
+    display: ${props => props.active ? 'block' : 'none'};
     pointer-events: none;
     font-size: 0.75rem;
     font-weight: 400;
