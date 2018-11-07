@@ -355,7 +355,8 @@ export default class Home extends React.Component {
               />
             )}
           <Loans>
-            <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
+            <FullSegmentHeader>Tawaran terbaik untuk kamu</FullSegmentHeader>
+            <SegmentDescription margin="0 0 0.25rem">Beli sekarang, bayar nanti, tanpa bunga, tanpa denda!</SegmentDescription>
             {this.props.product.loaded &&
               this.props.product.products.length > 0 && (
                 <Filter>
