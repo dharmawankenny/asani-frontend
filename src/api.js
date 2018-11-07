@@ -12,7 +12,15 @@ export const api = axios.create({
   baseURL: PREFIX_API_URL,
 });
 
-const cdnApi = axios.create({});
+
+export const getAllBanners = async () => {
+  try {
+    const response = await api.get('/get-all-banners/');
+    return response;
+  } catch (err) {
+    return err.response;
+  }
+};
 
 export const postSendOTP = async (telNumber) => {
   try {

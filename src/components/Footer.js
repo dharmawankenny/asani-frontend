@@ -18,8 +18,18 @@ export default class Footer extends React.Component {
             EN
           </Switch>
         </Switcher> */}
-        <strong>Layanan Chat&nbsp;&nbsp;</strong><a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
-          <Help src={WhatsAppIcon} />
+        {this.props.withCopy && (
+          <CopyInfo>
+            <p>
+              &copy; 2018 Asani<br />
+              PT Teknologi Skoring Nusantara<br />
+              Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat<br />
+              Telp: +6281311442228
+            </p>
+          </CopyInfo>
+        )}
+        <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
+          <strong>Layanan Chat&nbsp;&nbsp;</strong><Help src={WhatsAppIcon} />
         </a>
       </Wrapper>
     );
@@ -34,6 +44,9 @@ const Wrapper = styled.div`
 
   a {
     ${flex()}
+    text-decoration: none;
+    color: ${props => props.theme.color.N300};
+    font-size: 0.75rem;
   }
 `;
 
@@ -73,4 +86,16 @@ const Help = styled.img`
   width: auto;
   margin: 0;
   padding: 0;
+`;
+
+const CopyInfo = styled.div`
+  flex: 1;
+  ${flex({ justify: 'flex-start' })}
+
+  p {
+    margin: 0;
+    font-size: 0.625rem;
+    line-height: 1.125;
+    color: ${props => props.theme.color.N300};
+  }
 `;

@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import swal from 'sweetalert';
 
 import BgImage from '../../assets/bg.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import CreditScoreIcon from '../../assets/credit_score.svg';
+import NoInterestIcon from '../../assets/no_interest.svg';
+import BuyNowPayLaterIcon from '../../assets/buy_now_pay_later.svg';
+import ManyProductsIcon from '../../assets/many_products.svg';
+import EmptyProfileImg from '../../assets/empty_profile.png';
 import { flex } from '../../commons/theme';
 
 import { BigActionButton } from '../../components/Buttons';
@@ -16,13 +20,91 @@ import Spinner from '../../components/Spinner';
 import { Consumer as AuthConsumer } from '../../contexts/auth';
 
 import HelpIcon from '../../assets/help.svg';
+import ChevronIcon from '../../assets/chevron_down_white.svg';
+import ChevronBlueIcon from '../../assets/chevron_down.svg';
 
 import {
+  getAllBanners,
   postSendOTP,
   postCheckOTPLogin,
 } from '../../api';
 
 export default class UserAccess extends React.Component {
+  static ProductsUrl = [
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_telkomsel.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_xl.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_indosat.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_steam.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_garena.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_google.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_gemscool.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_mobilelegends.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_pubg.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_itunes.png',
+  ];
+
+  static HowToUse = [
+    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+  ];
+
+  static Testimonies = [
+    {
+      profileImg: EmptyProfileImg,
+      name: 'John Doe',
+      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      profileImg: EmptyProfileImg,
+      name: 'John Doe',
+      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      profileImg: EmptyProfileImg,
+      name: 'John Doe',
+      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      profileImg: EmptyProfileImg,
+      name: 'John Doe',
+      testimony: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+  ];
+
+  static FAQ = [
+    {
+      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
+      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
+      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
+      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
+      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
+      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
+      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+    {
+      question: 'Lorem Ipsum Dolor Sit Amet At donec proin parturient a condimentum',
+      answer: 'At donec proin parturient a condimentum parturient faucibus rutrum suspendisse dignissim justo a adipiscing habitant a scelerisque pulvinar cubilia tristique.',
+    },
+  ];
+
   state = {
     telNumber: '',
     telNumberError: '',
@@ -31,11 +113,28 @@ export default class UserAccess extends React.Component {
     step: 0,
     retryTimer: 300,
     loading: false,
+    banners: [],
+    activeBanner: 0,
+    bannersLoading: true,
+    bannersLoaded: false,
   };
+
+  componentDidMount() {
+    this.fetchBanners();
+  }
 
   componentWillUnmount() {
     if (this.retryInterval) {
       clearInterval(this.retryInterval);
+    }
+  }
+
+  fetchBanners = async () => {
+    const res = await getAllBanners();
+
+    if (res && res.data && res.data.data) {
+      this.setState({ banners: res.data.data, bannersLoading: false, bannersLoaded: true });
+      console.log(res.data.data);
     }
   }
 
@@ -187,19 +286,46 @@ export default class UserAccess extends React.Component {
         <Header stopNavigation naked />
         <PageWrapper vertical>
           <Content>
+            <Carousel>
+              {this.state.bannersLoading && <Spinner color="N800" />}
+              {this.state.bannersLoaded && (
+                <Fragment>
+                  <img src={this.state.banners[this.state.activeBanner].imageUrl} />
+                  <button
+                    className="left"
+                    onClick={() => this.setState(prevState => {
+                      if (prevState.activeBanner === 0) {
+                        return { activeBanner: prevState.banners.length - 1 };
+                      }
+
+                      return { activeBanner: prevState.activeBanner - 1 };
+                    })}
+                  >
+                    <img src={ChevronIcon} />
+                  </button>
+                  <button
+                    className="right"
+                    onClick={() => this.setState(prevState => {
+                      if (prevState.activeBanner === prevState.banners.length - 1) {
+                        return { activeBanner: 0 };
+                      }
+
+                      return { activeBanner: prevState.activeBanner + 1 };
+                    })}
+                  >
+                    <img src={ChevronIcon} />
+                  </button>
+                </Fragment>
+              )}
+            </Carousel>
             <h1>
               {this.state.step === 0 && 'Beli Voucher Game dan Pulsa Sekarang, Bayarnya Nanti!'}
               {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
             </h1>
             {this.state.step === 0 && (
               <Fragment>
-				<Subheader>
-				  <h5>
-					Nomor WhatsApp Kamu
-				  </h5>
-				</Subheader>
                 <Input
-                  label=""
+                  label="Nomor WhatsApp Kamu"
                   prefix="+62"
                   type="tel"
                   placeholder="8XXXXXXXXX"
@@ -217,13 +343,8 @@ export default class UserAccess extends React.Component {
             )}
             {this.state.step === 1 && (
               <Fragment>
-				<Subheader>
-				  <h5>
-					4 Angka Kode OTP Yang Diberikan Via WhatsApp
-				  </h5>
-				</Subheader>
                 <Input
-                  label=""
+                  label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
                   type="text"
                   placeholder="XXXX"
                   value={this.state.otpCode}
@@ -253,43 +374,63 @@ export default class UserAccess extends React.Component {
                 )}
               </Fragment>
             )}
-            {/*<table>
-              <tr>
-                <td colSpan="2"> <h1></h1></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="award" size='4x'/></FontAwesomeIconColor></td>
-                <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="trophy" size='4x'/></FontAwesomeIconColor></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><KeunggulanText>GRATIS cek skor kredit</KeunggulanText></td>
-                <td width="50%" align="center"><KeunggulanText>Bisa beli sekarang, bayar nanti</KeunggulanText></td>
-              </tr>
-              <tr>
-                <td colSpan="2"> <h1></h1></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="ban" size='4x'/></FontAwesomeIconColor></td>
-                <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="thumbs-up" size='4x'/></FontAwesomeIconColor></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><KeunggulanText>Semua TANPA bunga & Denda</KeunggulanText></td>
-                <td width="50%" align="center"><KeunggulanText>Banyak pilihan produk</KeunggulanText></td>
-              </tr>
-            </table>*/}
+            <Segment margin="5rem 0 1rem">
+              <h1>Keunggulan Kami</h1>
+              <div>
+                <OurPro margin="1rem 1rem 1rem 0">
+                  <img src={CreditScoreIcon} />
+                  <h2>Cek skor kredit gratis</h2>
+                </OurPro>
+                <OurPro margin="1rem 0 1rem 1rem">
+                  <img src={NoInterestIcon} />
+                  <h2>Tanpa bunga, tanpa denda</h2>
+                </OurPro>
+                <OurPro margin="1rem 1rem 0 0">
+                  <img src={BuyNowPayLaterIcon} />
+                  <h2>Beli sekarang bayar nanti</h2>
+                </OurPro>
+                <OurPro margin="1rem 0 0 1rem">
+                  <img src={ManyProductsIcon} />
+                  <h2>Banyak pilihan produk pinjaman</h2>
+                </OurPro>
+              </div>
+            </Segment>
+            <Segment>
+              <h1>Produk Pinjaman Tersedia</h1>
+              <div>
+                {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+              </div>
+            </Segment>
+            <Segment>
+              <h1>Cara Pakai Asani</h1>
+              <div>
+                <OrderedList>
+                  {UserAccess.HowToUse.map(howTo => <li>{howTo}</li>)}
+                </OrderedList>
+              </div>
+            </Segment>
+            <Segment>
+              <h1>Testimoni Pelanggan</h1>
+              <div>
+                {UserAccess.Testimonies.map(tst => (
+                  <Testimony>
+                    <img src={tst.profileImg} />
+                    <h2>{tst.name}</h2>
+                    <p>{tst.testimony}</p>
+                  </Testimony>
+                ))}
+              </div>
+            </Segment>
+            <Segment>
+              <h1>FAQ</h1>
+              <div>
+                {UserAccess.FAQ.map(faq => (
+                  <FAQItem {...faq} />
+                ))}
+              </div>
+            </Segment>
           </Content>
-		      <h1></h1>
-		      <table>
-		        <tr>
-				      <td width="60%">
-					      <Pttext>&copy; 2018 Asani</Pttext>
-				        <Pttext>PT Teknologi Skoring Nusantara</Pttext>
-				        <Pttext>Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat</Pttext>
-				        <Pttext>Telp: +6281311442228</Pttext>
-				      </td>
-				      <td><Footer /></td>
-			      </tr>
-			    </table>
+				  <Footer withCopy />
         </PageWrapper>
         <Background src={BgImage} />
       </Fragment>
@@ -297,25 +438,26 @@ export default class UserAccess extends React.Component {
   }
 }
 
+class FAQItem extends React.Component {
+  state = {
+    active: false,
+  };
 
-const FontAwesomeIconColor = styled.div`
-color: ${props => props.theme.color.N300};
-`
-const Subheader = styled.div`
-color: ${props => props.theme.color.N300};
-`
+  toggleActive = () => this.setState(prevState => ({ active: !prevState.active }));
 
-const  KeunggulanText = styled.div`
-color: ${props => props.theme.color.N300};
-font-size: 0.75rem;
-`
+  render() {
+    return (
+      <FAQToggler active={this.state.active}>
+        <button onClick={this.toggleActive}>
+          <h1>{this.props.question}</h1>
+          <img src={ChevronBlueIcon} />
+        </button>
+        <p>{this.props.answer}</p>
+      </FAQToggler>
+    );
+  }
+}
 
-const Pttext = styled.div`
-color: ${props => props.theme.color.N200};
-width: calc(100% - 0.5rem);
-pointer-events: none;
-font-size: 0.75rem;
-`
 const Background = styled.img`
   position: fixed;
   top: 0;
@@ -331,7 +473,6 @@ const Background = styled.img`
 const Content = styled.div`
   width: 100%;
   ${flex({ justify: 'flex-start' })}
-  flex: 1;
 
   h1 {
     font-size: 1.25rem;
@@ -340,6 +481,50 @@ const Content = styled.div`
     text-align: left;
     margin: 0 0 2rem;
     padding: 0;
+  }
+`;
+
+const Carousel = styled.div`
+  width: calc(100% + 3rem);
+  margin: 0 -1.5rem 1.5rem;
+  height: 10rem;
+  position: relative;
+  ${flex()}
+
+  & > img {
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+  }
+
+  button {
+    position: absolute;
+    top: 4rem;
+    width: 1.5rem;
+    height: 2.5rem;
+    background: rgba(9, 30, 66, 0.5);
+    ${flex()}
+
+    &.left {
+      left: 0;
+
+      img {
+        transform: rotate(90deg);
+      }
+    }
+
+    &.right {
+      right: 0;
+
+      img {
+        transform: rotate(-90deg);
+      }
+    }
+
+    img {
+      width: 1rem;
+      height: 1rem;
+    }
   }
 `;
 
@@ -379,4 +564,168 @@ const Help = styled.img`
   width: auto;
   margin: 0;
   padding: 0;
+`;
+
+const Segment = styled.div`
+  width: 100%;
+  margin: ${props => props.margin ? props.margin : '1rem 0'};
+
+  & > h1 {
+    font-size: 1rem;
+    color: ${props => props.theme.color.N500};
+    margin: 0 0 1rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  & > div {
+    width: 100%;
+    ${flex({ justify: 'flex-start' })}
+  }
+`;
+
+const OurPro = styled.div`
+  width: calc(50% - 1rem);
+  margin: ${props => props.margin};
+  ${flex()}
+  position: relative;
+
+  img {
+    width: 4rem;
+    height: 4rem;
+    object-fit: contain;
+  }
+
+  h2 {
+    width: 100%;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25;
+    text-align: center;
+    margin: 0.5rem 0 0;
+    color: ${props => props.theme.color.N500};
+  }
+`;
+
+const ProductIcon = styled.img`
+  width: calc((100% - 6rem) / 5);
+  margin: 1.5rem 1.5rem 0 0;
+
+  &:nth-of-type(1),
+  &:nth-of-type(2),
+  &:nth-of-type(3),
+  &:nth-of-type(4),
+  &:nth-of-type(5) {
+    margin-top: 0.5rem;
+  }
+
+  &:nth-of-type(5n + 5) {
+    margin-right: 0;
+  }
+`;
+
+const OrderedList = styled.ol`
+  width: 100%;
+  margin: 0;
+  padding: 0 0 0 1rem;
+  font-size: 0.875rem;
+  color: ${props => props.theme.color.N500};
+
+  li {
+    margin: 0 0 1rem;
+
+    &:last-of-type {
+      margin: 0;
+    }
+  }
+`;
+
+const Testimony = styled.div`
+  width: calc(50% - 1rem);
+  margin: 2rem 2rem 0 0;
+  ${flex()}
+
+  &:nth-of-type(1),
+  &:nth-of-type(2) {
+    margin-top: 0;
+  }
+
+  &:nth-of-type(2n + 2) {
+    margin-right: 0;
+  }
+
+  img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: contain;
+    border-radius: 5rem;
+    box-shadow: ${props => props.theme.shadow.base};
+    border: 0.1rem solid ${props => props.theme.color.N0};
+  }
+
+  h2,
+  p {
+    width: 100%;
+    line-height: 1.125;
+    text-align: center;
+    color: ${props => props.theme.color.N500};
+  }
+
+  h2 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0;
+  }
+
+  p {
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin: 0.25rem 0 0;
+  }
+`;
+
+const FAQToggler = styled.div`
+  ${flex({ justify: 'flex-start' })}
+  width: 100%;
+  padding: 0 0 1rem;
+  margin: 0;
+
+  button {
+    width: 100%;
+    border-bottom: 1px solid ${props => props.theme.color.N40};
+    padding: 0 0 0.5rem;
+    ${flex({ justify: 'flex-start' })}
+
+    h1 {
+      flex: 1;
+      font-size: 0.875rem;
+      font-weight: 400;
+      text-align: left;
+      line-height: 1;
+      color: ${props => props.theme.color.N500};
+      margin: 0;
+    }
+
+    img {
+      width: 1rem;
+      height: 1rem;
+      object-fit: contain;
+      margin: 0 0 0 1rem;
+      transform: rotate(${props => props.active ? '180deg' : '0deg'});
+      transition: 0.25s ease all;
+    }
+  }
+
+  p {
+    width: 100%;
+    max-height: ${props => props.active ? '20rem' : '0'};
+    opacity: ${props => props.active ? '1' : '0'};
+    transition: ${props => props.active ? '0.125s ease max-height, 0.125s ease opacity 0.125s' : '0.125s ease max-height 0.125s, 0.125s ease opacity'};
+    pointer-events: none;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: ${props => props.theme.color.N300};
+    margin: ${props => props.active ? '0.5rem 0' : '0'};
+  }
 `;
