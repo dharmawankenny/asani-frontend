@@ -259,22 +259,22 @@ export default class UserAccess extends React.Component {
                 <td colSpan="2"> <h1></h1></td>
               </tr>
               <tr>
-                <td width="58%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="award" size='4x'/></FontAwesomeIconColor></td>
+                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="award" size='4x'/></FontAwesomeIconColor></td>
                 <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="trophy" size='4x'/></FontAwesomeIconColor></td>
               </tr>
               <tr>
-                <td width="58%" align="center"><KeunggulanText>GRATIS cek skor kredit</KeunggulanText></td>
+                <td width="57%" align="center"><KeunggulanText>GRATIS cek skor kredit</KeunggulanText></td>
                 <td width="50%" align="center"><KeunggulanText>Bisa beli sekarang, bayar nanti</KeunggulanText></td>
               </tr>
               <tr>
                 <td colSpan="2"> <h1></h1></td>
               </tr>
               <tr>
-                <td width="58%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="ban" size='4x'/></FontAwesomeIconColor></td>
+                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="ban" size='4x'/></FontAwesomeIconColor></td>
                 <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="thumbs-up" size='4x'/></FontAwesomeIconColor></td>
               </tr>
               <tr>
-                <td width="58%" align="center"><KeunggulanText>Semua TANPA bunga & Denda</KeunggulanText></td>
+                <td width="57%" align="center"><KeunggulanText>Semua TANPA bunga & Denda</KeunggulanText></td>
                 <td width="50%" align="center"><KeunggulanText>Banyak pilihan produk</KeunggulanText></td>
               </tr>
             </table>
