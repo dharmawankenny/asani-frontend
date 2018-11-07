@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import swal from 'sweetalert';
 
 import BgImage from '../../assets/bg.png';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { flex } from '../../commons/theme';
 
 import { BigActionButton } from '../../components/Buttons';
@@ -253,19 +253,43 @@ export default class UserAccess extends React.Component {
                 )}
               </Fragment>
             )}
+            {/*<table>
+              <tr>
+                <td colSpan="2"> <h1></h1></td>
+              </tr>
+              <tr>
+                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="award" size='4x'/></FontAwesomeIconColor></td>
+                <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="trophy" size='4x'/></FontAwesomeIconColor></td>
+              </tr>
+              <tr>
+                <td width="57%" align="center"><KeunggulanText>GRATIS cek skor kredit</KeunggulanText></td>
+                <td width="50%" align="center"><KeunggulanText>Bisa beli sekarang, bayar nanti</KeunggulanText></td>
+              </tr>
+              <tr>
+                <td colSpan="2"> <h1></h1></td>
+              </tr>
+              <tr>
+                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="ban" size='4x'/></FontAwesomeIconColor></td>
+                <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="thumbs-up" size='4x'/></FontAwesomeIconColor></td>
+              </tr>
+              <tr>
+                <td width="57%" align="center"><KeunggulanText>Semua TANPA bunga & Denda</KeunggulanText></td>
+                <td width="50%" align="center"><KeunggulanText>Banyak pilihan produk</KeunggulanText></td>
+              </tr>
+            </table>*/}
           </Content>
-		    <h1></h1>
-		    <table>
-			<tr>
-				<td width="60%">
-					<Pttext>&copy; 2018 Asani</Pttext>
-					<Pttext>PT Teknologi Skoring Nusantara</Pttext>
-					<Pttext>Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat</Pttext>
-					<Pttext>Telp: +6281311442228</Pttext>
-				</td>
-				<td><Footer /></td>
-			</tr>
-			</table>
+		      <h1></h1>
+		      <table>
+		        <tr>
+				      <td width="60%">
+					      <Pttext>&copy; 2018 Asani</Pttext>
+				        <Pttext>PT Teknologi Skoring Nusantara</Pttext>
+				        <Pttext>Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat</Pttext>
+				        <Pttext>Telp: +6281311442228</Pttext>
+				      </td>
+				      <td><Footer /></td>
+			      </tr>
+			    </table>
         </PageWrapper>
         <Background src={BgImage} />
       </Fragment>
@@ -273,8 +297,17 @@ export default class UserAccess extends React.Component {
   }
 }
 
+
+const FontAwesomeIconColor = styled.div`
+color: ${props => props.theme.color.N300};
+`
 const Subheader = styled.div`
 color: ${props => props.theme.color.N300};
+`
+
+const  KeunggulanText = styled.div`
+color: ${props => props.theme.color.N300};
+font-size: 0.75rem;
 `
 
 const Pttext = styled.div`
