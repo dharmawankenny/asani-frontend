@@ -129,8 +129,8 @@ const Wrapper = styled.div`
   width: 100%;
   padding: ${props => props.naked ? '1.5rem' : '1rem 1.5rem 0.75rem'};
   ${flex({ justify: 'space-between' })}
-  background: ${props => props.naked ? 'none' : props.theme.color.N0};
-  box-shadow: ${props => props.naked ? 'none' : props.theme.shadow.dark};
+  background: ${props => props.theme.color.N0};
+  box-shadow: ${props => props.theme.shadow.dark};
 `;
 
 const LogoMenu = styled.div`
