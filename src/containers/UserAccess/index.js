@@ -285,7 +285,7 @@ export default class UserAccess extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header stopNavigation naked />
+        <Header stopNavigation naked withHelp />
         <PageWrapper vertical>
           <Content>
             <MainFocus>

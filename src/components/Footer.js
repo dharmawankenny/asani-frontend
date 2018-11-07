@@ -24,7 +24,7 @@ export default class Footer extends React.Component {
           </CopyInfo>
         )}
         <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
-          <strong>Layanan Chat&nbsp;&nbsp;</strong><Help src={WhatsAppIcon} />
+          Layanan Chat<Help src={WhatsAppIcon} />
         </a>
         {this.props.withCopy && (
           <AddressInfo>
@@ -48,7 +48,9 @@ const Wrapper = styled.div`
     ${flex()}
     text-decoration: none;
     color: ${props => props.theme.color.N300};
-    font-size: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1;
   }
 `;
 
@@ -84,9 +86,9 @@ const Switch = styled.button`
 
 const Help = styled.img`
   color: ${props => props.theme.color.N300};
-  height: 1.5rem;
+  height: 1.25rem;
   width: auto;
-  margin: 0;
+  margin: 0 0 0 0.5rem;
   padding: 0;
 `;
 
@@ -102,7 +104,7 @@ const CopyInfo = styled.p`
 const AddressInfo = styled.p`
   width: 100%;
   ${flex({ justify: 'flex-start' })}
-  margin: 0.5rem 0 0;
+  margin: 0.25rem 0 0;
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.125;

@@ -11,6 +11,7 @@ import HomeIcon from '../assets/home.svg';
 import CreditScoreIcon from '../assets/credit_score.svg';
 import LoanHistoryIcon from '../assets/loan_history.svg';
 import LogoutIcon from '../assets/logout.svg';
+import WhatsAppIcon from '../assets/whatsapp.png';
 
 import SITEMAP from '../commons/sitemap';
 import { flex } from '../commons/theme';
@@ -75,6 +76,11 @@ export default class Header extends React.Component {
                 <img src={MenuIcon} />
               </MenuToggle>
             )}
+            {this.props.withHelp && (
+              <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
+                Layanan Chat<Help src={WhatsAppIcon} />
+              </a>
+            )}
           </LogoMenu>
           {this.props.withMenu && (
             <Menu active={this.state.showMenu}>
@@ -138,6 +144,15 @@ const LogoMenu = styled.div`
   max-width: 32rem;
   margin: 0 auto;
   ${flex({ justify: 'space-between' })}
+
+  a {
+    ${flex()}
+    text-decoration: none;
+    color: ${props => props.theme.color.N300};
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1;
+  }
 `;
 
 const Logo = styled.button`
@@ -250,4 +265,12 @@ const NavigationButton = styled.button`
 const FooterWrapper = styled.div`
   width: 100%;
   margin: 2rem 0 0;
+`;
+
+const Help = styled.img`
+  color: ${props => props.theme.color.N300};
+  height: 1.25rem;
+  width: auto;
+  margin: 0 0 0 0.25rem;
+  padding: 0;
 `;
