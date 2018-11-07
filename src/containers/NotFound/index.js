@@ -14,7 +14,7 @@ export default class NotFound extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header />
+        <Header naked />
         <PageWrapper vertical>
           <Content>
             <h1>404 :(</h1>

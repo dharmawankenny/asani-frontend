@@ -113,15 +113,7 @@ export default class UserAccess extends React.Component {
     step: 0,
     retryTimer: 300,
     loading: false,
-    banners: [],
-    activeBanner: 0,
-    bannersLoading: true,
-    bannersLoaded: false,
   };
-
-  componentDidMount() {
-    this.fetchBanners();
-  }
 
   componentWillUnmount() {
     if (this.retryInterval) {
@@ -286,61 +278,30 @@ export default class UserAccess extends React.Component {
         <Header stopNavigation naked />
         <PageWrapper vertical>
           <Content>
-            <Carousel>
-              {this.state.bannersLoading && <Spinner color="N800" />}
-              {this.state.bannersLoaded && (
+            <MainFocus>
+              <h1>
+                {this.state.step === 0 && 'Beli Voucher Game dan Pulsa Sekarang, Bayarnya Nanti!'}
+                {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
+              </h1>
+              {this.state.step === 0 && (
                 <Fragment>
-                  <img src={this.state.banners[this.state.activeBanner].imageUrl} />
-                  <button
-                    className="left"
-                    onClick={() => this.setState(prevState => {
-                      if (prevState.activeBanner === 0) {
-                        return { activeBanner: prevState.banners.length - 1 };
-                      }
-
-                      return { activeBanner: prevState.activeBanner - 1 };
-                    })}
-                  >
-                    <img src={ChevronIcon} />
-                  </button>
-                  <button
-                    className="right"
-                    onClick={() => this.setState(prevState => {
-                      if (prevState.activeBanner === prevState.banners.length - 1) {
-                        return { activeBanner: 0 };
-                      }
-
-                      return { activeBanner: prevState.activeBanner + 1 };
-                    })}
-                  >
-                    <img src={ChevronIcon} />
-                  </button>
+                  <Input
+                    label="Nomor WhatsApp Kamu"
+                    prefix="+62"
+                    type="tel"
+                    placeholder="8XXXXXXXXX"
+                    value={this.state.telNumber}
+                    error={this.state.telNumberError}
+                    onChange={evt => this.setTelNumber(evt.target.value)}
+                  />
+                  <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
+                    {!this.state.loading && 'Masuk / Daftar'}
+                    {this.state.loading && (
+                      <Spinner color="N0" />
+                    )}
+                  </BigActionButton>
                 </Fragment>
               )}
-            </Carousel>
-            <h1>
-              {this.state.step === 0 && 'Beli Voucher Game dan Pulsa Sekarang, Bayarnya Nanti!'}
-              {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
-            </h1>
-            {this.state.step === 0 && (
-              <Fragment>
-                <Input
-                  label="Nomor WhatsApp Kamu"
-                  prefix="+62"
-                  type="tel"
-                  placeholder="8XXXXXXXXX"
-                  value={this.state.telNumber}
-                  error={this.state.telNumberError}
-                  onChange={evt => this.setTelNumber(evt.target.value)}
-                />
-                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
-                  {!this.state.loading && 'Masuk / Daftar'}
-                  {this.state.loading && (
-                    <Spinner color="N0" />
-                  )}
-                </BigActionButton>
-              </Fragment>
-            )}
             {this.state.step === 1 && (
               <Fragment>
                 <Input
@@ -374,7 +335,8 @@ export default class UserAccess extends React.Component {
                 )}
               </Fragment>
             )}
-            <Segment margin="5rem 0 1rem">
+            </MainFocus>
+            <Segment margin="0 0 2rem">
               <h1>Keunggulan Kami</h1>
               <div>
                 <OurPro margin="1rem 1rem 1rem 0">
@@ -484,6 +446,12 @@ const Content = styled.div`
   }
 `;
 
+const MainFocus = styled.div`
+  width: 100%;
+  min-height: calc(100vh - 5rem);
+  ${flex({ justify: 'flex-start' })}
+`;
+
 const Carousel = styled.div`
   width: calc(100% + 3rem);
   margin: 0 -1.5rem 1.5rem;
@@ -568,19 +536,19 @@ const Help = styled.img`
 
 const Segment = styled.div`
   width: 100%;
-  margin: ${props => props.margin ? props.margin : '1rem 0'};
+  margin: ${props => props.margin ? props.margin : '2rem 0'};
 
   & > h1 {
-    font-size: 1rem;
+    font-size: 1.25rem;
     color: ${props => props.theme.color.N500};
     margin: 0 0 1rem;
     width: 100%;
-    text-align: left;
+    text-align: center;
   }
 
   & > div {
     width: 100%;
-    ${flex({ justify: 'flex-start' })}
+    ${flex({ justify: 'center' })}
   }
 `;
 
@@ -591,44 +559,45 @@ const OurPro = styled.div`
   position: relative;
 
   img {
-    width: 4rem;
-    height: 4rem;
+    width: 2.5rem;
+    height: 2.5rem;
     object-fit: contain;
   }
 
   h2 {
     width: 100%;
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 1.25;
     text-align: center;
-    margin: 0.5rem 0 0;
+    margin: 0.75rem 0 0;
     color: ${props => props.theme.color.N500};
   }
 `;
 
 const ProductIcon = styled.img`
-  width: calc((100% - 6rem) / 5);
+  width: calc((100% - 4.5rem) / 4);
   margin: 1.5rem 1.5rem 0 0;
 
   &:nth-of-type(1),
   &:nth-of-type(2),
   &:nth-of-type(3),
-  &:nth-of-type(4),
-  &:nth-of-type(5) {
+  &:nth-of-type(4) {
     margin-top: 0.5rem;
   }
 
-  &:nth-of-type(5n + 5) {
+  &:last-of-type,
+  &:nth-of-type(4n + 4) {
     margin-right: 0;
   }
 `;
 
 const OrderedList = styled.ol`
   width: 100%;
-  margin: 0;
+  margin: 0.5rem 0 0;
   padding: 0 0 0 1rem;
   font-size: 0.875rem;
+  line-height: 1.25;
   color: ${props => props.theme.color.N500};
 
   li {
@@ -647,7 +616,7 @@ const Testimony = styled.div`
 
   &:nth-of-type(1),
   &:nth-of-type(2) {
-    margin-top: 0;
+    margin-top: 1rem;
   }
 
   &:nth-of-type(2n + 2) {
@@ -666,15 +635,15 @@ const Testimony = styled.div`
   h2,
   p {
     width: 100%;
-    line-height: 1.125;
+    line-height: 1.25;
     text-align: center;
     color: ${props => props.theme.color.N500};
   }
 
   h2 {
-    font-size: 0.875rem;
+    font-size: 1rem;
     font-weight: 700;
-    margin: 0.5rem 0 0;
+    margin: 0.75rem 0 0;
   }
 
   p {
@@ -688,7 +657,7 @@ const FAQToggler = styled.div`
   ${flex({ justify: 'flex-start' })}
   width: 100%;
   padding: 0 0 1rem;
-  margin: 0;
+  margin: 0.5rem 0 0;
 
   button {
     width: 100%;
@@ -701,7 +670,7 @@ const FAQToggler = styled.div`
       font-size: 0.875rem;
       font-weight: 400;
       text-align: left;
-      line-height: 1;
+      line-height: 1.25;
       color: ${props => props.theme.color.N500};
       margin: 0;
     }
@@ -722,9 +691,9 @@ const FAQToggler = styled.div`
     opacity: ${props => props.active ? '1' : '0'};
     transition: ${props => props.active ? '0.125s ease max-height, 0.125s ease opacity 0.125s' : '0.125s ease max-height 0.125s, 0.125s ease opacity'};
     pointer-events: none;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 400;
-    line-height: 1.25;
+    line-height: 1.5;
     color: ${props => props.theme.color.N300};
     margin: ${props => props.active ? '0.5rem 0' : '0'};
   }

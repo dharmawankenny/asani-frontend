@@ -20,17 +20,19 @@ export default class Footer extends React.Component {
         </Switcher> */}
         {this.props.withCopy && (
           <CopyInfo>
-            <p>
-              &copy; 2018 Asani<br />
-              PT Teknologi Skoring Nusantara<br />
-              Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat<br />
-              Telp: +6281311442228
-            </p>
+            &copy; 2018 Asani
           </CopyInfo>
         )}
         <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
           <strong>Layanan Chat&nbsp;&nbsp;</strong><Help src={WhatsAppIcon} />
         </a>
+        {this.props.withCopy && (
+          <AddressInfo>
+            PT Teknologi Skoring Nusantara<br />
+            Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat<br />
+            Telp: +6281311442228
+          </AddressInfo>
+        )}
       </Wrapper>
     );
   }
@@ -40,7 +42,7 @@ const Wrapper = styled.div`
   font-size: 0.80rem;
   color: ${props => props.theme.color.N300};
   width: 100%;
-  ${flex({ justify: 'flex-end' })}
+  ${flex({ justify: 'flex-end', align: 'center' })}
 
   a {
     ${flex()}
@@ -88,14 +90,21 @@ const Help = styled.img`
   padding: 0;
 `;
 
-const CopyInfo = styled.div`
+const CopyInfo = styled.p`
   flex: 1;
-  ${flex({ justify: 'flex-start' })}
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: ${props => props.theme.color.N800};
+`;
 
-  p {
-    margin: 0;
-    font-size: 0.625rem;
-    line-height: 1.125;
-    color: ${props => props.theme.color.N300};
-  }
+const AddressInfo = styled.p`
+  width: 100%;
+  ${flex({ justify: 'flex-start' })}
+  margin: 0.5rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.125;
+  color: ${props => props.theme.color.N300};
 `;
