@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import swal from 'sweetalert';
 
 import BgImage from '../../assets/bg.png';
-import Imgjempol from '../../assets/Imgjempol.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { flex } from '../../commons/theme';
 
@@ -254,7 +253,7 @@ export default class UserAccess extends React.Component {
                 )}
               </Fragment>
             )}
-            <table>
+            {/*<table>
               <tr>
                 <td colSpan="2"> <h1></h1></td>
               </tr>
@@ -277,7 +276,7 @@ export default class UserAccess extends React.Component {
                 <td width="57%" align="center"><KeunggulanText>Semua TANPA bunga & Denda</KeunggulanText></td>
                 <td width="50%" align="center"><KeunggulanText>Banyak pilihan produk</KeunggulanText></td>
               </tr>
-            </table>
+            </table>*/}
           </Content>
 		      <h1></h1>
 		      <table>
