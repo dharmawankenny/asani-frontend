@@ -48,13 +48,13 @@ export default class UserAccess extends React.Component {
     let errorMessage = '';
 
     if (cleanTelNumber.length < 8) {
-      errorMessage = 'Nomor WhatsApp terlalu pendek';
+      errorMessage = 'Nomor Ponsel terlalu pendek';
     } else if (cleanTelNumber.length > 13) {
-      errorMessage = 'Nomor WhatsApp terlalu panjang';
+      errorMessage = 'Nomor Ponsel terlalu panjang';
     }
 
     if (isNaN(cleanTelNumber)) {
-      errorMessage = 'Nomor WhatsApp hanya boleh berisi angka';
+      errorMessage = 'Nomor Ponsel hanya boleh berisi angka';
     }
 
     if (errorMessage) {
@@ -111,7 +111,7 @@ export default class UserAccess extends React.Component {
         }, 1000);
       } else {
         swal({
-          text: 'Mohon maaf, sepertinya sedang ada gangguang pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+          text: 'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
           icon: 'error',
         });
       }
@@ -141,7 +141,7 @@ export default class UserAccess extends React.Component {
       }, 1000);
     } else {
       swal({
-        text: 'Mohon maaf, sepertinya sedang ada gangguang pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+        text: 'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
         icon: 'error',
       });
     }
@@ -166,7 +166,7 @@ export default class UserAccess extends React.Component {
   		  });
 	    } else {
         swal({
-          text: 'Mohon maaf, sepertinya sedang ada gangguang pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+          text: 'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
           icon: 'error',
         });
       }
@@ -189,13 +189,13 @@ export default class UserAccess extends React.Component {
           <Content>
             <h1>
               {this.state.step === 0 && 'Beli Voucher Game dan Pulsa Sekarang, Bayarnya Nanti!'}
-              {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
+              {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor Ponsel anda'}
             </h1>
             {this.state.step === 0 && (
               <Fragment>
 				<Subheader>
 				  <h5>
-					Nomor WhatsApp Kamu
+					Nomor Ponsel Kamu
 				  </h5>
 				</Subheader>
                 <Input
@@ -219,7 +219,7 @@ export default class UserAccess extends React.Component {
               <Fragment>
 				<Subheader>
 				  <h5>
-					4 Angka Kode OTP Yang Diberikan Via WhatsApp
+					4 Angka Kode OTP Yang Diberikan Via Ponsel
 				  </h5>
 				</Subheader>
                 <Input
