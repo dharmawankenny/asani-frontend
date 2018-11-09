@@ -188,7 +188,7 @@ export default class UserAccess extends React.Component {
         <PageWrapper vertical>
           <Content>
             <h1>
-              {this.state.step === 0 && 'Beli Voucher Game dan Pulsa Sekarang, Bayarnya Nanti!'}
+              {this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
               {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor Ponsel anda'}
             </h1>
             {this.state.step === 0 && (
