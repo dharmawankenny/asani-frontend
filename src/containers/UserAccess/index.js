@@ -219,7 +219,7 @@ export default class UserAccess extends React.Component {
               <Fragment>
 				<Subheader>
 				  <h5>
-					4 Angka Kode OTP Yang Diberikan Via Ponsel
+					Masukkan Kode OTP yang dikirimkan via SMS 
 				  </h5>
 				</Subheader>
                 <Input
