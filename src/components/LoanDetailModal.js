@@ -136,25 +136,24 @@ export default class LoanDetailModal extends React.Component {
                       </div>
                     ))}
                   </Toggler>
-                  {outlet &&
-                    outletAddr && (
-                      <Toggler active={this.state.showOutlets}>
-                        <button onClick={this.toggleOutlets}>
-                          <h1>Pembayaran Via Outlet</h1>
-                          <img src={ChevronDownIcon} />
-                        </button>
-                        <div>
-                          <LabelValue>
-                            <span>Nama Outlet</span>
-                            <span>{outlet}</span>
-                          </LabelValue>
-                          <LabelValue>
-                            <span>Alamat Outlet</span>
-                            <span>{outletAddr}</span>
-                          </LabelValue>
-                        </div>
-                      </Toggler>
-                    )}
+                  {(outlet && outletAddr) && (
+                    <Toggler active={this.state.showOutlets}>
+                      <button onClick={this.toggleOutlets}>
+                        <h1>Pembayaran Via Outlet</h1>
+                        <img src={ChevronDownIcon} />
+                      </button>
+                      <div>
+                        <LabelValue>
+                          <span>Nama Outlet</span>
+                          <span>{outlet}</span>
+                        </LabelValue>
+                        <LabelValue>
+                          <span>Alamat Outlet</span>
+                          <span>{outletAddr}</span>
+                        </LabelValue>
+                      </div>
+                    </Toggler>
+                  )}
                   <DetailedInfo>
                     <LabelValue>
                       <span>Produk</span>

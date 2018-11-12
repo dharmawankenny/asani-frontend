@@ -52,7 +52,7 @@ export const SegmentDescription = styled.span`
   font-size: 0.75rem;
   font-width: 400;
   line-height: 1.25;
-  margin: 0;
+  margin: ${props => props.margin ? props.margin : '0'};
   padding: 0;
   color: ${props => props.theme.color.N300};
   text-align: left;

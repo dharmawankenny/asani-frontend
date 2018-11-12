@@ -14,14 +14,14 @@ export default class NotFound extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header />
+        <Header naked />
         <PageWrapper vertical>
           <Content>
             <h1>404 :(</h1>
             <h2>Oh Tidak, anda tersesat, halaman yang anda cari tidak tersedia pada Asani :(</h2>
             <BigActionButton onClick={() => navigate(SITEMAP.HOME)}>Kembali ke Beranda</BigActionButton>
           </Content>
-          <Footer />
+          <Footer withCopy />
         </PageWrapper>
       </Fragment>
     );
