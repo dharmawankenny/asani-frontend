@@ -125,7 +125,7 @@ export default class UserAccess extends React.Component {
     otpCode: '',
     otpCodeError: '',
     step: 0,
-    retryTimer: 300,
+    retryTimer: 180,
     loading: false,
   };
 
@@ -232,7 +232,7 @@ export default class UserAccess extends React.Component {
     const sendOTPResult = await postSendOTP(this.state.telNumber);
 
     if (sendOTPResult) {
-      await this.setState({ retryTimer: 300 });
+      await this.setState({ retryTimer: 180 });
 
       this.retryInterval = setInterval(() => {
         this.setState(prevState => {
