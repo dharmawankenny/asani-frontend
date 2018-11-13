@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
 
-import LogoImg from '../assets/logo.png';
+import LogoImg from '../assets/asani-mediakit-white.png';
 import MenuIcon from '../assets/menu.svg';
 import HomeIcon from '../assets/home.svg';
 import CreditScoreIcon from '../assets/credit_score.svg';
@@ -77,7 +77,7 @@ export default class Header extends React.Component {
               </MenuToggle>
             )}
             {this.props.withHelp && (
-              <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
+              <a style={{color: "white"}} href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
                 Layanan Chat<Help src={WhatsAppIcon} />
               </a>
             )}

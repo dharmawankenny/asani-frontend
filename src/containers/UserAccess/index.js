@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import swal from 'sweetalert';
-
+import '../../assets/css/styles.css'
 import BgImage from '../../assets/bg.png';
 import CreditScoreIcon from '../../assets/credit_score.svg';
 import NoInterestIcon from '../../assets/no_interest.svg';
@@ -22,6 +22,7 @@ import { Consumer as AuthConsumer } from '../../contexts/auth';
 import HelpIcon from '../../assets/help.svg';
 import ChevronIcon from '../../assets/chevron_down_white.svg';
 import ChevronBlueIcon from '../../assets/chevron_down.svg';
+import backImage from '../../assets/web-bg.png'
 
 import {
   getAllBanners,
@@ -285,31 +286,36 @@ export default class UserAccess extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header stopNavigation naked withHelp />
+          <div className="bgColor" >
+            <Header stopNavigation naked withHelp />
         <PageWrapper vertical>
           <Content>
             <MainFocus>
-              <h1>
+              <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", fontSize: "32px", color: "white"}}>
                 {this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
                 {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
               </h1>
               {this.state.step === 0 && (
                 <Fragment>
-                  <Input
-                    label="Nomor WhatsApp Kamu"
-                    prefix="+62"
-                    type="tel"
-                    placeholder="8XXXXXXXXX"
-                    value={this.state.telNumber}
-                    error={this.state.telNumberError}
-                    onChange={evt => this.setTelNumber(evt.target.value)}
-                  />
-                  <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
-                    {!this.state.loading && 'Masuk / Daftar'}
-                    {this.state.loading && (
-                      <Spinner color="N0" />
-                    )}
-                  </BigActionButton>
+                  <div className="card-login">
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 300}}>Cek Skor Kredit Kamu</h1>
+                    <div className="card-padding" >
+                        <Input
+                        prefix="+62"
+                        type="tel"
+                        placeholder="8XXXXXXXXX"
+                        value={this.state.telNumber}
+                        error={this.state.telNumberError}
+                        onChange={evt => this.setTelNumber(evt.target.value)}
+                      />
+                      <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
+                        {!this.state.loading && 'Masuk / Daftar'}
+                        {this.state.loading && (
+                          <Spinner color="N0" />
+                        )}
+                      </BigActionButton>
+                    </div>
+                  </div>
                 </Fragment>
               )}
             {this.state.step === 1 && (
@@ -347,7 +353,6 @@ export default class UserAccess extends React.Component {
             )}
             </MainFocus>
             <Segment margin="0 0 2rem">
-              <h1>Keunggulan Kami</h1>
               <div>
                 <OurPro margin="1rem 1rem 1rem 0">
                   <img src={CreditScoreIcon} />
@@ -396,7 +401,8 @@ export default class UserAccess extends React.Component {
           </Content>
 				  <Footer withCopy />
         </PageWrapper>
-        {/* <Background src={BgImage} /> */}
+          </div>
+         {/*<Background src={BgImage} />*/}
       </Fragment>
     );
   }
