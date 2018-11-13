@@ -42,6 +42,11 @@ export default class UserAccess extends React.Component {
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_steam.png',
   ];
 
+  static MitraUrl = [
+      'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_dompetkilat.png',
+      'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_dompetkilat.png',
+  ]
+
   static HowToUse = [
     'Masuk/daftar nomor Whatsapp kamu di website asani.co.id.',
     'Cek kode OTP kamu di chat Whatsapp yang bersifat RAHASIA. Jangan diberitahu kepada siapapun.',
@@ -53,26 +58,26 @@ export default class UserAccess extends React.Component {
   ];
 
   static Testimonies = [
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi1.png',
-      name: 'Ari, 26 tahun',
-      testimony: 'Seneng pake produk pulsa di Asani soalnya ga ada bunganya. Walaupun pinjaman, tapi harganya masih normal',
-    },
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi2.png',
-      name: 'Agus, 19 tahun',
-      testimony: 'Saya adalah gamer yang kadang butuh voucher games di malam hari. Pake Asani bisa mem-back up dulu, bayarnya paginya',
-    },
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi3.png',
-      name: 'Wahid, 43 tahun',
-      testimony: 'Kemarin ngambil kredit motor. Pake skor kreditnya Asani bisa dapet bunga lebih rendah. Karena pihak peminjam ada gambaran dari histori pinjaman sebelumnya',
-    },
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi4.png',
-      name: 'Lusi, 45 tahun',
-      testimony: 'Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Responsif dan cepat!',
-    },
+      {
+        profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi1.png',
+        name: 'Frysa, 26 tahun',
+        testimony: '“Seneng pake produk pulsa di Asani soalnya ga ada bunganya. Walaupun pinjaman, tapi harganya masih murah” ',
+      },
+      {
+          profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi4.png',
+          name: 'Lusi, 45 tahun',
+          testimony: 'Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Dalam hitungan menit, pulsa sudah masuk”',
+      },
+      {
+        profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi2.png',
+        name: 'Agus, 19 tahun',
+        testimony: 'Saya adalah gamer . Penasaran apa itu skor kredit, pas coba Asani malah berasa main game. Ada produk yang dikunci dan bisa dibuka jika skor saya meningkat. Seru!',
+      },
+      {
+        profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi3.png',
+        name: 'Wahid, 43 tahun',
+        testimony: 'Kerasnya hidup di ibu kota akan lebih terasa di akhir bulan. Kemarin saya ambil pinjaman. Untung ada Asani yang memberikan pinjaman dengan persyaratan yang mudah.',
+      },
   ];
 
   static FAQ = [
@@ -373,10 +378,10 @@ export default class UserAccess extends React.Component {
               </div>
             </Segment>
             <Segment>
-              <div>
                 <h1>Mitra Lender</h1>
-                  <div>
-                      {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+              <div>
+                  <div className="flex-container">
+                      {UserAccess.MitraUrl.map(MitraUrl => <MitraIcon src={MitraUrl} />)}
                   </div>
               </div>
               <div style={{marginTop: "48px"}}>
@@ -398,17 +403,17 @@ export default class UserAccess extends React.Component {
                 ))}
               </div>
             </Segment>
-            <Segment>
-              <h1>FAQ</h1>
-              <div>
-                {UserAccess.FAQ.map(faq => (
-                  <FAQItem {...faq} />
-                ))}
-              </div>
-            </Segment>
+            {/*<Segment>*/}
+              {/*<h1>FAQ</h1>*/}
+              {/*<div>*/}
+                {/*{UserAccess.FAQ.map(faq => (*/}
+                  {/*<FAQItem {...faq} />*/}
+                {/*))}*/}
+              {/*</div>*/}
+            {/*</Segment>*/}
           </Content>
-				  <Footer withCopy />
         </PageWrapper>
+              <Footer withCopy />
           </div>
          {/*<Background src={BgImage} />*/}
       </Fragment>
@@ -602,7 +607,25 @@ const OurPro = styled.div`
 const ProductIcon = styled.img`
   width: calc((100% - 6rem) / 4);
   margin: 1.5rem 1.5rem 0 0;
+  &:nth-of-type(1),
+  &:nth-of-type(2),
+  &:nth-of-type(3),
+  &:nth-of-type(4),
+  &:nth-of-type(5) {
+    margin-top: 0.5rem;
+  }
 
+  &:last-of-type,
+  &:nth-of-type(4n + 4) {
+    margin-right: 0;
+  }
+`;
+
+const MitraIcon = styled.img`
+  width: calc((100% - 6rem) / 4);
+  height: 92px;
+  margin: 1.5rem 1.5rem 0 0;
+  display: block;
   &:nth-of-type(1),
   &:nth-of-type(2),
   &:nth-of-type(3),
