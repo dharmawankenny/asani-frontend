@@ -301,7 +301,7 @@ export default class UserAccess extends React.Component {
               {this.state.step === 0 && (
                 <Fragment>
                   <div className="card-login">
-                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 700, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
                     <div className="card-padding" >
                         <Input
                             label="Nomor WhatsApp Kamu"
