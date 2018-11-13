@@ -44,7 +44,6 @@ export default class UserAccess extends React.Component {
 
   static MitraUrl = [
       'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_dompetkilat.png',
-      'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_dompetkilat.png',
   ]
 
   static HowToUse = [
@@ -296,7 +295,8 @@ export default class UserAccess extends React.Component {
             <MainFocus>
               <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>
                 {this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
-                {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
+                {/*{this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}*/}
+                  {this.state.step === 1 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
               </h1>
               {this.state.step === 0 && (
                 <Fragment>
@@ -304,12 +304,13 @@ export default class UserAccess extends React.Component {
                     <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 700, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
                     <div className="card-padding" >
                         <Input
-                        prefix="+62"
-                        type="tel"
-                        placeholder="8XXXXXXXXX"
-                        value={this.state.telNumber}
-                        error={this.state.telNumberError}
-                        onChange={evt => this.setTelNumber(evt.target.value)}
+                            label="Nomor WhatsApp Kamu"
+                            prefix="+62"
+                            type="tel"
+                            placeholder="8XXXXXXXXX"
+                            value={this.state.telNumber}
+                            error={this.state.telNumberError}
+                            onChange={evt => this.setTelNumber(evt.target.value)}
                       />
                       <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
                         {!this.state.loading && 'Masuk / Daftar'}
@@ -323,7 +324,10 @@ export default class UserAccess extends React.Component {
               )}
             {this.state.step === 1 && (
               <Fragment>
-                <Input
+                <div className="card-login">
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda</h1>
+                  <div className="card-padding">
+                    <Input
                   label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
                   type="text"
                   placeholder="XXXX"
@@ -352,6 +356,8 @@ export default class UserAccess extends React.Component {
                     )}
                   </RetryButton>
                 )}
+                  </div>
+                </div>
               </Fragment>
             )}
             </MainFocus>
