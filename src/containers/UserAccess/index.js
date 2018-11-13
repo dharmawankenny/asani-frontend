@@ -35,13 +35,11 @@ export default class UserAccess extends React.Component {
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_telkomsel.png',
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_xl.png',
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_indosat.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_steam.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_garena.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_smartfren.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_tri.png',
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_google.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_gemscool.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_mobilelegends.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_pubg.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_itunes.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_garena.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_steam.png',
   ];
 
   static HowToUse = [
@@ -291,14 +289,14 @@ export default class UserAccess extends React.Component {
         <PageWrapper vertical>
           <Content>
             <MainFocus>
-              <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", fontSize: "32px", color: "white"}}>
+              <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>
                 {this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
                 {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
               </h1>
               {this.state.step === 0 && (
                 <Fragment>
                   <div className="card-login">
-                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 300}}>Cek Skor Kredit Kamu</h1>
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 700, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
                     <div className="card-padding" >
                         <Input
                         prefix="+62"
@@ -352,30 +350,40 @@ export default class UserAccess extends React.Component {
               </Fragment>
             )}
             </MainFocus>
-            <Segment margin="0 0 2rem">
-              <div>
+            <Segment>
+              <div style={{marginTop: "-50px"}}>
                 <OurPro margin="1rem 1rem 1rem 0">
                   <img src={CreditScoreIcon} />
-                  <h2>Cek skor kredit gratis</h2>
+                  <h2>Cek & tingkatkan skor kredit kamu, gratis!</h2>
                 </OurPro>
                 <OurPro margin="1rem 0 1rem 1rem">
                   <img src={NoInterestIcon} />
-                  <h2>Tanpa bunga, tanpa denda</h2>
+                  <h2>Pilih pinjaman terbaikmu dari mitra lender kami
+                  </h2>
                 </OurPro>
                 <OurPro margin="1rem 1rem 0 0">
                   <img src={BuyNowPayLaterIcon} />
-                  <h2>Beli sekarang bayar nanti</h2>
+                  <h2>Proses cepat, teman disaat darurat
+                  </h2>
                 </OurPro>
                 <OurPro margin="1rem 0 0 1rem">
                   <img src={ManyProductsIcon} />
-                  <h2>Banyak pilihan tawaran pinjaman</h2>
+                  <h2>Tanpa bunga, tanpa denda, tanpa jaminan</h2>
                 </OurPro>
               </div>
             </Segment>
             <Segment>
-              <h1>Tawaran Pinjaman Tersedia</h1>
               <div>
-                {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+                <h1>Mitra Lender</h1>
+                  <div>
+                      {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+                  </div>
+              </div>
+              <div style={{marginTop: "48px"}}>
+                <h1>Tawaran Pinjaman Tersedia</h1>
+                    <div>
+                        {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+                    </div>
               </div>
             </Segment>
             <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
@@ -592,7 +600,7 @@ const OurPro = styled.div`
 `;
 
 const ProductIcon = styled.img`
-  width: calc((100% - 6rem) / 5);
+  width: calc((100% - 6rem) / 4);
   margin: 1.5rem 1.5rem 0 0;
 
   &:nth-of-type(1),
@@ -604,7 +612,7 @@ const ProductIcon = styled.img`
   }
 
   &:last-of-type,
-  &:nth-of-type(5n + 5) {
+  &:nth-of-type(4n + 4) {
     margin-right: 0;
   }
 `;
