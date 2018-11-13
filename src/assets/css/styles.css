@@ -1,0 +1,50 @@
+.bgColor {
+    background-color: #2797FB;
+    width: 100%;
+    height: 400px;
+    /*background-image: url("../../assets/web-bg.png");*/
+}
+.card-login {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 100%;
+    background-color: white !important;
+    z-index: 1000;
+    border-radius: 5px;
+}
+
+.card-padding {
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+}
+
+.grid-container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 50px 50px 50px;/*Make the grid smaller than the container*/
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.footer-color {
+    background-color: #404040;
+    padding: 20px
+}
+.footer-text-color {
+}
+
+/*.flex-container > div {*/
+    /*background-color: #f1f1f1;*/
+    /*width: 100px;*/
+    /*margin: 10px;*/
+    /*text-align: center;*/
+    /*line-height: 75px;*/
+    /*font-size: 30px;*/
+/*}*/
+

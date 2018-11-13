@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import '../assets/css/styles.css'
 
 import WhatsAppIcon from '../assets/whatsapp.png';
 
@@ -9,37 +10,35 @@ import { flex } from '../commons/theme';
 export default class Footer extends React.Component {
   render() {
     return (
-      <Wrapper>
-        {/* <Switcher>
-          <Switch active>
-            ID
-          </Switch>
-          <Switch>
-            EN
-          </Switch>
-        </Switcher> */}
-        {this.props.withCopy && (
-          <CopyInfo>
-            &copy; 2018 Asani
-          </CopyInfo>
-        )}
-        <a href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
-          Layanan Chat<Help src={WhatsAppIcon} />
-        </a>
-        {this.props.withCopy && (
-          <AddressInfo>
-            PT Teknologi Skoring Nusantara<br />
-            Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat<br />
-            Telp: +6281311442228
-          </AddressInfo>
-        )}
-      </Wrapper>
+        <div className="footer-color">
+            {/* <Switcher>
+              <Switch active>
+                ID
+              </Switch>
+              <Switch>
+                EN
+              </Switch>
+            </Switcher> */}
+            {this.props.withCopy && (
+              <CopyInfo>
+                &copy; 2018 Asani
+              </CopyInfo>
+            )}
+            {this.props.withCopy && (
+              <AddressInfo>
+                    PT Teknologi Skoring Nusantara<br />
+                    Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat<br />
+                    Email: cs@asani.co.id <br />
+                    Telp: +6281311442228
+              </AddressInfo>
+            )}
+        </div>
     );
   }
 }
 
 const Wrapper = styled.div`
-  font-size: 0.80rem;
+  font-size: 0.8rem;
   color: ${props => props.theme.color.N300};
   width: 100%;
   ${flex({ justify: 'flex-end', align: 'center' })}
@@ -98,7 +97,7 @@ const CopyInfo = styled.p`
   font-size: 1rem;
   font-weight: 700;
   line-height: 1;
-  color: ${props => props.theme.color.N800};
+  color: white;
 `;
 
 const AddressInfo = styled.p`
@@ -107,6 +106,6 @@ const AddressInfo = styled.p`
   margin: 0.25rem 0 0;
   font-size: 0.75rem;
   font-weight: 400;
-  line-height: 1.125;
-  color: ${props => props.theme.color.N300};
+  line-height: 1.25;
+  color: white;
 `;

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import swal from 'sweetalert';
-
+import '../../assets/css/styles.css'
 import BgImage from '../../assets/bg.png';
 import CreditScoreIcon from '../../assets/credit_score.svg';
 import NoInterestIcon from '../../assets/no_interest.svg';
@@ -22,6 +22,7 @@ import { Consumer as AuthConsumer } from '../../contexts/auth';
 import HelpIcon from '../../assets/help.svg';
 import ChevronIcon from '../../assets/chevron_down_white.svg';
 import ChevronBlueIcon from '../../assets/chevron_down.svg';
+import backImage from '../../assets/web-bg.png'
 
 import {
   getAllBanners,
@@ -34,14 +35,16 @@ export default class UserAccess extends React.Component {
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_telkomsel.png',
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_xl.png',
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_indosat.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_steam.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_garena.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_smartfren.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_tri.png',
     'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_google.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_gemscool.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_mobilelegends.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_pubg.png',
-    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_itunes.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_garena.png',
+    'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_steam.png',
   ];
+
+  static MitraUrl = [
+      'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/logo_dompetkilat.png',
+  ]
 
   static HowToUse = [
     'Masuk/daftar nomor Whatsapp kamu di website asani.co.id.',
@@ -54,26 +57,26 @@ export default class UserAccess extends React.Component {
   ];
 
   static Testimonies = [
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi1.png',
-      name: 'Ari, 26 tahun',
-      testimony: 'Seneng pake produk pulsa di Asani soalnya ga ada bunganya. Walaupun pinjaman, tapi harganya masih normal',
-    },
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi2.png',
-      name: 'Agus, 19 tahun',
-      testimony: 'Saya adalah gamer yang kadang butuh voucher games di malam hari. Pake Asani bisa mem-back up dulu, bayarnya paginya',
-    },
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi3.png',
-      name: 'Wahid, 43 tahun',
-      testimony: 'Kemarin ngambil kredit motor. Pake skor kreditnya Asani bisa dapet bunga lebih rendah. Karena pihak peminjam ada gambaran dari histori pinjaman sebelumnya',
-    },
-    {
-      profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi4.png',
-      name: 'Lusi, 45 tahun',
-      testimony: 'Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Responsif dan cepat!',
-    },
+      {
+        profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi1.png',
+        name: 'Frysa, 26 tahun',
+        testimony: '“Seneng pake produk pulsa di Asani soalnya ga ada bunganya. Walaupun pinjaman, tapi harganya masih murah” ',
+      },
+      {
+          profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi4.png',
+          name: 'Lusi, 45 tahun',
+          testimony: 'Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Dalam hitungan menit, pulsa sudah masuk”',
+      },
+      {
+        profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi2.png',
+        name: 'Agus, 19 tahun',
+        testimony: 'Saya adalah gamer . Penasaran apa itu skor kredit, pas coba Asani malah berasa main game. Ada produk yang dikunci dan bisa dibuka jika skor saya meningkat. Seru!',
+      },
+      {
+        profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi3.png',
+        name: 'Wahid, 43 tahun',
+        testimony: 'Kerasnya hidup di ibu kota akan lebih terasa di akhir bulan. Kemarin saya ambil pinjaman. Untung ada Asani yang memberikan pinjaman dengan persyaratan yang mudah.',
+      },
   ];
 
   static FAQ = [
@@ -121,7 +124,7 @@ export default class UserAccess extends React.Component {
     otpCode: '',
     otpCodeError: '',
     step: 0,
-    retryTimer: 300,
+    retryTimer: 180,
     loading: false,
   };
 
@@ -228,7 +231,7 @@ export default class UserAccess extends React.Component {
     const sendOTPResult = await postSendOTP(this.state.telNumber);
 
     if (sendOTPResult) {
-      await this.setState({ retryTimer: 300 });
+      await this.setState({ retryTimer: 180 });
 
       this.retryInterval = setInterval(() => {
         this.setState(prevState => {
@@ -285,36 +288,46 @@ export default class UserAccess extends React.Component {
   render() {
     return (
       <Fragment>
-        <Header stopNavigation naked withHelp />
+          <div className="bgColor" >
+            <Header stopNavigation naked withHelp />
         <PageWrapper vertical>
           <Content>
             <MainFocus>
-              <h1>
+              <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>
                 {this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
-                {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}
+                {/*{this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}*/}
+                  {this.state.step === 1 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
               </h1>
               {this.state.step === 0 && (
                 <Fragment>
-                  <Input
-                    label="Nomor WhatsApp Kamu"
-                    prefix="+62"
-                    type="tel"
-                    placeholder="8XXXXXXXXX"
-                    value={this.state.telNumber}
-                    error={this.state.telNumberError}
-                    onChange={evt => this.setTelNumber(evt.target.value)}
-                  />
-                  <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
-                    {!this.state.loading && 'Masuk / Daftar'}
-                    {this.state.loading && (
-                      <Spinner color="N0" />
-                    )}
-                  </BigActionButton>
+                  <div className="card-login">
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
+                    <div className="card-padding" >
+                        <Input
+                            label="Nomor WhatsApp Kamu"
+                            prefix="+62"
+                            type="tel"
+                            placeholder="8XXXXXXXXX"
+                            value={this.state.telNumber}
+                            error={this.state.telNumberError}
+                            onChange={evt => this.setTelNumber(evt.target.value)}
+                      />
+                      <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
+                        {!this.state.loading && 'Masuk / Daftar'}
+                        {this.state.loading && (
+                          <Spinner color="N0" />
+                        )}
+                      </BigActionButton>
+                    </div>
+                  </div>
                 </Fragment>
               )}
             {this.state.step === 1 && (
               <Fragment>
-                <Input
+                <div className="card-login">
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda</h1>
+                  <div className="card-padding">
+                    <Input
                   label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
                   type="text"
                   placeholder="XXXX"
@@ -343,34 +356,45 @@ export default class UserAccess extends React.Component {
                     )}
                   </RetryButton>
                 )}
+                  </div>
+                </div>
               </Fragment>
             )}
             </MainFocus>
-            <Segment margin="0 0 2rem">
-              <h1>Keunggulan Kami</h1>
-              <div>
+            <Segment>
+              <div style={{marginTop: "-50px"}}>
                 <OurPro margin="1rem 1rem 1rem 0">
                   <img src={CreditScoreIcon} />
-                  <h2>Cek skor kredit gratis</h2>
+                  <h2>Cek & tingkatkan skor kredit kamu, gratis!</h2>
                 </OurPro>
                 <OurPro margin="1rem 0 1rem 1rem">
                   <img src={NoInterestIcon} />
-                  <h2>Tanpa bunga, tanpa denda</h2>
+                  <h2>Pilih pinjaman terbaikmu dari mitra lender kami
+                  </h2>
                 </OurPro>
                 <OurPro margin="1rem 1rem 0 0">
                   <img src={BuyNowPayLaterIcon} />
-                  <h2>Beli sekarang bayar nanti</h2>
+                  <h2>Proses cepat, teman disaat darurat
+                  </h2>
                 </OurPro>
                 <OurPro margin="1rem 0 0 1rem">
                   <img src={ManyProductsIcon} />
-                  <h2>Banyak pilihan tawaran pinjaman</h2>
+                  <h2>Tanpa bunga, tanpa denda, tanpa jaminan</h2>
                 </OurPro>
               </div>
             </Segment>
             <Segment>
-              <h1>Tawaran Pinjaman Tersedia</h1>
+                <h1>Mitra Lender</h1>
               <div>
-                {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+                  <div className="flex-container">
+                      {UserAccess.MitraUrl.map(MitraUrl => <MitraIcon src={MitraUrl} />)}
+                  </div>
+              </div>
+              <div style={{marginTop: "48px"}}>
+                <h1>Tawaran Pinjaman Tersedia</h1>
+                    <div>
+                        {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+                    </div>
               </div>
             </Segment>
             <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
@@ -385,18 +409,19 @@ export default class UserAccess extends React.Component {
                 ))}
               </div>
             </Segment>
-            <Segment>
-              <h1>FAQ</h1>
-              <div>
-                {UserAccess.FAQ.map(faq => (
-                  <FAQItem {...faq} />
-                ))}
-              </div>
-            </Segment>
+            {/*<Segment>*/}
+              {/*<h1>FAQ</h1>*/}
+              {/*<div>*/}
+                {/*{UserAccess.FAQ.map(faq => (*/}
+                  {/*<FAQItem {...faq} />*/}
+                {/*))}*/}
+              {/*</div>*/}
+            {/*</Segment>*/}
           </Content>
-				  <Footer withCopy />
         </PageWrapper>
-        {/* <Background src={BgImage} /> */}
+              <Footer withCopy />
+          </div>
+         {/*<Background src={BgImage} />*/}
       </Fragment>
     );
   }
@@ -586,9 +611,8 @@ const OurPro = styled.div`
 `;
 
 const ProductIcon = styled.img`
-  width: calc((100% - 6rem) / 5);
+  width: calc((100% - 6rem) / 4);
   margin: 1.5rem 1.5rem 0 0;
-
   &:nth-of-type(1),
   &:nth-of-type(2),
   &:nth-of-type(3),
@@ -598,7 +622,26 @@ const ProductIcon = styled.img`
   }
 
   &:last-of-type,
-  &:nth-of-type(5n + 5) {
+  &:nth-of-type(4n + 4) {
+    margin-right: 0;
+  }
+`;
+
+const MitraIcon = styled.img`
+  width: calc((100% - 6rem) / 4);
+  height: 92px;
+  margin: 1.5rem 1.5rem 0 0;
+  display: block;
+  &:nth-of-type(1),
+  &:nth-of-type(2),
+  &:nth-of-type(3),
+  &:nth-of-type(4),
+  &:nth-of-type(5) {
+    margin-top: 0.5rem;
+  }
+
+  &:last-of-type,
+  &:nth-of-type(4n + 4) {
     margin-right: 0;
   }
 `;
