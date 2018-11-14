@@ -65,63 +65,65 @@ export default class Header extends React.Component {
     // if (this.state.shouldRenderToDom) {
     //   return ReactDOM.createPortal(
     return (
-      <Headroom disable={this.props.naked}>
-        <Wrapper naked={this.props.naked}>
-          <LogoMenu>
-            <Logo onClick={this.navigateTo(SITEMAP.HOME)}>
-              <img src={LogoImg} />
-            </Logo>
-            {this.props.withMenu && (
-              <MenuToggle onClick={this.toggleMenu}>
-                <img src={MenuIcon} />
-              </MenuToggle>
-            )}
-            {this.props.withHelp && (
-              <a style={{color: "white"}} href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
-                Layanan Chat<Help src={WhatsAppIcon} />
-              </a>
-            )}
-          </LogoMenu>
-          {this.props.withMenu && (
-            <Menu active={this.state.showMenu}>
-              <Overlay active={this.state.showMenu} onClick={this.toggleMenu} />
-              <Content active={this.state.showMenu}>
-                <ContentAnimationWrapper active={this.state.showMenu}>
-                  <NavigationButton
-                    onClick={this.navigateTo(SITEMAP.HOME)}
-                    disabled={this.isLinkActive(SITEMAP.HOME)}
-                  >
-                    <img src={HomeIcon} />
-                    <span>Beranda</span>
-                  </NavigationButton>
-                  <NavigationButton
-                    onClick={this.navigateTo(SITEMAP.CREDIT_SCORE)}
-                    disabled={this.isLinkActive(SITEMAP.CREDIT_SCORE)}
-                  >
-                    <img src={CreditScoreIcon} />
-                    <span>Skor Kredit</span>
-                  </NavigationButton>
-                  <NavigationButton
-                    onClick={this.navigateTo(SITEMAP.LOAN_HISTORY)}
-                    disabled={this.isLinkActive(SITEMAP.LOAN_HISTORY)}
-                  >
-                    <img src={LoanHistoryIcon} />
-                    <span>Riwayat</span>
-                  </NavigationButton>
-                  <AuthConsumer>
-                    {({ logOut }) => (
-                      <NavigationButton onClick={logOut}><img src={LogoutIcon} /><span>Keluar</span></NavigationButton>
+          <Headroom style={{position: "fixed"}} disable={this.props.naked}>
+            <Wrapper naked={this.props.naked}>
+                <div style={{backgroundColor: "#2797FB", width: "100%"}}>
+                  <LogoMenu>
+                    <Logo onClick={this.navigateTo(SITEMAP.HOME)}>
+                      <img style={{width:"100px", height:"32px", marginTop:"5px"}} src={LogoImg} />
+                    </Logo>
+                    {this.props.withMenu && (
+                      <MenuToggle onClick={this.toggleMenu}>
+                        <img style={{marginTop:"5px", paddingRight: "16px"}} src={MenuIcon} />
+                      </MenuToggle>
                     )}
-                  </AuthConsumer>
-                  <FooterWrapper>
-                    <Footer />
-                  </FooterWrapper>
-                </ContentAnimationWrapper>
-              </Content>
-            </Menu>
-          )}
-        </Wrapper>
-      </Headroom>
+                    {this.props.withHelp && (
+                      <a style={{color: "white", paddingRight:"16px"}} href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
+                        Layanan Chat<Help src={WhatsAppIcon} />
+                      </a>
+                    )}
+                  </LogoMenu>
+                </div>
+              {this.props.withMenu && (
+                <Menu active={this.state.showMenu}>
+                  <Overlay active={this.state.showMenu} onClick={this.toggleMenu} />
+                  <Content active={this.state.showMenu}>
+                    <ContentAnimationWrapper active={this.state.showMenu}>
+                      <NavigationButton
+                        onClick={this.navigateTo(SITEMAP.HOME)}
+                        disabled={this.isLinkActive(SITEMAP.HOME)}
+                      >
+                        <img src={HomeIcon} />
+                        <span>Beranda</span>
+                      </NavigationButton>
+                      <NavigationButton
+                        onClick={this.navigateTo(SITEMAP.CREDIT_SCORE)}
+                        disabled={this.isLinkActive(SITEMAP.CREDIT_SCORE)}
+                      >
+                        <img src={CreditScoreIcon} />
+                        <span>Skor Kredit</span>
+                      </NavigationButton>
+                      <NavigationButton
+                        onClick={this.navigateTo(SITEMAP.LOAN_HISTORY)}
+                        disabled={this.isLinkActive(SITEMAP.LOAN_HISTORY)}
+                      >
+                        <img src={LoanHistoryIcon} />
+                        <span>Riwayat</span>
+                      </NavigationButton>
+                      <AuthConsumer>
+                        {({ logOut }) => (
+                          <NavigationButton onClick={logOut}><img src={LogoutIcon} /><span>Keluar</span></NavigationButton>
+                        )}
+                      </AuthConsumer>
+                      <FooterWrapper>
+                        <Footer />
+                      </FooterWrapper>
+                    </ContentAnimationWrapper>
+                  </Content>
+                </Menu>
+              )}
+            </Wrapper>
+          </Headroom>
     );
     //     this.portalDom
     //   );
@@ -131,9 +133,16 @@ export default class Header extends React.Component {
   }
 }
 
+// const Wrapper = styled.div`
+//   width: 100%;
+//   padding: ${props => props.naked ? '1.5rem' : '1rem 1.5rem 0.75rem'};
+//   ${flex({ justify: 'space-between' })}
+//   background: ${props => props.naked ? 'none' : props.theme.color.N0};
+//   box-shadow: ${props => props.naked ? 'none' : props.theme.shadow.dark};
+// `;
 const Wrapper = styled.div`
   width: 100%;
-  padding: ${props => props.naked ? '1.5rem' : '1rem 1.5rem 0.75rem'};
+  padding: ${props => props.naked ? '0px' : '0px'};
   ${flex({ justify: 'space-between' })}
   background: ${props => props.naked ? 'none' : props.theme.color.N0};
   box-shadow: ${props => props.naked ? 'none' : props.theme.shadow.dark};

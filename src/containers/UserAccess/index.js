@@ -14,7 +14,7 @@ import { BigActionButton } from '../../components/Buttons';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
-import { PageWrapper } from '../../components/PageBuilder';
+import { PageWrapperNoPadding } from '../../components/PageBuilderNoPadding';
 import Spinner from '../../components/Spinner';
 
 import { Consumer as AuthConsumer } from '../../contexts/auth';
@@ -290,7 +290,7 @@ export default class UserAccess extends React.Component {
       <Fragment>
           <div className="bgColor" >
             <Header stopNavigation naked withHelp />
-            <PageWrapper vertical>
+            <PageWrapperNoPadding vertical>
               <Content>
                 <div className="bgImage">
                     <MainFocus>
@@ -302,10 +302,10 @@ export default class UserAccess extends React.Component {
                       {this.state.step === 0 && (
                         <Fragment>
                           <div className="card-login">
-                            <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
+                            <h3 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", color: "#42526E" }}>Bangun skor kredit kamu dan dapatkan pinjaman terbaik</h3>
                             <div className="card-padding" >
                                 <Input
-                                    label="Nomor WhatsApp Kamu"
+                                    label="Nomor Handphone Kamu"
                                     prefix="+62"
                                     type="tel"
                                     placeholder="8XXXXXXXXX"
@@ -326,10 +326,10 @@ export default class UserAccess extends React.Component {
                     {this.state.step === 1 && (
                       <Fragment>
                         <div className="card-login">
-                            <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "20px", paddingRight: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda</h1>
+                            <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "20px", paddingRight: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor handphone anda</h1>
                           <div className="card-padding">
                             <Input
-                          label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
+                          label="4 Angka Kode OTP Yang Diberikan Via SMS"
                           type="text"
                           placeholder="XXXX"
                           value={this.state.otpCode}
@@ -385,6 +385,7 @@ export default class UserAccess extends React.Component {
                     </OurPro>
                   </div>
                 </Segment>
+                <div className="section-lender">
                 <Segment>
                     <h1>Mitra Lender</h1>
                   <div>
@@ -399,6 +400,7 @@ export default class UserAccess extends React.Component {
                         </div>
                   </div>
                 </Segment>
+                </div>
                 <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
                   <h1>Testimoni Pelanggan</h1>
                   <div>
@@ -420,8 +422,8 @@ export default class UserAccess extends React.Component {
                   {/*</div>*/}
                 {/*</Segment>*/}
               </Content>
-            </PageWrapper>
-              <Footer withCopy />
+                <Footer withCopy />
+            </PageWrapperNoPadding>
           </div>
          {/*<Background src={BgImage} />*/}
       </Fragment>
@@ -471,13 +473,14 @@ const Content = styled.div`
     line-height: 1.5;
     text-align: left;
     margin: 0 0 2rem;
-    padding: 0;
+    padding: 0 16px 16px;
   }
 `;
 
 const MainFocus = styled.div`
   width: 100%;
   min-height: calc(100vh - 15rem);
+  margin-top: 5% ;
   ${flex({ justify: 'flex-start' })}
 `;
 
@@ -544,7 +547,7 @@ const RetryCounter = styled.span`
 const RetryButton = styled.button`
   width: 100%;
   margin: 1rem 0 0;
-  padding: 0.5rem;
+  padding: 16px;
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1;
@@ -566,7 +569,7 @@ const Help = styled.img`
 const Segment = styled.div`
   width: 100%;
   margin: ${props => props.margin ? props.margin : '2rem 0'};
-
+  padding: 0 1.5rem 3rem;
   & > h1 {
     font-size: 1.25rem;
     color: ${props => props.theme.color.N500};

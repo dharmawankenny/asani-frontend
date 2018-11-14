@@ -83,9 +83,6 @@ export default class App extends React.Component {
     } else if (this.state.loggedIn && window.location.pathname.startsWith(SITEMAP.AUTHENTICATION)) {
       navigate(SITEMAP.HOME);
     }
-    else {
-      navigate(SITEMAP.HOME)
-    }
   }
 
   logIn = async (token) => {

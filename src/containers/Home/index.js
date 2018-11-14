@@ -129,7 +129,6 @@ export default class Home extends React.Component {
   setSortQuery = sortQuery => () => this.setState({ sortQuery });
 
   toggleProductQuery = productKey => () => {
-    console.log(' this is something')
     // this.setState(prevState => {
     //   // if (this.isAllProductQueryEnabled(prevState.productQuery)) {
     //   const newProductQuery = { ...prevState.productQuery };
@@ -187,7 +186,6 @@ export default class Home extends React.Component {
 
   onProductClick = productId => () => {
     // this.props.productActions.getProductDetail(productId);
-      console.log('this is what', productId)
       navigate('/dashboard/product_id/'+productId)
   };
 
@@ -289,7 +287,6 @@ export default class Home extends React.Component {
   };
 
   render() {
-    // console.log(this.props)
     return (
       <Fragment>
         <Header withMenu />

@@ -20,17 +20,21 @@ import '../../assets/css/styles.css'
 import Collapsible from 'react-collapsible';
 // import '../assets/sass/main.scss'
 
-import * as productActions from '../../reducers/product';
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import * as productActions from '../../reducers/product';
 import * as creditScoreActions from "../../reducers/creditScore";
 import * as loanActions from "../../reducers/loan";
 import * as userDocumentActions from "../../reducers/userDocument";
+import store from '../../store/index'
 
 @connect(
     state => ({ ...state }),
     dispatch => ({
+        creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
         productActions: bindActionCreators(productActions, dispatch),
+        loanActions: bindActionCreators(loanActions, dispatch),
+        userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
     })
 )
 export default class DetailPage extends React.Component {
@@ -42,13 +46,12 @@ export default class DetailPage extends React.Component {
         currentStep: 0,
     };
     componentDidMount () {
-        console.log(this.props.location.pathname)
         let temp = this.props.location.pathname
-        let path = temp.split('/')
-        console.log(path)
+        let tempPath = temp.split('/')
+        let path = tempPath[3]
+        this.props.productActions.getProductDetail(this.props.id)
     }
     componentDidUpdate(prevProps) {
-        console.log('ini di detail page')
         if (!this.props.active && prevProps.active) {
             document.body.style.overflow = 'auto';
         } else if (this.props.active && !prevProps.active) {
@@ -96,7 +99,7 @@ export default class DetailPage extends React.Component {
     }
 
     componentWillUnmount() {
-        this.props.onClose();
+        // this.props.onClose();
         document.body.style.overflow = 'auto';
     }
 
@@ -110,193 +113,187 @@ export default class DetailPage extends React.Component {
         this.props.updateLoans();
         this.props.onClose();
     }
-
-    // collapseBank () {
-    //     var coll = document.getElementsByClassName("collapsible");
-    //     var i;
-    //
-    //     for (i = 0; i < coll.length; i++) {
-    //         coll[i].addEventListener("click", function () {
-    //             this.classList.toggle("active");
-    //             var content = this.nextElementSibling;
-    //             if (content.style.display === "block") {
-    //                 content.style.display = "none";
-    //             } else {
-    //                 content.style.display = "block";
-    //             }
-    //         });
-    //     }
-    // }
-    render() {
-        return (
-            <div>
-                <h1>Hello word</h1>
-            </div>
-        );
-    }
     // render() {
-    //     const {
-    //         productType,
-    //         lenderName,
-    //         productPrice,
-    //         productNominal,
-    //         productDesc,
-    //         tenorDays,
-    //         interestPct,
-    //         interestAmount,
-    //         interestAnnualPct,
-    //         totalBill,
-    //         urlProductLogo,
-    //         adminFee,
-    //         penalty,
-    //         docRequired,
-    //         banks
-    //     } = this.props.productDetail;
-    //     console.log(banks)
-    //
     //     return (
-    //         <Modal active={this.props.active}>
-    //             <Content active={this.props.active}>
-    //                 <ContentAnimationWrapper active={this.props.active} loading={this.props.loading}>
-    //                     <Header>
-    //                         <h1>Detil Peminjaman</h1>
-    //                         <button onClick={this.props.onClose} id="asani-actions-close-product-detail"><img src={CloseIcon} /></button>
-    //                     </Header>
-    //                     {this.props.loading && (
-    //                         <SpinnerWrapper>
-    //                             <Spinner color="N800" />
-    //                         </SpinnerWrapper>
-    //                     )}
-    //                     {this.props.loaded &&
-    //                     this.props.productDetail &&
-    //                     !isEmpty(this.props.productDetail) &&
-    //                     docRequired.length !== 0 && (
-    //                         <Steps>
-    //                             {docRequired.length > 0 &&
-    //                             docRequired.map((doc, index) => (
-    //                                 <Step active={this.state.currentStep >= index}>
-    //                                     <div className="logo">
-    //                                         <img src={doc.icon_url} />
-    //                                     </div>
-    //                                     <span>Upload {doc.doc_name}</span>
-    //                                     {index !== 0 && (
-    //                                         <div className="leftBar" />
-    //                                     )}
-    //                                     <div className="rightBar" />
-    //                                 </Step>
-    //                             ))}
-    //                             <Step active={this.state.currentStep === docRequired.length}>
-    //                                 <div className="logo">
-    //                                     <img src={LoanIcon} />
-    //                                 </div>
-    //                                 <div className="leftBar" />
-    //                                 <span>Review Peminjaman</span>
-    //                             </Step>
-    //                         </Steps>
-    //                     )}
-    //                     {this.props.loaded &&
-    //                     this.props.productDetail &&
-    //                     !isEmpty(this.props.productDetail) &&
-    //                     this.state.currentStep < docRequired.length && (
-    //                         <DocUploadWrapper>
-    //                             <DocUpload
-    //                                 userDocument={docRequired[this.state.currentStep]}
-    //                                 upload={this.props.uploadDocument}
-    //                                 progress={this.props.uploadProgress}
-    //                                 finished={this.props.uploadFinished}
-    //                                 finishedText="Selanjutnya"
-    //                                 finishedCallback={this.successfullyUploadedCallback}
-    //                             />
-    //                         </DocUploadWrapper>
-    //                     )}
-    //                     {this.props.loaded &&
-    //                     this.props.productDetail &&
-    //                     !isEmpty(this.props.productDetail) &&
-    //                     this.state.currentStep === docRequired.length && (
-    //                         <Fragment>
-    //                             <SummaryInfo>
-    //                                 <ProductLogo src={urlProductLogo} />
-    //                                 {productDesc && (
-    //                                     <Info><span>{productDesc}</span></Info>
-    //                                 )}
-    //                                 <LabelValue>
-    //                                     <span>Pemberi pinjaman</span>
-    //                                     <span>{lenderName}</span>
-    //                                 </LabelValue>
-    //                                 <LabelValue>
-    //                                     <span>Produk</span>
-    //                                     <span>{productType}</span>
-    //                                 </LabelValue>
-    //                                 <LabelValue>
-    //                                     <span>Harga Produk</span>
-    //                                     <span>{printPrice(productPrice)}</span>
-    //                                 </LabelValue>
-    //                                 <LabelValue>
-    //                                     <span>Nominal</span>
-    //                                     <span>{productNominal}</span>
-    //                                 </LabelValue>
-    //                                 {/* <LabelValue>
-    //                   <span>% Bunga</span>
-    //                   <span>{interestPct}%</span>
-    //                 </LabelValue> */}
-    //                                 <LabelValue>
-    //                                     <span>Nominal Bunga</span>
-    //                                     <span>{printPrice(interestAmount)}</span>
-    //                                 </LabelValue>
-    //                                 <LabelValue>
-    //                                     <span>Admin Fee</span>
-    //                                     <span>{Number(adminFee) === 0 ? '0' : printPrice(Number(adminFee))}</span>
-    //                                 </LabelValue>
-    //                                 <BillValue>
-    //                                     <span>Total Tagihan</span>
-    //                                     <span>{printPrice(totalBill)}</span>
-    //                                     <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
-    //                                 </BillValue>
-    //                             </SummaryInfo>
-    //                             <div style={{width: "calc(100% - 3rem)"}}>
-    //                                 <button>
-    //                                     <Collapsible trigger="Metode Pembayaran">
-    //                                         {
-    //                                             banks.map((bank, index) => (
-    //                                                 <div key={index} className="collapsible">
-    //                                                     <span> Nama Bank: <b>{bank.bankName}</b>  </span> <br/>
-    //                                                     <span>Nomor Rekening : {bank.accountNumber} </span><br/>
-    //                                                     <span>Atas Nama : {bank.accountName} </span>
-    //                                                 </div>
-    //                                             ))
-    //                                         }
-    //                                     </Collapsible>
-    //                                 </button>
-    //                             </div>
-    //                             <InfoPrompt color="G300" margin="0 auto 1.5rem">
-    //                                 <img src={ImproveIcon} />
-    //                                 <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
-    //                             </InfoPrompt>
-    //                             <Info align="center"><span>Dengan menekan tombol ambil pinjaman, saya setuju dengan detail pinjaman di atas.</span></Info>
-    //                         </Fragment>
-    //                     )}
-    //                     {this.props.loaded &&
-    //                     this.props.productDetail &&
-    //                     !isEmpty(this.props.productDetail) &&
-    //                     this.state.currentStep === docRequired.length && (
-    //                         <ActionButtonWrapper>
-    //                             <BigActionButton
-    //                                 color={this.props.hasActiveLoans ? 'N300' : 'G300'}
-    //                                 onClick={() => this.props.purchase(this.props.productDetail.productId)}
-    //                                 disabled={this.props.purchaseLoading} id={`asani-actions-purchase-product-${productType}`}
-    //                             >
-    //                                 {!this.props.purchaseLoading && 'Ambil Pinjaman'}
-    //                                 {this.props.purchaseLoading && (
-    //                                     <Spinner color="N0" />
-    //                                 )}
-    //                             </BigActionButton>
-    //                         </ActionButtonWrapper>
-    //                     )}
-    //                 </ContentAnimationWrapper>
-    //             </Content>
-    //         </Modal>
+    //         <div>
+    //             <h1>Hello word</h1>
+    //         </div>
     //     );
     // }
+    render() {
+        let loading = this.props.product.detailLoading
+        let loaded = this.props.product.detailLoaded
+        let productDetail = this.props
+        // console.log('loading', this.props)
+        // console.log(store().getState().product)
+        // console.log(productActions)
+        const {
+            productType,
+            lenderName,
+            productPrice,
+            productNominal,
+            productDesc,
+            tenorDays,
+            interestPct,
+            interestAmount,
+            interestAnnualPct,
+            totalBill,
+            urlProductLogo,
+            adminFee,
+            penalty,
+            docRequired,
+            banks
+        } = this.props.productDetail;
+        return (
+            <Fragment>
+                <Header>
+                    <h1>Detil Peminjaman</h1>
+                </Header>
+            </Fragment>
+        )
+        // return (
+        //     <Modal active={this.props.active}>
+        //         <Content active={this.props.active}>
+        //             <ContentAnimationWrapper active={this.props.active} loading={this.props.loading}>
+        //                 <Header>
+        //                     <h1>Detil Peminjaman</h1>
+        //                     <button onClick={this.props.onClose} id="asani-actions-close-product-detail"><img src={CloseIcon} /></button>
+        //                 </Header>
+        //                 {this.props.loading && (
+        //                     <SpinnerWrapper>
+        //                         <Spinner color="N800" />
+        //                     </SpinnerWrapper>
+        //                 )}
+        //                 {this.props.loaded &&
+        //                 this.props.productDetail &&
+        //                 !isEmpty(this.props.productDetail) &&
+        //                 docRequired.length !== 0 && (
+        //                     <Steps>
+        //                         {docRequired.length > 0 &&
+        //                         docRequired.map((doc, index) => (
+        //                             <Step active={this.state.currentStep >= index}>
+        //                                 <div className="logo">
+        //                                     <img src={doc.icon_url} />
+        //                                 </div>
+        //                                 <span>Upload {doc.doc_name}</span>
+        //                                 {index !== 0 && (
+        //                                     <div className="leftBar" />
+        //                                 )}
+        //                                 <div className="rightBar" />
+        //                             </Step>
+        //                         ))}
+        //                         <Step active={this.state.currentStep === docRequired.length}>
+        //                             <div className="logo">
+        //                                 <img src={LoanIcon} />
+        //                             </div>
+        //                             <div className="leftBar" />
+        //                             <span>Review Peminjaman</span>
+        //                         </Step>
+        //                     </Steps>
+        //                 )}
+        //                 {this.props.loaded &&
+        //                 this.props.productDetail &&
+        //                 !isEmpty(this.props.productDetail) &&
+        //                 this.state.currentStep < docRequired.length && (
+        //                     <DocUploadWrapper>
+        //                         <DocUpload
+        //                             userDocument={docRequired[this.state.currentStep]}
+        //                             upload={this.props.uploadDocument}
+        //                             progress={this.props.uploadProgress}
+        //                             finished={this.props.uploadFinished}
+        //                             finishedText="Selanjutnya"
+        //                             finishedCallback={this.successfullyUploadedCallback}
+        //                         />
+        //                     </DocUploadWrapper>
+        //                 )}
+        //                 {this.props.loaded &&
+        //                 this.props.productDetail &&
+        //                 !isEmpty(this.props.productDetail) &&
+        //                 this.state.currentStep === docRequired.length && (
+        //                     <Fragment>
+        //                         <SummaryInfo>
+        //                             <ProductLogo src={urlProductLogo} />
+        //                             {productDesc && (
+        //                                 <Info><span>{productDesc}</span></Info>
+        //                             )}
+        //                             <LabelValue>
+        //                                 <span>Pemberi pinjaman</span>
+        //                                 <span>{lenderName}</span>
+        //                             </LabelValue>
+        //                             <LabelValue>
+        //                                 <span>Produk</span>
+        //                                 <span>{productType}</span>
+        //                             </LabelValue>
+        //                             <LabelValue>
+        //                                 <span>Harga Produk</span>
+        //                                 <span>{printPrice(productPrice)}</span>
+        //                             </LabelValue>
+        //                             <LabelValue>
+        //                                 <span>Nominal</span>
+        //                                 <span>{productNominal}</span>
+        //                             </LabelValue>
+        //                             {/* <LabelValue>
+        //               <span>% Bunga</span>
+        //               <span>{interestPct}%</span>
+        //             </LabelValue> */}
+        //                             <LabelValue>
+        //                                 <span>Nominal Bunga</span>
+        //                                 <span>{printPrice(interestAmount)}</span>
+        //                             </LabelValue>
+        //                             <LabelValue>
+        //                                 <span>Admin Fee</span>
+        //                                 <span>{Number(adminFee) === 0 ? '0' : printPrice(Number(adminFee))}</span>
+        //                             </LabelValue>
+        //                             <BillValue>
+        //                                 <span>Total Tagihan</span>
+        //                                 <span>{printPrice(totalBill)}</span>
+        //                                 <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
+        //                             </BillValue>
+        //                         </SummaryInfo>
+        //                         <div style={{width: "calc(100% - 3rem)"}}>
+        //                             <button>
+        //                                 <Collapsible trigger="Metode Pembayaran">
+        //                                     {
+        //                                         banks.map((bank, index) => (
+        //                                             <div key={index} className="collapsible">
+        //                                                 <span> Nama Bank: <b>{bank.bankName}</b>  </span> <br/>
+        //                                                 <span>Nomor Rekening : {bank.accountNumber} </span><br/>
+        //                                                 <span>Atas Nama : {bank.accountName} </span>
+        //                                             </div>
+        //                                         ))
+        //                                     }
+        //                                 </Collapsible>
+        //                             </button>
+        //                         </div>
+        //                         <InfoPrompt color="G300" margin="0 auto 1.5rem">
+        //                             <img src={ImproveIcon} />
+        //                             <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
+        //                         </InfoPrompt>
+        //                         <Info align="center"><span>Dengan menekan tombol ambil pinjaman, saya setuju dengan detail pinjaman di atas.</span></Info>
+        //                     </Fragment>
+        //                 )}
+        //                 {this.props.loaded &&
+        //                 this.props.productDetail &&
+        //                 !isEmpty(this.props.productDetail) &&
+        //                 this.state.currentStep === docRequired.length && (
+        //                     <ActionButtonWrapper>
+        //                         <BigActionButton
+        //                             color={this.props.hasActiveLoans ? 'N300' : 'G300'}
+        //                             onClick={() => this.props.purchase(this.props.productDetail.productId)}
+        //                             disabled={this.props.purchaseLoading} id={`asani-actions-purchase-product-${productType}`}
+        //                         >
+        //                             {!this.props.purchaseLoading && 'Ambil Pinjaman'}
+        //                             {this.props.purchaseLoading && (
+        //                                 <Spinner color="N0" />
+        //                             )}
+        //                         </BigActionButton>
+        //                     </ActionButtonWrapper>
+        //                 )}
+        //             </ContentAnimationWrapper>
+        //         </Content>
+        //     </Modal>
+        // );
+    }
 }
 
 const Modal = styled.div`
