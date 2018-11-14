@@ -76,6 +76,7 @@ export default class LoanDetailModal extends React.Component {
       outletAddr,
       banks,
     } = this.props.loanDetail;
+    console.log('ini loan detail',this.props.loanDetail)
 
     return (
       <Modal active={this.props.active}>

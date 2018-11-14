@@ -5010,6 +5010,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-collapsible@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.3.1.tgz#4f26244a0ecd4331ad1f6c7b7f6dc7dad7b631ad"
+  integrity sha512-OnlL/yzXxfb6KkUgtDoKe08CTmvrB80Q+y8Tfy8WwvDI4Hgbi25GWoURuYLSu5PWe9tSv5WtzcBDCjp2pLBZkA==
+
 react-dom@^16.6.0:
   version "16.6.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-16.6.0.tgz#6375b8391e019a632a89a0988bce85f0cc87a92f"

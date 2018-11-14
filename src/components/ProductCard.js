@@ -63,6 +63,7 @@ export default class ProductCard extends React.Component {
       urlProductLogo,
       isLocked,
     } = this.props.product;
+    // console.log(this.props.product)
 
     return (
       <Wrapper onClick={isLocked ? this.showNotEnoughPointPrompt : this.props.onClick} id="asani-actions-view-product-detail">

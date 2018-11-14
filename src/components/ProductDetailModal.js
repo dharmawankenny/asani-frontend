@@ -16,6 +16,9 @@ import { printPrice, fromNow } from '../commons/utils';
 import { BigActionButton } from './Buttons';
 import DocUpload from './DocUpload';
 import Spinner from './Spinner';
+import '../assets/css/styles.css'
+import Collapsible from 'react-collapsible';
+// import '../assets/sass/main.scss'
 
 export default class ProductDetailModal extends React.Component {
   static defaultProps = {
@@ -89,22 +92,40 @@ export default class ProductDetailModal extends React.Component {
     this.props.onClose();
   }
 
+  collapseBank () {
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function () {
+              this.classList.toggle("active");
+              var content = this.nextElementSibling;
+              if (content.style.display === "block") {
+                  content.style.display = "none";
+              } else {
+                  content.style.display = "block";
+              }
+          });
+      }
+  }
+
   render() {
     const {
-      productType,
-      lenderName,
-      productPrice,
-      productNominal,
-      productDesc,
-      tenorDays,
-      interestPct,
-      interestAmount,
-      interestAnnualPct,
-      totalBill,
-      urlProductLogo,
-      adminFee,
-      penalty,
-      docRequired,
+        productType,
+        lenderName,
+        productPrice,
+        productNominal,
+        productDesc,
+        tenorDays,
+        interestPct,
+        interestAmount,
+        interestAnnualPct,
+        totalBill,
+        urlProductLogo,
+        adminFee,
+        penalty,
+        docRequired,
+        banks
     } = this.props.productDetail;
 
     return (
@@ -205,6 +226,14 @@ export default class ProductDetailModal extends React.Component {
                       <span>{printPrice(totalBill)}</span>
                       <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
                     </BillValue>
+                  </SummaryInfo>
+                  <SummaryInfo>
+                      <Collapsible trigger="Start here">
+                          <div>
+                                <p>This is the collapsible content. It can be any element or React component you like.</p>
+                                <p>It can even be another Collapsible component. Check out the next section!</p>
+                          </div>
+                      </Collapsible>
                   </SummaryInfo>
                   <InfoPrompt color="G300" margin="0 auto 1.5rem">
                     <img src={ImproveIcon} />

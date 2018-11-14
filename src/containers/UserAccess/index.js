@@ -65,17 +65,17 @@ export default class UserAccess extends React.Component {
       {
           profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi4.png',
           name: 'Lusi, 45 tahun',
-          testimony: 'Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Dalam hitungan menit, pulsa sudah masuk”',
+          testimony: '"Udah beli pulsa lebih dari 5 kali, dan belum pernah kecewa. Dalam hitungan menit, pulsa sudah masuk”',
       },
       {
         profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi2.png',
         name: 'Agus, 19 tahun',
-        testimony: 'Saya adalah gamer . Penasaran apa itu skor kredit, pas coba Asani malah berasa main game. Ada produk yang dikunci dan bisa dibuka jika skor saya meningkat. Seru!',
+        testimony: '"Saya adalah gamer . Penasaran apa itu skor kredit, pas coba Asani malah berasa main game. Ada produk yang dikunci dan bisa dibuka jika skor saya meningkat. Seru!"',
       },
       {
         profileImg: 'https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/testi3.png',
         name: 'Wahid, 43 tahun',
-        testimony: 'Kerasnya hidup di ibu kota akan lebih terasa di akhir bulan. Kemarin saya ambil pinjaman. Untung ada Asani yang memberikan pinjaman dengan persyaratan yang mudah.',
+        testimony: '"Kerasnya hidup di ibu kota akan lebih terasa di akhir bulan. Kemarin saya ambil pinjaman. Untung ada Asani yang memberikan pinjaman dengan persyaratan yang mudah."',
       },
   ];
 
@@ -301,7 +301,7 @@ export default class UserAccess extends React.Component {
               {this.state.step === 0 && (
                 <Fragment>
                   <div className="card-login">
-                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Cek Skor Kredit Kamu</h1>
                     <div className="card-padding" >
                         <Input
                             label="Nomor WhatsApp Kamu"
@@ -325,7 +325,7 @@ export default class UserAccess extends React.Component {
             {this.state.step === 1 && (
               <Fragment>
                 <div className="card-login">
-                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda</h1>
+                    <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "20px", paddingRight: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda</h1>
                   <div className="card-padding">
                     <Input
                   label="4 Angka Kode OTP Yang Diberikan Via WhatsApp"
@@ -362,7 +362,7 @@ export default class UserAccess extends React.Component {
             )}
             </MainFocus>
             <Segment>
-              <div style={{marginTop: "-50px"}}>
+              <div style={{marginTop: "-10%"}}>
                 <OurPro margin="1rem 1rem 1rem 0">
                   <img src={CreditScoreIcon} />
                   <h2>Cek & tingkatkan skor kredit kamu, gratis!</h2>
@@ -387,21 +387,21 @@ export default class UserAccess extends React.Component {
                 <h1>Mitra Lender</h1>
               <div>
                   <div className="flex-container">
-                      {UserAccess.MitraUrl.map(MitraUrl => <MitraIcon src={MitraUrl} />)}
+                      {UserAccess.MitraUrl.map((MitraUrl, index) => <MitraIcon key={index} src={MitraUrl} />)}
                   </div>
               </div>
               <div style={{marginTop: "48px"}}>
                 <h1>Tawaran Pinjaman Tersedia</h1>
                     <div>
-                        {UserAccess.ProductsUrl.map(productUrl => <ProductIcon src={productUrl} />)}
+                        {UserAccess.ProductsUrl.map((productUrl, index) => <ProductIcon key={index} src={productUrl} />)}
                     </div>
               </div>
             </Segment>
             <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
               <h1>Testimoni Pelanggan</h1>
               <div>
-                {UserAccess.Testimonies.map(tst => (
-                  <Testimony>
+                {UserAccess.Testimonies.map((tst, index) => (
+                  <Testimony key={index}>
                     <img src={tst.profileImg} />
                     <h2>{tst.name}</h2>
                     <p>{tst.testimony}</p>

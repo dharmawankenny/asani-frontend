@@ -19,19 +19,21 @@ export default class Footer extends React.Component {
                 EN
               </Switch>
             </Switcher> */}
-            {this.props.withCopy && (
-              <CopyInfo>
-                &copy; 2018 Asani
-              </CopyInfo>
-            )}
-            {this.props.withCopy && (
-              <AddressInfo>
-                    PT Teknologi Skoring Nusantara<br />
-                    Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat<br />
-                    Email: cs@asani.co.id <br />
-                    Telp: +6281311442228
-              </AddressInfo>
-            )}
+            <div className="center-footer">
+                {this.props.withCopy && (
+                  <CopyInfo>
+                    &copy; 2018 Asani
+                  </CopyInfo>
+                )}
+                {this.props.withCopy && (
+                  <AddressInfo>
+                        PT Teknologi Skoring Nusantara<br />
+                        Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat<br />
+                        Email: cs@asani.co.id <br />
+                        Telp: +6281311442228
+                  </AddressInfo>
+                )}
+            </div>
         </div>
     );
   }

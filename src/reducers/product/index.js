@@ -139,9 +139,9 @@ export function getProductDetail(productId) {
   return async dispatch => {
     dispatch(loadingDetail());
     const response = await apiCalls.getProductDetail(productId);
-
     if (response && response.data) {
       if (response.data.data) {
+        console.log('ini dari getProductDetail',response.data.data)
         dispatch(loadingDetailSuccess(response.data.data));
       } else {
         dispatch(loadingDetailSuccess(response.data));
@@ -156,7 +156,6 @@ export function purchaseProduct(productId) {
   return async dispatch => {
     dispatch(loadingPurchase());
     const response = await apiCalls.postLoan(productId);
-    console.error(response)
     if (response.data.status === -1) {
       dispatch(purchaseUserBanned('Error Purchasing Product'));
       // swal({
