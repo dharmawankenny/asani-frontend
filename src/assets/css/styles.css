@@ -68,6 +68,10 @@
     background-color: #f1f1f1;
 }
 
+.Collapsible_trigger {
+    width: 100%;
+}
+
 /*.flex-container > div {*/
     /*background-color: #f1f1f1;*/
     /*width: 100px;*/

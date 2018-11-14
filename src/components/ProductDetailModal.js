@@ -92,22 +92,22 @@ export default class ProductDetailModal extends React.Component {
     this.props.onClose();
   }
 
-  collapseBank () {
-      var coll = document.getElementsByClassName("collapsible");
-      var i;
-
-      for (i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function () {
-              this.classList.toggle("active");
-              var content = this.nextElementSibling;
-              if (content.style.display === "block") {
-                  content.style.display = "none";
-              } else {
-                  content.style.display = "block";
-              }
-          });
-      }
-  }
+  // collapseBank () {
+  //     var coll = document.getElementsByClassName("collapsible");
+  //     var i;
+  //
+  //     for (i = 0; i < coll.length; i++) {
+  //         coll[i].addEventListener("click", function () {
+  //             this.classList.toggle("active");
+  //             var content = this.nextElementSibling;
+  //             if (content.style.display === "block") {
+  //                 content.style.display = "none";
+  //             } else {
+  //                 content.style.display = "block";
+  //             }
+  //         });
+  //     }
+  // }
 
   render() {
     const {
@@ -127,6 +127,7 @@ export default class ProductDetailModal extends React.Component {
         docRequired,
         banks
     } = this.props.productDetail;
+    console.log(banks)
 
     return (
       <Modal active={this.props.active}>
@@ -227,14 +228,21 @@ export default class ProductDetailModal extends React.Component {
                       <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
                     </BillValue>
                   </SummaryInfo>
-                  <SummaryInfo>
-                      <Collapsible trigger="Start here">
-                          <div>
-                                <p>This is the collapsible content. It can be any element or React component you like.</p>
-                                <p>It can even be another Collapsible component. Check out the next section!</p>
-                          </div>
-                      </Collapsible>
-                  </SummaryInfo>
+                  <div style={{width: "calc(100% - 3rem)"}}>
+                      <button>
+                          <Collapsible trigger="Metode Pembayaran">
+                              {
+                                banks.map((bank, index) => (
+                                    <div key={index} className="collapsible">
+                                        <span> Nama Bank: <b>{bank.bankName}</b>  </span> <br/>
+                                        <span>Nomor Rekening : {bank.accountNumber} </span><br/>
+                                        <span>Atas Nama : {bank.accountName} </span>
+                                    </div>
+                                ))
+                              }
+                          </Collapsible>
+                      </button>
+                  </div>
                   <InfoPrompt color="G300" margin="0 auto 1.5rem">
                     <img src={ImproveIcon} />
                     <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
