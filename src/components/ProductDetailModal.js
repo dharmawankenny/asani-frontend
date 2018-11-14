@@ -30,6 +30,7 @@ export default class ProductDetailModal extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
+    console.log('ini di modal page')
     if (!this.props.active && prevProps.active) {
       document.body.style.overflow = 'auto';
     } else if (this.props.active && !prevProps.active) {

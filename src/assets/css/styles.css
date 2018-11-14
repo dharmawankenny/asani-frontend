@@ -2,7 +2,12 @@
     background-color: #2797FB;
     width: 100%;
     height: 400px;
-    /*background-image: url("../../assets/web-bg.png");*/
+}
+.bgImage {
+    background-image: url("../../assets/banner_front.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 100%;
 }
 .card-login {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -10,6 +15,7 @@
     background-color: white !important;
     z-index: 1000;
     border-radius: 5px;
+    margin-top: 55%
 }
 
 .card-padding {
@@ -18,6 +24,7 @@
     padding-right: 30px;
     padding-bottom: 20px;
 }
+
 
 .flex-container {
     display: flex;

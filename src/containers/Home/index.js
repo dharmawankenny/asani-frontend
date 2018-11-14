@@ -129,54 +129,56 @@ export default class Home extends React.Component {
   setSortQuery = sortQuery => () => this.setState({ sortQuery });
 
   toggleProductQuery = productKey => () => {
-    this.setState(prevState => {
-      // if (this.isAllProductQueryEnabled(prevState.productQuery)) {
-      const newProductQuery = { ...prevState.productQuery };
-      Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
-
-      return {
-        productQuery: {
-          ...newProductQuery,
-          [productKey]: true,
-        },
-      };
-      // } else if (this.isAllProductQueryNotEnabled({ ...prevState.productQuery, [productKey]: false })) {
-      //   const newProductQuery = { ...prevState.productQuery };
-      //   Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true );
-
-      //   return {
-      //     productQuery: {
-      //       ...newProductQuery,
-      //     },
-      //   };
-      // }
-
-      // return {
-      //   productQuery: {
-      //     ...prevState.productQuery,
-      //     [productKey]: !prevState.productQuery[productKey],
-      //   },
-      // };
-    });
+    console.log(' this is something')
+    // this.setState(prevState => {
+    //   // if (this.isAllProductQueryEnabled(prevState.productQuery)) {
+    //   const newProductQuery = { ...prevState.productQuery };
+    //   Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
+    //
+    //   return {
+    //     productQuery: {
+    //       ...newProductQuery,
+    //       [productKey]: true,
+    //     },
+    //   };
+    //   // } else if (this.isAllProductQueryNotEnabled({ ...prevState.productQuery, [productKey]: false })) {
+    //   //   const newProductQuery = { ...prevState.productQuery };
+    //   //   Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true );
+    //
+    //   //   return {
+    //   //     productQuery: {
+    //   //       ...newProductQuery,
+    //   //     },
+    //   //   };
+    //   // }
+    //
+    //   // return {
+    //   //   productQuery: {
+    //   //     ...prevState.productQuery,
+    //   //     [productKey]: !prevState.productQuery[productKey],
+    //   //   },
+    //   // };
+    // });
   };
 
   isAllProductQueryEnabled = productQuery => Object.values(productQuery).every(flag => flag);
   isAllProductQueryNotEnabled = productQuery => Object.values(productQuery).every(flag => !flag);
 
   toggleAllProduct = () => {
-    this.setState(prevState => {
-      const newProductQuery = { ...prevState.productQuery };
-
-      if (this.isAllProductQueryEnabled(newProductQuery)) {
-        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false);
-
-        return { productQuery: { ...newProductQuery } };
-      }
-
-      Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true);
-
-      return { productQuery: { ...newProductQuery } };
-    });
+    console.log('toggleAll product')
+    // this.setState(prevState => {
+    //   const newProductQuery = { ...prevState.productQuery };
+    //
+    //   if (this.isAllProductQueryEnabled(newProductQuery)) {
+    //     Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false);
+    //
+    //     return { productQuery: { ...newProductQuery } };
+    //   }
+    //
+    //   Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true);
+    //
+    //   return { productQuery: { ...newProductQuery } };
+    // });
   };
 
   onActiveLoanClick = loanId => () => {
@@ -184,7 +186,9 @@ export default class Home extends React.Component {
   };
 
   onProductClick = productId => () => {
-    this.props.productActions.getProductDetail(productId);
+    // this.props.productActions.getProductDetail(productId);
+      console.log('this is what', productId)
+      navigate('/dashboard/product_id/'+productId)
   };
 
   compareByUnlocked = (a, b) => {
@@ -376,6 +380,8 @@ export default class Home extends React.Component {
                           grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
                         })}
                         onClick={this.toggleProductQuery(product)}
+                        // onClick={() => navigate(SITEMAP.DETAIL_PAGE)}
+                        //   onClick={() => console.log('This is page change')}
                         id={`asani-actions-set-filter-type-to-${product}`}
                       >
                         {product}
