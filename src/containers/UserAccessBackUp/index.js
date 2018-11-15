@@ -307,10 +307,10 @@ export default class UserAccessBackUp extends React.Component {
                             <img className="img-style" src={Banner} alt="" onClick={this.triggerImage}/>
                         </div>
                     </div>
-                <div id="cardLogin" style={{backgroundColor: "#2797FB" , width: "100%", height: "60px"}} ></div>
+                <div id="cardLogin" style={{backgroundColor: "#2797FB" , width: "100%", height: "70px", marginTop: "-20px"}} ></div>
                     {this.state.step === 0 && (
                         <Fragment>
-                            <div className="card-bg">
+                            <div id="cardLogin" className="card-bg">
                                 <div className="card-login">
                                     <h3 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", color: "#42526E" }}>Bangun skor kredit kamu dan dapatkan pinjaman terbaik</h3>
                                     <div className="card-padding" >
