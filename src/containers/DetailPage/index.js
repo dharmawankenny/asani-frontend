@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import SITEMAP from '../../commons/sitemap';
 import moment from 'moment-timezone';
 import isEmpty from 'lodash/isEmpty';
 import swal from 'sweetalert';
-
+import {navigate} from '@reach/router'
 import ChevronDownIcon from '../../assets/chevron_down.svg';
 import CloseIcon from '../../assets/close.svg';
 import LoanIcon from '../../assets/loan_history.svg';
@@ -27,14 +28,15 @@ import * as creditScoreActions from "../../reducers/creditScore";
 import * as loanActions from "../../reducers/loan";
 import * as userDocumentActions from "../../reducers/userDocument";
 import store from '../../store/index'
+import ProductDetailModal from "../../components/ProductDetailModal";
 
 @connect(
     state => ({ ...state }),
     dispatch => ({
-        // creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
+        creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
         productActions: bindActionCreators(productActions, dispatch),
-        // loanActions: bindActionCreators(loanActions, dispatch),
-        // userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
+        loanActions: bindActionCreators(loanActions, dispatch),
+        userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
     })
 )
 export default class DetailPage extends React.Component {
@@ -120,32 +122,177 @@ export default class DetailPage extends React.Component {
     //     );
     // }
     render() {
-        let loading = this.props.product.detailLoading
-        let loaded = this.props.product.detailLoaded
-        let productDetail = this.props.detailedProduct
-        console.log(productDetail)
-        // const {
-        //     productType,
-        //     lenderName,
-        //     productPrice,
-        //     productNominal,
-        //     productDesc,
-        //     tenorDays,
-        //     interestPct,
-        //     interestAmount,
-        //     interestAnnualPct,
-        //     totalBill,
-        //     urlProductLogo,
-        //     adminFee,
-        //     penalty,
-        //     docRequired,
-        //     banks
-        // } = this.props.productDetail;
+        const active = true
+        const loading = this.props.product.detailLoading
+        const loaded = this.props.product.detailLoaded
+        const productDetail = this.props.product.detailedProduct
+        const uploadDocument = userDocumentActions.uploadDocument
+        const resetUploader = userDocumentActions.uploadingReset
+        const uploadProgress = this.props.userDocument.uploadProgress
+        const uploadFinished = this.props.userDocument.uploadFinished
+        const purchase = productActions.purchaseProduct
+        const resetPurchase = productActions.resetPurchase
+        const purchaseLoading = this.props.product.purchaseLoading
+        const purchaseSuccess = this.props.product.purchaseLoaded
+        const userBanned = this.props.product.userBanned
+        const purchaseError = this.props.product.purchaseError
+        const updateLoans = loanActions.getActiveLoans
+        const hasActiveLoans = this.props.loan.activeLoansLoaded && this.props.loan.activeLoans && this.props.loan.activeLoans.length > 0
+        const {
+            productType,
+            lenderName,
+            productPrice,
+            productNominal,
+            productDesc,
+            tenorDays,
+            interestPct,
+            interestAmount,
+            interestAnnualPct,
+            totalBill,
+            urlProductLogo,
+            adminFee,
+            penalty,
+            docRequired,
+            banks
+        } = productDetail;
         return (
             <Fragment>
+                <Content active={active}>
                 <Header>
                     <h1>Detil Peminjaman</h1>
+                    <button onClick={() => navigate(SITEMAP.HOME)} id="asani-actions-close-product-detail"><img src={CloseIcon} /></button>
                 </Header>
+                {loading && (
+                    <SpinnerWrapper>
+                        <Spinner color="N800" />
+                    </SpinnerWrapper>
+                )}
+                {loaded &&
+                productDetail &&
+                !isEmpty(productDetail) &&
+                docRequired.length !== 0 && (
+                    <Steps>
+                        {docRequired.length > 0 &&
+                        docRequired.map((doc, index) => (
+                            <Step key={index} active={this.state.currentStep >= index}>
+                                <div className="logo">
+                                    <img src={doc.icon_url} />
+                                </div>
+                                <span>Upload {doc.doc_name}</span>
+                                {index !== 0 && (
+                                    <div className="leftBar" />
+                                )}
+                                <div className="rightBar" />
+                            </Step>
+                        ))}
+                        <Step active={this.state.currentStep === docRequired.length}>
+                            <div className="logo">
+                                <img src={LoanIcon} />
+                            </div>
+                            <div className="leftBar" />
+                            <span>Review Peminjaman</span>
+                        </Step>
+                    </Steps>
+                )}
+                {loaded &&
+                productDetail &&
+                !isEmpty(productDetail) &&
+                this.state.currentStep < docRequired.length && (
+                    <DocUploadWrapper>
+                        <DocUpload
+                            userDocument={docRequired[this.state.currentStep]}
+                            upload={uploadDocument}
+                            progress={uploadProgress}
+                            finished={uploadFinished}
+                            finishedText="Selanjutnya"
+                            finishedCallback={this.successfullyUploadedCallback}
+                        />
+                    </DocUploadWrapper>
+                )}
+                {loaded &&
+                productDetail &&
+                !isEmpty(productDetail) &&
+                this.state.currentStep === docRequired.length && (
+                    <Fragment>
+                        <SummaryInfo>
+                            <ProductLogo src={urlProductLogo} />
+                            {productDesc && (
+                                <Info><span>{productDesc}</span></Info>
+                            )}
+                            <LabelValue>
+                                <span>Pemberi pinjaman</span>
+                                <span>{lenderName}</span>
+                            </LabelValue>
+                            <LabelValue>
+                                <span>Produk</span>
+                                <span>{productType}</span>
+                            </LabelValue>
+                            <LabelValue>
+                                <span>Harga Produk</span>
+                                <span>{printPrice(productPrice)}</span>
+                            </LabelValue>
+                            <LabelValue>
+                                <span>Nominal</span>
+                                <span>{productNominal}</span>
+                            </LabelValue>
+                            {/* <LabelValue>
+                      <span>% Bunga</span>
+                      <span>{interestPct}%</span>
+                    </LabelValue> */}
+                            <LabelValue>
+                                <span>Nominal Bunga</span>
+                                <span>{printPrice(interestAmount)}</span>
+                            </LabelValue>
+                            <LabelValue>
+                                <span>Admin Fee</span>
+                                <span>{Number(adminFee) === 0 ? '0' : printPrice(Number(adminFee))}</span>
+                            </LabelValue>
+                            <BillValue>
+                                <span>Total Tagihan</span>
+                                <span>{printPrice(totalBill)}</span>
+                                <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
+                            </BillValue>
+                        </SummaryInfo>
+                        <div style={{width: "calc(100% - 3rem)"}}>
+                            <button>
+                                <Collapsible trigger="Metode Pembayaran">
+                                    {
+                                        banks.map((bank, index) => (
+                                            <div key={index} className="collapsible">
+                                                <span> Nama Bank: <b>{bank.bankName}</b>  </span> <br/>
+                                                <span>Nomor Rekening : {bank.accountNumber} </span><br/>
+                                                <span>Atas Nama : {bank.accountName} </span>
+                                            </div>
+                                        ))
+                                    }
+                                </Collapsible>
+                            </button>
+                        </div>
+                        <InfoPrompt color="G300" margin="0 auto 1.5rem">
+                            <img src={ImproveIcon} />
+                            <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>
+                        </InfoPrompt>
+                        <Info align="center"><span>Dengan menekan tombol ambil pinjaman, saya setuju dengan detail pinjaman di atas.</span></Info>
+                    </Fragment>
+                )}
+                {loaded &&
+                productDetail &&
+                !isEmpty(productDetail) &&
+                this.state.currentStep === docRequired.length && (
+                    <ActionButtonWrapper>
+                        <BigActionButton
+                            color={hasActiveLoans ? 'N300' : 'G300'}
+                            onClick={() => purchase(productDetail.productId)}
+                            disabled={purchaseLoading} id={`asani-actions-purchase-product-${productType}`}
+                        >
+                            {!purchaseLoading && 'Ambil Pinjaman'}
+                            {purchaseLoading && (
+                                <Spinner color="N0" />
+                            )}
+                        </BigActionButton>
+                    </ActionButtonWrapper>
+                )}
+                </Content>
             </Fragment>
         )
         // return (

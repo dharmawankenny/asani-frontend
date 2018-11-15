@@ -78,11 +78,14 @@ export default class App extends React.Component {
 
   componentDidMount() {
     // force redirection
-    if (!this.state.loggedIn && !window.location.pathname.startsWith(SITEMAP.AUTHENTICATION)) {
-      navigate(SITEMAP.AUTHENTICATION);
-    } else if (this.state.loggedIn && window.location.pathname.startsWith(SITEMAP.AUTHENTICATION)) {
-      navigate(SITEMAP.HOME);
-    }
+      if (this.state.loggedIn && window.location.pathname.startsWith("/"))  {
+          navigate(SITEMAP.HOME);
+      }
+      else if (!this.state.loggedIn && !window.location.pathname.startsWith(SITEMAP.AUTHENTICATION)) {
+        navigate(SITEMAP.AUTHENTICATION);
+      } else if (this.state.loggedIn && window.location.pathname.startsWith(SITEMAP.AUTHENTICATION)) {
+        navigate(SITEMAP.HOME);
+      }
   }
 
   logIn = async (token) => {

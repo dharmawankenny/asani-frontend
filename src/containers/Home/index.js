@@ -287,7 +287,7 @@ export default class Home extends React.Component {
   };
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <Fragment>
         <Header withMenu />
@@ -398,31 +398,6 @@ export default class Home extends React.Component {
               this.applyFilter(this.props.product.products).map(product => (
                 <ProductCard product={product} onClick={this.onProductClick(product.productId)} />
               ))}
-            {this.props.product.loaded &&
-              this.props.product.products && (
-                <ProductDetailModal
-                  active={!isEmpty(this.props.product.detailedProduct) || this.props.product.detailLoading}
-                  loading={this.props.product.detailLoading}
-                  loaded={this.props.product.detailLoaded}
-                  productDetail={this.props.product.detailedProduct}
-                  onClose={() => {
-                    this.props.productActions.resetDetail();
-                    this.props.userDocumentActions.uploadingReset();
-                  }}
-                  uploadDocument={this.props.userDocumentActions.uploadDocument}
-                  resetUploader={this.props.userDocumentActions.uploadingReset}
-                  uploadProgress={this.props.userDocument.uploadProgress}
-                  uploadFinished={this.props.userDocument.uploadFinished}
-                  purchase={this.props.productActions.purchaseProduct}
-                  resetPurchase={this.props.productActions.resetPurchase}
-                  purchaseLoading={this.props.product.purchaseLoading}
-                  purchaseSuccess={this.props.product.purchaseLoaded}
-				  userBanned={this.props.product.userBanned}
-                  purchaseError={this.props.product.purchaseError}
-                  updateLoans={this.props.loanActions.getActiveLoans}
-                  hasActiveLoans={this.props.loan.activeLoansLoaded && this.props.loan.activeLoans && this.props.loan.activeLoans.length > 0}
-                />
-              )}
             {this.props.product.loaded &&
               this.props.product.products &&
               this.props.product.products.length === 0 && (
