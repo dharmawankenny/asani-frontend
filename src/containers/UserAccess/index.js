@@ -295,6 +295,7 @@ export default class UserAccess extends React.Component {
             <div className="bgImage-backup">
                 <img className="img-backup" src={Banner} alt="" onClick={imageTrigger} />
             </div>
+        <div>Hellow</div>
                 {/*<h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>*/}
                 {/*{this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
                 {/*/!*{this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}*!/*/}
