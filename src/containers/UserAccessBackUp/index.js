@@ -8,7 +8,7 @@ import NoInterestIcon from '../../assets/no_interest.svg';
 import BuyNowPayLaterIcon from '../../assets/buy_now_pay_later.svg';
 import ManyProductsIcon from '../../assets/many_products.svg';
 import EmptyProfileImg from '../../assets/empty_profile.png';
-import Banner from '../../assets/banner_front.png'
+import Banner from '../../assets/new-banner.png'
 import { flex } from '../../commons/theme';
 
 import { BigActionButton } from '../../components/Buttons';
