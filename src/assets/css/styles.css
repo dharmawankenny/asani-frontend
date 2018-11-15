@@ -9,7 +9,32 @@
     z-index: 1;
     /*background-color: red;*/
 }
-
+@media only screen and (max-width: 561px) {
+    .card-bg {
+        width: 100%;
+        /*height: 400px;*/
+        height: 130px;
+        margin: auto;
+        z-index: 1;
+        /*background-color: red;*/
+        background-color: #2797FB;
+        padding-right: 24px !important;
+        padding-left: 24px !important;
+    }
+}
+@media only screen and (max-width: 512px) {
+    .card-bg {
+        width: 100%;
+        /*height: 400px;*/
+        height: 130px;
+        margin: auto;
+        z-index: 1;
+        /*background-color: red;*/
+        background-color: #2797FB;
+        padding-right: 24px !important;
+        padding-left: 24px !important;
+    }
+}
 @media only screen and (max-width: 512px) {
     .img-style {
         width: 100% !important;
