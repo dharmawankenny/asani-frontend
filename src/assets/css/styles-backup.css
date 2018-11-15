@@ -1,0 +1,187 @@
+
+/*!*ini yang asli tikect.com*!*/
+/*.bgColor {*/
+    /*!*background-color: #2797FB;*!*/
+    /*width: 100%;*/
+    /*!*height: 400px;*!*/
+    /*height: 260px;*/
+    /*margin: auto;*/
+    /*z-index: 1;*/
+    /*!*background-color: red;*!*/
+/*}*/
+
+/*@media only screen and (max-width: 512px) {*/
+    /*.img-style {*/
+        /*width: 100% !important;*/
+        /*!*margin: auto;*!*/
+        /*margin-left: auto;*/
+        /*margin-right: auto;*/
+        /*display: block;*/
+    /*}*/
+    /*.card-login {*/
+        /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
+        /*width: 100% !important;*/
+        /*background-color: white !important;*/
+        /*z-index: 1000;*/
+        /*border-radius: 5px;*/
+        /*display: block;*/
+        /*margin-left: auto;*/
+        /*margin-right: auto;*/
+        /*!*margin-top: -200px !important;*!*/
+        /*!*padding-top: 56.25%; !* 16:9 Aspect Ratio *!*!*/
+        /*!*padding-bottom: 56.25%;*!*/
+        /*!*margin: 0 1.5rem 3rem;*!*/
+    /*}*/
+    /*.bgImage {*/
+        /*!*background-image: url("../../assets/banner_front.png");*!*/
+        /*background-size: 100%;*/
+        /*background-repeat: no-repeat;*/
+        /*!*width: 50%;*!*/
+        /*height: 100%;*/
+        /*width: 100%;*/
+        /*margin: auto;*/
+    /*}*/
+
+/*}*/
+/*.card-bg {*/
+    /*width: 100%;*/
+    /*!*height: 400px;*!*/
+    /*height: 130px;*/
+    /*margin: auto;*/
+    /*z-index: 1;*/
+    /*!*background-color: red;*!*/
+    /*background-color: #2797FB;*/
+/*}*/
+/*.img-backup {*/
+    /*width: 512px;*/
+    /*!*height: 100%;*!*/
+    /*height: 260px;*/
+    /*!*margin: auto;*!*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*display: block*/
+/*}*/
+
+/*!*ini yang asli tiket.com*!*/
+/*!*.bgImage {*!*/
+/*!*!*background-image: url("../../assets/banner_front.png");*!*!*/
+/*!*!*background-size: 100%;*!*!*/
+/*!*background-repeat: no-repeat;*!*/
+/*!*!*width: 50%;*!*!*/
+/*!*width: 100%;*!*/
+/*!*margin: auto;*!*/
+/*!*}*!*/
+/*!*ini asli tiket.com*!*/
+
+/*.bgImage-backup {*/
+    /*!*background-image: url("../../assets/banner_front.png");*!*/
+    /*background-size: 100%;*/
+    /*background-repeat: no-repeat;*/
+    /*!*width: 50%;*!*/
+    /*width: 100%;*/
+    /*height: 260px;*/
+    /*margin: auto;*/
+/*}*/
+
+
+
+/*!*ini asli tiket.com*!*/
+/*.img-style {*/
+    /*width: 512px;*/
+    /*!*height: 100%;*!*/
+    /*height: 260px;*/
+    /*!*margin: auto;*!*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*display: block*/
+/*}*/
+
+
+/*.section-lender {*/
+    /*background-color: #F4F5F7;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+/*}*/
+/*.card-login {*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
+    /*width: 512px;*/
+    /*background-color: white !important;*/
+    /*z-index: 1000;*/
+    /*border-radius: 5px;*/
+    /*display: block;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*!*margin-top: -200px !important;*!*/
+    /*!*padding-top: 56.25%; !* 16:9 Aspect Ratio *!*!*/
+    /*!*padding-bottom: 56.25%;*!*/
+    /*!*margin: 0 1.5rem 3rem;*!*/
+/*}*/
+
+/*.card-padding {*/
+    /*padding: 0 16px 16px;*/
+/*}*/
+
+
+/*.flex-container {*/
+    /*display: flex;*/
+    /*justify-content: center;*/
+/*}*/
+
+/*.grid-container {*/
+    /*display: grid;*/
+    /*justify-content: center;*/
+    /*grid-template-columns: 50px 50px 50px;!*Make the grid smaller than the container*!*/
+    /*grid-gap: 10px;*/
+    /*padding: 10px;*/
+/*}*/
+
+/*.footer-color {*/
+    /*background-color: #404040;*/
+    /*padding: 20px;*/
+    /*width: 100%;*/
+/*}*/
+
+/*!*@media only screen and (min-width: 900px)  {*!*/
+/*!*.center-footer {*!*/
+/*!*margin: auto;*!*/
+/*!*width: 30%;*!*/
+/*!*padding: 10px;*!*/
+/*!*}*!*/
+/*!*}*!*/
+
+/*.collapsible {*/
+    /*background-color: #777;*/
+    /*color: white;*/
+    /*cursor: pointer;*/
+    /*padding: 18px;*/
+    /*width: 100%;*/
+    /*border: none;*/
+    /*text-align: left;*/
+    /*outline: none;*/
+    /*font-size: 15px;*/
+/*}*/
+
+/*.active, .collapsible:hover {*/
+    /*background-color: #555;*/
+/*}*/
+
+/*.content {*/
+    /*padding: 0 18px;*/
+    /*display: none;*/
+    /*overflow: hidden;*/
+    /*background-color: #f1f1f1;*/
+/*}*/
+
+/*.Collapsible_trigger {*/
+    /*width: 100%;*/
+/*}*/
+
+/*!*.flex-container > div {*!*/
+/*!*background-color: #f1f1f1;*!*/
+/*!*width: 100px;*!*/
+/*!*margin: 10px;*!*/
+/*!*text-align: center;*!*/
+/*!*line-height: 75px;*!*/
+/*!*font-size: 30px;*!*/
+/*!*}*!*/
+

@@ -13,7 +13,7 @@ import { flex } from '../../commons/theme';
 
 import { BigActionButton } from '../../components/Buttons';
 import Footer from '../../components/Footer';
-import HeaderUserAccess from '../../components/HeaderUserAccess';
+import Header from '../../components/Header';
 import Input from '../../components/Input';
 import { PageWrapperNoPadding } from '../../components/PageBuilderNoPadding';
 import Spinner from '../../components/Spinner';
@@ -290,148 +290,146 @@ export default class UserAccessBackUp extends React.Component {
     render () {
         return (
             <Fragment>
-                    <HeaderUserAccess stopNavigation naked withHelp />
-                    {/*<div className="bgImage"></div>*/}
-                    <div className="bgColor">
-                        <div className="bgImage">
-                            <img className="img-style" src={Banner} alt=""/>
-                        </div>
+                <Header stopNavigation naked withHelp />
+                {/*<div className="bgImage"></div>*/}
+                <div className="bgColor">
+                    <div className="bgImage">
+                        <img className="img-style" src={Banner} alt=""/>
                     </div>
-                    {this.state.step === 0 && (
-                        <Fragment>
-                            <div className="card-bg">
-                                <div className="card-login">
-                                    <h3 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", color: "#42526E" }}>Bangun skor kredit kamu dan dapatkan pinjaman terbaik</h3>
-                                    <div className="card-padding" >
-                                        <Input
-                                            label="Nomor Handphone Kamu"
-                                            prefix="+62"
-                                            type="tel"
-                                            placeholder="8XXXXXXXXX"
-                                            value={this.state.telNumber}
-                                            error={this.state.telNumberError}
-                                            onChange={evt => this.setTelNumber(evt.target.value)}
-                                        />
-                                        <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
-                                            {!this.state.loading && 'Masuk / Daftar'}
+                </div>
+                {this.state.step === 0 && (
+                    <Fragment>
+                        <div className="card-bg">
+                            <div className="card-login">
+                                <h3 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", color: "#42526E" }}>Bangun skor kredit kamu dan dapatkan pinjaman terbaik</h3>
+                                <div className="card-padding" >
+                                    <Input
+                                        label="Nomor Handphone Kamu"
+                                        prefix="+62"
+                                        type="tel"
+                                        placeholder="8XXXXXXXXX"
+                                        value={this.state.telNumber}
+                                        error={this.state.telNumberError}
+                                        onChange={evt => this.setTelNumber(evt.target.value)}
+                                    />
+                                    <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
+                                        {!this.state.loading && 'Masuk / Daftar'}
+                                        {this.state.loading && (
+                                            <Spinner color="N0" />
+                                        )}
+                                    </BigActionButton>
+                                </div>
+                            </div>
+                        </div>
+                    </Fragment>
+                )}
+                {this.state.step === 1 && (
+                    <Fragment>
+                        <div className="card-login">
+                            <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "20px", paddingRight: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor handphone anda</h1>
+                            <div className="card-padding">
+                                <Input
+                                    label="4 Angka Kode OTP Yang Diberikan Via SMS"
+                                    type="text"
+                                    placeholder="XXXX"
+                                    value={this.state.otpCode}
+                                    error={this.state.otpCodeError}
+                                    onChange={evt => this.setOtpCode(evt.target.value)}
+                                />
+                                <AuthConsumer>
+                                    {({ logIn }) => (
+                                        <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" id="asani-actions-verify-otp">
+                                            {!this.state.loading && 'Verifikasi Kode OTP'}
                                             {this.state.loading && (
                                                 <Spinner color="N0" />
                                             )}
                                         </BigActionButton>
-                                    </div>
-                                </div>
-                            </div>
-                        </Fragment>
-                    )}
-                    {this.state.step === 1 && (
-                        <Fragment>
-                            <div className="card-bg">
-                                <div className="card-login">
-                                    <h3 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "20px", paddingRight: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E", marginTop: "0px !important" }}>Kode verifikasi OTP telah dikirim ke nomor handphone anda</h3>
-                                    <div className="card-padding">
-                                        <Input
-                                            label="4 Angka Kode OTP Yang Diberikan Via SMS"
-                                            type="text"
-                                            placeholder="XXXX"
-                                            value={this.state.otpCode}
-                                            error={this.state.otpCodeError}
-                                            onChange={evt => this.setOtpCode(evt.target.value)}
-                                        />
-                                        <AuthConsumer>
-                                            {({ logIn }) => (
-                                                <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" id="asani-actions-verify-otp">
-                                                    {!this.state.loading && 'Verifikasi Kode OTP'}
-                                                    {this.state.loading && (
-                                                        <Spinner color="N0" />
-                                                    )}
-                                                </BigActionButton>
-                                            )}
-                                        </AuthConsumer>
-                                        {this.state.retryTimer > 0 && (
-                                            <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
+                                    )}
+                                </AuthConsumer>
+                                {this.state.retryTimer > 0 && (
+                                    <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
+                                )}
+                                {this.state.retryTimer === 0 && (
+                                    <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
+                                        {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
+                                        {this.state.loading && (
+                                            <Spinner color="N0" />
                                         )}
-                                        {this.state.retryTimer === 0 && (
-                                            <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
-                                                {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
-                                                {this.state.loading && (
-                                                    <Spinner color="N0" />
-                                                )}
-                                            </RetryButton>
-                                        )}
-                                    </div>
-                                </div>
+                                    </RetryButton>
+                                )}
                             </div>
-                        </Fragment>
-                    )}
-                    <PageWrapperNoPadding vertical>
-                        <Content>
-                                    {/*<h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>*/}
-                                    {/*{this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
-                                    {/*/!*{this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}*!/*/}
-                                    {/*{this.state.step === 1 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
-                                    {/*</h1>*/}
+                        </div>
+                    </Fragment>
+                )}
+                <PageWrapperNoPadding vertical>
+                    <Content>
+                        {/*<h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>*/}
+                        {/*{this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
+                        {/*/!*{this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}*!/*/}
+                        {/*{this.state.step === 1 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
+                        {/*</h1>*/}
 
-                            <Segment>
-                                <div style={{marginTop: "120px"}}>
-                                    <OurPro margin="1rem 1rem 1rem 0">
-                                        <img src={CreditScoreIcon} />
-                                        <h2>Cek & tingkatkan skor kredit kamu, gratis!</h2>
-                                    </OurPro>
-                                    <OurPro margin="1rem 0 1rem 1rem">
-                                        <img src={NoInterestIcon} />
-                                        <h2>Pilih pinjaman terbaikmu dari mitra lender kami
-                                        </h2>
-                                    </OurPro>
-                                    <OurPro margin="1rem 1rem 0 0">
-                                        <img src={BuyNowPayLaterIcon} />
-                                        <h2>Proses cepat, teman disaat darurat
-                                        </h2>
-                                    </OurPro>
-                                    <OurPro margin="1rem 0 0 1rem">
-                                        <img src={ManyProductsIcon} />
-                                        <h2>Tanpa bunga, tanpa denda, tanpa jaminan</h2>
-                                    </OurPro>
-                                </div>
-                            </Segment>
-                            <div className="section-lender">
-                                <Segment>
-                                    <h1>Mitra Lender</h1>
-                                    <div>
-                                        <div className="flex-container">
-                                            {UserAccessBackUp.MitraUrl.map((MitraUrl, index) => <MitraIcon key={index} src={MitraUrl} />)}
-                                        </div>
-                                    </div>
-                                    <div style={{marginTop: "48px"}}>
-                                        <h1>Tawaran Pinjaman Tersedia</h1>
-                                        <div>
-                                            {UserAccessBackUp.ProductsUrl.map((productUrl, index) => <ProductIcon key={index} src={productUrl} />)}
-                                        </div>
-                                    </div>
-                                </Segment>
+                        <Segment>
+                            <div style={{marginTop: "120px"}}>
+                                <OurPro margin="1rem 1rem 1rem 0">
+                                    <img src={CreditScoreIcon} />
+                                    <h2>Cek & tingkatkan skor kredit kamu, gratis!</h2>
+                                </OurPro>
+                                <OurPro margin="1rem 0 1rem 1rem">
+                                    <img src={NoInterestIcon} />
+                                    <h2>Pilih pinjaman terbaikmu dari mitra lender kami
+                                    </h2>
+                                </OurPro>
+                                <OurPro margin="1rem 1rem 0 0">
+                                    <img src={BuyNowPayLaterIcon} />
+                                    <h2>Proses cepat, teman disaat darurat
+                                    </h2>
+                                </OurPro>
+                                <OurPro margin="1rem 0 0 1rem">
+                                    <img src={ManyProductsIcon} />
+                                    <h2>Tanpa bunga, tanpa denda, tanpa jaminan</h2>
+                                </OurPro>
                             </div>
-                            <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
-                                <h1>Testimoni Pelanggan</h1>
+                        </Segment>
+                        <div className="section-lender">
+                            <Segment>
+                                <h1>Mitra Lender</h1>
                                 <div>
-                                    {UserAccessBackUp.Testimonies.map((tst, index) => (
-                                        <Testimony key={index}>
-                                            <img src={tst.profileImg} />
-                                            <h2>{tst.name}</h2>
-                                            <p>{tst.testimony}</p>
-                                        </Testimony>
-                                    ))}
+                                    <div className="flex-container">
+                                        {UserAccessBackUp.MitraUrl.map((MitraUrl, index) => <MitraIcon key={index} src={MitraUrl} />)}
+                                    </div>
+                                </div>
+                                <div style={{marginTop: "48px"}}>
+                                    <h1>Tawaran Pinjaman Tersedia</h1>
+                                    <div>
+                                        {UserAccessBackUp.ProductsUrl.map((productUrl, index) => <ProductIcon key={index} src={productUrl} />)}
+                                    </div>
                                 </div>
                             </Segment>
-                            {/*<Segment>*/}
-                            {/*<h1>FAQ</h1>*/}
-                            {/*<div>*/}
-                            {/*{UserAccess.FAQ.map(faq => (*/}
-                            {/*<FAQItem {...faq} />*/}
-                            {/*))}*/}
-                            {/*</div>*/}
-                            {/*</Segment>*/}
-                        </Content>
-                        <Footer withCopy />
-                    </PageWrapperNoPadding>
+                        </div>
+                        <Segment flex={{ justify: 'flex-start', align: 'flex-start' }}>
+                            <h1>Testimoni Pelanggan</h1>
+                            <div>
+                                {UserAccessBackUp.Testimonies.map((tst, index) => (
+                                    <Testimony key={index}>
+                                        <img src={tst.profileImg} />
+                                        <h2>{tst.name}</h2>
+                                        <p>{tst.testimony}</p>
+                                    </Testimony>
+                                ))}
+                            </div>
+                        </Segment>
+                        {/*<Segment>*/}
+                        {/*<h1>FAQ</h1>*/}
+                        {/*<div>*/}
+                        {/*{UserAccess.FAQ.map(faq => (*/}
+                        {/*<FAQItem {...faq} />*/}
+                        {/*))}*/}
+                        {/*</div>*/}
+                        {/*</Segment>*/}
+                    </Content>
+                    <Footer withCopy />
+                </PageWrapperNoPadding>
             </Fragment>
         )
     }

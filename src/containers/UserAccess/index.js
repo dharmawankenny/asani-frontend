@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import swal from 'sweetalert';
-import '../../assets/css/styles.css'
+import '../../assets/css/styles-backup.css'
 import BgImage from '../../assets/bg.png';
 import CreditScoreIcon from '../../assets/credit_score.svg';
 import NoInterestIcon from '../../assets/no_interest.svg';
@@ -9,7 +9,7 @@ import BuyNowPayLaterIcon from '../../assets/buy_now_pay_later.svg';
 import ManyProductsIcon from '../../assets/many_products.svg';
 import EmptyProfileImg from '../../assets/empty_profile.png';
 import { flex } from '../../commons/theme';
-
+import Banner from '../../assets/banner_front.png'
 import { BigActionButton } from '../../components/Buttons';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -288,20 +288,18 @@ export default class UserAccess extends React.Component {
   render() {
     return (
       <Fragment>
-          <div className="bgColor" >
             <Header stopNavigation naked withHelp />
-            <PageWrapperNoPadding vertical>
-              <Content>
-                <div className="bgImage">
-                    <MainFocus>
-                      {/*<h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>*/}
-                        {/*{this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
-                        {/*/!*{this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}*!/*/}
-                          {/*{this.state.step === 1 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
-                      {/*</h1>*/}
-                      {this.state.step === 0 && (
-                        <Fragment>
-                          <div className="card-login">
+            <div className="bgImage-backup">
+                <img className="img-backup" src={Banner} alt=""/>
+            </div>
+                {/*<h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>*/}
+                {/*{this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
+                {/*/!*{this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor WhatsApp anda'}*!/*/}
+                {/*{this.state.step === 1 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
+                {/*</h1>*/}
+                {this.state.step === 0 && (
+                    <Fragment>
+                        <div className="card-login">
                             <h3 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", color: "#42526E" }}>Bangun skor kredit kamu dan dapatkan pinjaman terbaik</h3>
                             <div className="card-padding" >
                                 <Input
@@ -312,57 +310,60 @@ export default class UserAccess extends React.Component {
                                     value={this.state.telNumber}
                                     error={this.state.telNumberError}
                                     onChange={evt => this.setTelNumber(evt.target.value)}
-                              />
-                              <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
-                                {!this.state.loading && 'Masuk / Daftar'}
-                                {this.state.loading && (
-                                  <Spinner color="N0" />
-                                )}
-                              </BigActionButton>
+                                />
+                                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
+                                    {!this.state.loading && 'Masuk / Daftar'}
+                                    {this.state.loading && (
+                                        <Spinner color="N0" />
+                                    )}
+                                </BigActionButton>
                             </div>
-                          </div>
-                        </Fragment>
-                      )}
-                    {this.state.step === 1 && (
-                      <Fragment>
+                        </div>
+                    </Fragment>
+                )}
+                {this.state.step === 1 && (
+                    <Fragment>
                         <div className="card-login">
                             <h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "20px", paddingRight: "20px", marginBottom:"12px", fontWeight: 500, color: "#42526E" }}>Kode verifikasi OTP telah dikirim ke nomor handphone anda</h1>
-                          <div className="card-padding">
-                            <Input
-                          label="4 Angka Kode OTP Yang Diberikan Via SMS"
-                          type="text"
-                          placeholder="XXXX"
-                          value={this.state.otpCode}
-                          error={this.state.otpCodeError}
-                          onChange={evt => this.setOtpCode(evt.target.value)}
-                        />
-                        <AuthConsumer>
-                          {({ logIn }) => (
-                            <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" id="asani-actions-verify-otp">
-                              {!this.state.loading && 'Verifikasi Kode OTP'}
-                              {this.state.loading && (
-                                <Spinner color="N0" />
-                              )}
-                            </BigActionButton>
-                          )}
-                        </AuthConsumer>
-                        {this.state.retryTimer > 0 && (
-                          <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
-                        )}
-                        {this.state.retryTimer === 0 && (
-                          <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
-                            {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
-                            {this.state.loading && (
-                              <Spinner color="N0" />
-                            )}
-                          </RetryButton>
-                        )}
-                          </div>
+                            <div className="card-padding">
+                                <Input
+                                    label="4 Angka Kode OTP Yang Diberikan Via SMS"
+                                    type="text"
+                                    placeholder="XXXX"
+                                    value={this.state.otpCode}
+                                    error={this.state.otpCodeError}
+                                    onChange={evt => this.setOtpCode(evt.target.value)}
+                                />
+                                <AuthConsumer>
+                                    {({ logIn }) => (
+                                        <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" id="asani-actions-verify-otp">
+                                            {!this.state.loading && 'Verifikasi Kode OTP'}
+                                            {this.state.loading && (
+                                                <Spinner color="N0" />
+                                            )}
+                                        </BigActionButton>
+                                    )}
+                                </AuthConsumer>
+                                {this.state.retryTimer > 0 && (
+                                    <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
+                                )}
+                                {this.state.retryTimer === 0 && (
+                                    <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
+                                        {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
+                                        {this.state.loading && (
+                                            <Spinner color="N0" />
+                                        )}
+                                    </RetryButton>
+                                )}
+                            </div>
                         </div>
-                      </Fragment>
-                    )}
-                    </MainFocus>
-                </div>
+                    </Fragment>
+                )}
+            <PageWrapperNoPadding vertical>
+              <Content>
+                {/*<div className="bgImage">*/}
+
+                {/*</div>*/}
                 <Segment>
                   <div style={{marginTop: "-20px"}}>
                     <OurPro margin="1rem 1rem 1rem 0">
@@ -424,7 +425,6 @@ export default class UserAccess extends React.Component {
               </Content>
                 <Footer withCopy />
             </PageWrapperNoPadding>
-          </div>
          {/*<Background src={BgImage} />*/}
       </Fragment>
     );
@@ -480,7 +480,7 @@ const Content = styled.div`
 const MainFocus = styled.div`
   width: 100%;
   min-height: calc(100vh - 15rem);
-  margin-top: 200px !important ;
+  margin-top: 20px !important ;
   ${flex({ justify: 'flex-start' })}
 `;
 
@@ -634,7 +634,7 @@ const ProductIcon = styled.img`
 
 const MitraIcon = styled.img`
   width: calc((100% - 6rem) / 4);
-  height: calc((100% - 6rem) / 4);
+  height: 54px;
   margin: 1.5rem 1.5rem 0 0;
   display: block;
   &:nth-of-type(1),
