@@ -1,14 +1,100 @@
 .bgColor {
     background-color: #2797FB;
     width: 100%;
-    height: 400px;
+    /*height: 400px;*/
+    height: 260px;
+    margin: auto;
+    z-index: 1;
+    /*background-color: red;*/
+}
+/*.bgColor {*/
+    /*background-color: red;*/
+    /*width: 100%;*/
+    /*padding-top: 56.25%; !* 16:9 Aspect Ratio *!*/
+/*}*/
+/*@media only screen and (max-width: 712px) {*/
+    /*.bgColor {*/
+        /*background-color: #2797FB;*/
+        /*width: 60%;*/
+        /*height: 100%;*/
+        /*margin: auto*/
+    /*}*/
+    /*!*.card-login {*!*/
+        /*!*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*!*/
+        /*!*width: 100%;*!*/
+        /*!*background-color: white !important;*!*/
+        /*!*z-index: 1000;*!*/
+        /*!*border-radius: 5px;*!*/
+        /*!*margin-top: 200px !important;*!*/
+        /*!*!*margin: 0 1.5rem 3rem;*!*!*/
+    /*!*}*!*/
+/*}*/
+/*@media only screen and (max-width: 480px) {*/
+    /*.bgColor {*/
+        /*background-color: #2797FB;*/
+        /*width: 100%;*/
+        /*height: 400px;*/
+        /*margin: auto*/
+    /*}*/
+/*}*/
+/*.bgImage {*/
+    /*background-image: url("../../assets/banner_front.png");*/
+    /*background-size: 100%;*/
+    /*background-repeat: no-repeat;*/
+    /*width: 100%;*/
+    /*margin: auto;*/
+/*}*/
+@media only screen and (max-width: 512px) {
+    .img-style {
+        width: 100% !important;
+        /*height: 100%;*/
+        height: 260px;
+        /*margin: auto;*/
+        margin-left: auto;
+        margin-right: auto;
+        display: block
+    }
+    .card-login {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        width: 100% !important;
+        background-color: white !important;
+        z-index: 1000;
+        border-radius: 5px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        /*margin-top: -200px !important;*/
+        /*padding-top: 56.25%; !* 16:9 Aspect Ratio *!*/
+        /*padding-bottom: 56.25%;*/
+        /*margin: 0 1.5rem 3rem;*/
+    }
+
+}
+.card-bg {
+    width: 100%;
+    /*height: 400px;*/
+    height: 130px;
+    margin: auto;
+    z-index: 1;
+    /*background-color: red;*/
+    background-color: #2797FB;
 }
 .bgImage {
-    background-image: url("../../assets/banner_front.png");
-    background-size: 100%;
+    /*background-image: url("../../assets/banner_front.png");*/
+    /*background-size: 100%;*/
     background-repeat: no-repeat;
+    /*width: 50%;*/
     width: 100%;
-    margin: 0 16px 3rem;
+    margin: auto;
+}
+.img-style {
+    width: 512px;
+    /*height: 100%;*/
+    height: 260px;
+    /*margin: auto;*/
+    margin-left: auto;
+    margin-right: auto;
+    display: block
 }
 
 .section-lender {
@@ -18,11 +104,16 @@
 }
 .card-login {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    width: 100%;
+    width: 512px;
     background-color: white !important;
     z-index: 1000;
     border-radius: 5px;
-    margin-top: 55% !important;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /*margin-top: -200px !important;*/
+    /*padding-top: 56.25%; !* 16:9 Aspect Ratio *!*/
+    /*padding-bottom: 56.25%;*/
     /*margin: 0 1.5rem 3rem;*/
 }
 

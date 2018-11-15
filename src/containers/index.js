@@ -1,5 +1,6 @@
 import Home from './Home';
-import UserAccess from './UserAccess';
+import UserAccessBackUp from './UserAccessBackUp';
+import UserAccess from './UserAccess'
 import CreditScore from './CreditScore';
 import LoanHistory from './LoanHistory';
 import WhatIsACreditScore from './WhatIsACreditScore';
@@ -14,7 +15,7 @@ export const AUTHENTICATED_PAGES = {
 };
 
 export const UNAUTHENTICATED_PAGES = {
-  AUTHENTICATION: UserAccess,
+  AUTHENTICATION: UserAccessBackUp,
 };
 
 export default {

@@ -65,7 +65,7 @@ export default class Header extends React.Component {
     // if (this.state.shouldRenderToDom) {
     //   return ReactDOM.createPortal(
     return (
-          <Headroom style={{position: "fixed"}} disable={this.props.naked}>
+          <Headroom style={{position: "relative"}} disable={this.props.naked}>
             <Wrapper naked={this.props.naked}>
                 <div style={{backgroundColor: "#2797FB", width: "100%"}}>
                   <LogoMenu>
@@ -189,7 +189,7 @@ const MenuToggle = styled.button`
 `;
 
 const Menu = styled.div`
-  position: fixed;
+  position: relative;
   z-index: 1000;
   transform: translate3d(0, ${props => props.active ? '0' : '-100vh'}, 0);
   transition: ${props => props.active ? 'none' : '0s ease all 0.25s'};

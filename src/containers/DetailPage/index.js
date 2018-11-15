@@ -31,10 +31,10 @@ import store from '../../store/index'
 @connect(
     state => ({ ...state }),
     dispatch => ({
-        creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
+        // creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
         productActions: bindActionCreators(productActions, dispatch),
-        loanActions: bindActionCreators(loanActions, dispatch),
-        userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
+        // loanActions: bindActionCreators(loanActions, dispatch),
+        // userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
     })
 )
 export default class DetailPage extends React.Component {
@@ -46,10 +46,11 @@ export default class DetailPage extends React.Component {
         currentStep: 0,
     };
     componentDidMount () {
-        let temp = this.props.location.pathname
-        let tempPath = temp.split('/')
-        let path = tempPath[3]
+        // let temp = this.props.location.pathname
+        // let tempPath = temp.split('/')
+        // let path = tempPath[3]
         this.props.productActions.getProductDetail(this.props.id)
+        // this.props.productActions.getProducts()
     }
     componentDidUpdate(prevProps) {
         if (!this.props.active && prevProps.active) {
@@ -100,7 +101,6 @@ export default class DetailPage extends React.Component {
 
     componentWillUnmount() {
         // this.props.onClose();
-        document.body.style.overflow = 'auto';
     }
 
     successfullyUploadedCallback = () => {
@@ -111,7 +111,6 @@ export default class DetailPage extends React.Component {
     successfullyPurchasedCallback = () => {
         this.props.resetPurchase();
         this.props.updateLoans();
-        this.props.onClose();
     }
     // render() {
     //     return (
@@ -123,27 +122,25 @@ export default class DetailPage extends React.Component {
     render() {
         let loading = this.props.product.detailLoading
         let loaded = this.props.product.detailLoaded
-        let productDetail = this.props
-        // console.log('loading', this.props)
-        // console.log(store().getState().product)
-        // console.log(productActions)
-        const {
-            productType,
-            lenderName,
-            productPrice,
-            productNominal,
-            productDesc,
-            tenorDays,
-            interestPct,
-            interestAmount,
-            interestAnnualPct,
-            totalBill,
-            urlProductLogo,
-            adminFee,
-            penalty,
-            docRequired,
-            banks
-        } = this.props.productDetail;
+        let productDetail = this.props.detailedProduct
+        console.log(productDetail)
+        // const {
+        //     productType,
+        //     lenderName,
+        //     productPrice,
+        //     productNominal,
+        //     productDesc,
+        //     tenorDays,
+        //     interestPct,
+        //     interestAmount,
+        //     interestAnnualPct,
+        //     totalBill,
+        //     urlProductLogo,
+        //     adminFee,
+        //     penalty,
+        //     docRequired,
+        //     banks
+        // } = this.props.productDetail;
         return (
             <Fragment>
                 <Header>

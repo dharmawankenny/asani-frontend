@@ -33,7 +33,6 @@ const initialState = {
   userBanned: false,
 };
 
-export {initialState};
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
@@ -46,8 +45,9 @@ export default function reducer(state = initialState, action = {}) {
     case LOADING_DETAIL:
       return { ...state, detailLoading: true, detailError: null, detailLoaded: false };
     case LOAD_DETAIL_SUCCESS:
-        console.log('ini detail product',state.detailedProduct)
-        console.log('ini isinya', action.payload.data)
+        // console.log('ini detail product',state.detailedProduct)
+        // console.log('ini isinya', action.payload.data)
+        console.log('detail product',state.detailedProduct)
       return { ...state, detailedProduct: action.payload.data, detailLoading: false, detailError: null, detailLoaded: true };
     case LOAD_DETAIL_ERROR:
       return { ...state, detailError: action.payload.error, detailLoading: false, detailLoaded: true };

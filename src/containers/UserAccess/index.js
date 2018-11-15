@@ -364,7 +364,7 @@ export default class UserAccess extends React.Component {
                     </MainFocus>
                 </div>
                 <Segment>
-                  <div style={{marginTop: "-5%"}}>
+                  <div style={{marginTop: "-20px"}}>
                     <OurPro margin="1rem 1rem 1rem 0">
                       <img src={CreditScoreIcon} />
                       <h2>Cek & tingkatkan skor kredit kamu, gratis!</h2>
@@ -480,7 +480,7 @@ const Content = styled.div`
 const MainFocus = styled.div`
   width: 100%;
   min-height: calc(100vh - 15rem);
-  margin-top: 5% ;
+  margin-top: 200px !important ;
   ${flex({ justify: 'flex-start' })}
 `;
 
@@ -634,7 +634,7 @@ const ProductIcon = styled.img`
 
 const MitraIcon = styled.img`
   width: calc((100% - 6rem) / 4);
-  height: 92px;
+  height: calc((100% - 6rem) / 4);
   margin: 1.5rem 1.5rem 0 0;
   display: block;
   &:nth-of-type(1),
