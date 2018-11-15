@@ -4,7 +4,7 @@ import Headroom from 'react-headroom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
-
+import "../assets/css/styles.css"
 import LogoImg from '../assets/logo.png';
 import MenuIcon from '../assets/menu.svg';
 import HomeIcon from '../assets/home.svg';
@@ -18,6 +18,7 @@ import { flex } from '../commons/theme';
 import { Consumer as AuthConsumer } from '../contexts/auth';
 
 import Footer from './Footer';
+import WhatsAppIcon from "../assets/whatsap-abu.png";
 
 export default class Header extends React.Component {
     static propTypes = {
@@ -107,10 +108,16 @@ export default class Header extends React.Component {
                                             <NavigationButton onClick={logOut}><img src={LogoutIcon} /><span>Keluar</span></NavigationButton>
                                         )}
                                     </AuthConsumer>
-                                    <FooterWrapper>
+                                    <div className="parent-wa">
+                                        <div className="style-logo-wa">
+                                            <strong>Layanan Chat</strong>
+                                            <a className="link-wa" href="https://api.whatsapp.com/send?phone=6281311442228" target="_blank">
+                                                <img className="img-wa" src={WhatsAppIcon} alt=""/>
+                                            </a>
+                                        </div>
+                                    </div>
                                         {/*Hello*/}
                                         {/*<Footer />*/}
-                                    </FooterWrapper>
                                 </ContentAnimationWrapper>
                             </Content>
                         </Menu>
@@ -244,4 +251,11 @@ const NavigationButton = styled.button`
 const FooterWrapper = styled.div`
   width: 100%;
   margin: 2rem 0 0;
+`;
+const Help = styled.img`
+  color: ${props => props.theme.color.N300};
+  height: 1.25rem;
+  width: auto;
+  margin: 0 0 0 0.25rem;
+  padding: 0;
 `;
