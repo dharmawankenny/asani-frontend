@@ -4,7 +4,7 @@ import Headroom from 'react-headroom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { navigate } from '@reach/router';
-
+import '../assets/css/styles.css'
 import LogoImg from '../assets/asani-mediakit-white.png';
 import MenuIcon from '../assets/menu.svg';
 import HomeIcon from '../assets/home.svg';
@@ -70,7 +70,7 @@ export default class Header extends React.Component {
                     <div style={{backgroundColor: "#2797FB", width: "100%", padding: "1rem 1.5rem 0.75rem"}}>
                         <LogoMenu>
                             <Logo onClick={this.navigateTo(SITEMAP.HOME)}>
-                                <img style={{width:"100px", height:"32px", marginTop:"5px"}} src={LogoImg} />
+                                <img style={{width: "calc(30% -100px)"}} src={LogoImg} />
                             </Logo>
                             {this.props.withMenu && (
                                 <MenuToggle onClick={this.toggleMenu}>
@@ -131,10 +131,11 @@ const Logo = styled.button`
   padding: 0;
   position: relative;
   z-index: 2000;
-
+  width: 20% !important;
+  height: 20% !important;
   img {
-    height: 1.5rem;
-    width: auto;
+    height: 100%;
+    width: 100% !important;
   }
 `;
 

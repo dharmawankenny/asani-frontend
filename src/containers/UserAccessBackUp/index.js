@@ -286,24 +286,35 @@ export default class UserAccessBackUp extends React.Component {
 
         return `${minute > 9 ? minute : `0${minute}`}:${second > 9 ? second : `0${second}`}`;
     };
+    triggerImage () {
+        console.log("image work")
+        location.href = "#cardLogin"
+        document.getElementById('myInput').focus()
+        // window.scrollBy({
+        //     top: 100, // could be negative value
+        //     left: 0,
+        //     behavior: 'smooth'
+        // });
+    }
 
     render () {
         return (
             <Fragment>
                     <HeaderUserAccess stopNavigation naked withHelp />
-                    {/*<div className="bgImage"></div>*/}
+                    <div className="bgImage"></div>
                     <div className="bgColor">
                         <div className="bgImage">
-                            <img className="img-style" src={Banner} alt=""/>
+                            <img className="img-style" src={Banner} alt="" onClick={this.triggerImage}/>
                         </div>
                     </div>
                     {this.state.step === 0 && (
                         <Fragment>
-                            <div className="card-bg">
+                            <div id="cardLogin"  className="card-bg">
                                 <div className="card-login">
                                     <h3 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", paddingTop: "20px", paddingLeft: "16px", paddingRight: "16px", marginBottom:"12px", color: "#42526E" }}>Bangun skor kredit kamu dan dapatkan pinjaman terbaik</h3>
                                     <div className="card-padding" >
                                         <Input
+                                            id="myInput"
                                             label="Nomor Handphone Kamu"
                                             prefix="+62"
                                             type="tel"

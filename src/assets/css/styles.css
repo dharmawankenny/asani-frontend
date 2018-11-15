@@ -9,6 +9,19 @@
     z-index: 1;
     /*background-color: red;*/
 }
+@media only screen and (max-width: 364px) {
+    .card-bg {
+        width: 100%;
+        /*height: 400px;*/
+        height: 130px;
+        margin: auto;
+        z-index: 1;
+        /*background-color: red;*/
+        background-color: #2797FB;
+        padding-right: 24px !important;
+        padding-left: 24px !important;
+    }
+}
 @media only screen and (max-width: 561px) {
     .card-bg {
         width: 100%;
@@ -53,6 +66,7 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: auto;
         /*margin-top: -200px !important;*/
         /*padding-top: 56.25%; !* 16:9 Aspect Ratio *!*/
         /*padding-bottom: 56.25%;*/
@@ -110,7 +124,11 @@
     margin-right: auto;
     display: block
 }
-
+.logo-image-asani {
+    /*width: calc(100% - 48px) ;*/
+    /*height: calc(100% - 48px) ;*/
+    width: 30%;
+}
 
 .section-lender {
     background-color: #F4F5F7;

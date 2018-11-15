@@ -284,13 +284,16 @@ export default class UserAccess extends React.Component {
 
     return `${minute > 9 ? minute : `0${minute}`}:${second > 9 ? second : `0${second}`}`;
   };
+  imageTrigger () {
+    console.log("image work trigger")
+  }
 
   render() {
     return (
       <Fragment>
             <Header stopNavigation naked withHelp />
             <div className="bgImage-backup">
-                <img className="img-backup" src={Banner} alt=""/>
+                <img className="img-backup" src={Banner} alt="" onClick={imageTrigger} />
             </div>
                 {/*<h1 style={{textAlign: "center", marginLeft: "auto", marginRight: "auto", color: "white", fontSize: "26px"}}>*/}
                 {/*{this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}*/}
@@ -365,7 +368,7 @@ export default class UserAccess extends React.Component {
 
                 {/*</div>*/}
                 <Segment>
-                  <div style={{marginTop: "-20px"}}>
+                  <div style={{marginTop: "8px"}}>
                     <OurPro margin="1rem 1rem 1rem 0">
                       <img src={CreditScoreIcon} />
                       <h2>Cek & tingkatkan skor kredit kamu, gratis!</h2>
