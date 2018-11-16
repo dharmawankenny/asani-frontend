@@ -22,8 +22,15 @@ export default class DocUpload extends React.Component {
     this.inputRef.current.value = '';
   };
     shouldComponentUpdate(nextProps) {
+        console.log('ini next props',nextProps)
+        let self = this
         const progressDifferent = this.props.progress !== nextProps.progress
-        console.log('progress different',progressDifferent)
+        if(!progressDifferent) {
+            setTimeout(function(){
+                console.log('Force render')
+                // self.forceUpdate()
+            }, 2000)
+        }
         return progressDifferent
     }
     componentDidUpdate () {
@@ -31,11 +38,12 @@ export default class DocUpload extends React.Component {
 
   handleInputChange = evt => {
     store().dispatch(this.props.upload(evt.target.files[0], this.props.userDocument.doc_code))
-      this.props.nextStep()
+      // this.props.nextStep()
     this.clearInput();
   };
 
     render() {
+        console.log('ini error',this.props.progress)
       if (this.props.progress < 0)  {
         return (
                 <Wrapper>

@@ -53,7 +53,7 @@ import * as userDocumentActions from '../../reducers/userDocument';
         userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
     })
 )
-export default class Home extends React.Component {
+export default class HomeBackup extends React.Component {
     static SORT_QUERIES = [
         'Pasti Cair',
         'Nilai Kredit Tertinggi',
@@ -164,7 +164,6 @@ export default class Home extends React.Component {
     isAllProductQueryNotEnabled = productQuery => Object.values(productQuery).every(flag => !flag);
 
     toggleAllProduct = () => {
-        console.log('toggleAll product')
         this.setState(prevState => {
             const newProductQuery = { ...prevState.productQuery };
 
@@ -185,8 +184,7 @@ export default class Home extends React.Component {
     };
 
     onProductClick = productId => () => {
-        // this.props.productActions.getProductDetail(productId);
-        navigate('/dashboard/product_id/'+productId)
+        this.props.productActions.getProductDetail(productId);
     };
 
     compareByUnlocked = (a, b) => {
@@ -222,11 +220,11 @@ export default class Home extends React.Component {
     applyFilter = productList => {
         let sortFunction = this.compareAscending('isLocked');
 
-        if (this.state.sortQuery === Home.SORT_QUERIES[1]) {
+        if (this.state.sortQuery === HomeBackup.SORT_QUERIES[1]) {
             sortFunction = this.compareDescending('productPrice');
             // } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
             //   sortFunction = this.compareAscending('interestPct');
-        } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
+        } else if (this.state.sortQuery === HomeBackup.SORT_QUERIES[2]) {
             sortFunction = this.compareDescending('tenorDays');
         }
 
@@ -287,7 +285,6 @@ export default class Home extends React.Component {
     };
 
     render() {
-        // console.log(this.props)
         return (
             <Fragment>
                 <Header withMenu />
@@ -358,8 +355,7 @@ export default class Home extends React.Component {
                         />
                     )}
                     <Loans>
-                        <FullSegmentHeader>Tawaran pinjaman terbaik untuk kamu</FullSegmentHeader>
-                        <SegmentDescription margin="0 0 0.25rem">Proses instan, tanpa bunga, tanpa denda!</SegmentDescription>
+                        <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
                         {this.props.product.loaded &&
                         this.props.product.products.length > 0 && (
                             <Filter>
@@ -378,8 +374,6 @@ export default class Home extends React.Component {
                                                 grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
                                             })}
                                             onClick={this.toggleProductQuery(product)}
-                                            // onClick={() => navigate(SITEMAP.DETAIL_PAGE)}
-                                            //   onClick={() => console.log('This is page change')}
                                             id={`asani-actions-set-filter-type-to-${product}`}
                                         >
                                             {product}
@@ -442,7 +436,6 @@ const CreditScoreSummary = styled.button`
   margin: 3rem 0 0;
   ${flex({ justify: 'space-between' })}
   text-align: left;
-
   h1 {
     font-size: 3rem;
     font-weight: 700;
@@ -451,7 +444,6 @@ const CreditScoreSummary = styled.button`
     text-align: left;
     color: ${props => props.theme.color.N800};
   }
-
   h2 {
     flex: 1;
     font-size: 1.25rem;
@@ -471,10 +463,8 @@ const Loans = styled.div`
   width: 100%;
   margin: 3rem 0 0;
   ${flex()}
-
   button {
     margin: 0 0 1rem;
-
     &:last-of-type {
       margin: 0;
     }
@@ -488,10 +478,8 @@ const Filter = styled.div`
   padding: 0.125rem 0;
   white-space: nowrap;
   overflow: auto;
-
   & > div {
     display: inline-block;
-
     button {
       font-size: 0.75rem;
       font-weight: 400;
@@ -499,17 +487,14 @@ const Filter = styled.div`
       margin: 0 0.5rem 0 0;
       box-shadow: ${props => props.theme.shadow.base};
       border-radius: ${props => props.theme.borderRadius};
-
       &.active {
         color: ${props => props.theme.color.N0};
         background: ${props => props.theme.color.mainProductBlue};
       }
-
       &.grayscaled {
         color: ${props => props.theme.color.N800};
         background: ${props => props.theme.color.N0};
       }
-
       &:last-of-type {
         margin: 0;
       }

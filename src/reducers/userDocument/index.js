@@ -105,9 +105,9 @@ export default function reducer(state = initialState, action = {}) {
     case RESET_ALL:
       return { ...initialState };
       case URL_ICON_1:
-        return { ...state, url_icon_1: action.payload.url_icon_1 };
+        return { ...state, url_icon_1: action.payload };
       case URL_ICON_2:
-          return { ...state, url_icon_2: action.payload.url_icon_2 };
+          return { ...state, url_icon_2: action.payload };
     default:
       return state;
   }
@@ -151,6 +151,7 @@ export function resetAll() {
 }
 
 export function urlIcon1(url) {
+  console.log('url photo baru',url)
   return { type: URL_ICON_1, payload: url };
 }
 

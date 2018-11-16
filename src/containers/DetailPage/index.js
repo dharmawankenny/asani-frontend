@@ -213,8 +213,6 @@ class DetailPage extends React.Component {
             docRequired,
             banks
         } = productDetail;
-        console.log("ini doc required", docRequired)
-        console.log("current step",this.state.currentStep)
         return (
             <Fragment>
                 <Header>
@@ -259,9 +257,7 @@ class DetailPage extends React.Component {
                                             <img src={url_icon_2} alt=""/>
                                         </div>
                                         <div className="leftBar" />
-                                        <div className="rightBar" />
                                         <span> Upload Selfie Dengan KTP</span>
-                                        <div className="rightBar" />
                                     </Step>
                                 </Step>
                             </Fragment>
@@ -274,9 +270,8 @@ class DetailPage extends React.Component {
                                         <img src="https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/icon_selfie.png" alt=""/>
                                     </div>
                                     <div className="leftBar" />
-                                    <div className="rightBar" />
                                     <span> Upload Selfie Dengan KTP</span>
-                                    <div className="rightBar" />
+
                                 </Step>
                             </Step>
                         )}
