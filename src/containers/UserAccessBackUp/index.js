@@ -141,7 +141,6 @@ export default class UserAccessBackUp extends React.Component {
 
         if (res && res.data && res.data.data) {
             this.setState({ banners: res.data.data, bannersLoading: false, bannersLoaded: true });
-            console.log(res.data.data);
         }
     }
 
