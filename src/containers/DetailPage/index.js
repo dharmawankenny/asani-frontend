@@ -20,48 +20,103 @@ import Spinner from '../../components/Spinner';
 import '../../assets/css/styles.css'
 import Collapsible from 'react-collapsible';
 // import '../assets/sass/main.scss'
-
+import store from '../../store'
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as productActions from '../../reducers/product';
 import * as creditScoreActions from "../../reducers/creditScore";
 import * as loanActions from "../../reducers/loan";
 import * as userDocumentActions from "../../reducers/userDocument";
-import store from '../../store/index'
-import ProductDetailModal from "../../components/ProductDetailModal";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+// @connect(
+//     // state => ({ ...state }),
+//     (state) => {
+//         return {
+//             ...state
+//         }
+//     },
+//     dispatch => ({
+//         creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
+//         productActions: bindActionCreators(productActions, dispatch),
+//         loanActions: bindActionCreators(loanActions, dispatch),
+//         userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
+//     })
+// )
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
 
-@connect(
-    state => ({ ...state }),
-    dispatch => ({
+function mapStateToProps(state) {
+    // console.log(state)
+    return { ...state };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
         creditScoreActions: bindActionCreators(creditScoreActions, dispatch),
         productActions: bindActionCreators(productActions, dispatch),
         loanActions: bindActionCreators(loanActions, dispatch),
-        userDocumentActions: bindActionCreators(userDocumentActions, dispatch),
-    })
-)
-export default class DetailPage extends React.Component {
+        userDocumentActions: bindActionCreators(userDocumentActions, dispatch), };
+}
+class DetailPage extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {
+            currentStep: 0,
+            active: false,
+            open: false,
+        }
+
+    }
     static defaultProps = {
         productDetail: {},
     };
 
-    state = {
-        currentStep: 0,
+    handleClickOpen = () => {
+        this.setState({ open: true });
     };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+    nextStep = () => {
+        this.setState(({
+            currentStep: this.state.currentStep + 1,
+            open: false
+        }))
+    }
+
     componentDidMount () {
-        // let temp = this.props.location.pathname
-        // let tempPath = temp.split('/')
-        // let path = tempPath[3]
         this.props.productActions.getProductDetail(this.props.id)
-        // this.props.productActions.getProducts()
+        let temp = !isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading
+        // this.setState({
+        //     ...state,
+        //     currentStep:
+        // })
+
     }
     componentDidUpdate(prevProps) {
-        if (!this.props.active && prevProps.active) {
+        const temp = !isEmpty(this.props.loan.detailedLoan) || this.props.loan.detailLoading
+        const prevTemp = !isEmpty(prevProps.loan.detailedLoan) || prevProps.loan.detailLoading
+        if (!temp && prevTemp) {
+            console.log('if !temp && prevTemo')
+            console.log(!temp, prevTemp)
             document.body.style.overflow = 'auto';
-        } else if (this.props.active && !prevProps.active) {
+        } else if (temp && !prevTemp) {
+            console.log('else temp && !prevTemo')
+            console.log(temp, !prevTemp)
             document.body.style.overflow = 'hidden';
         }
-
-        if (this.props.purchaseSuccess && !prevProps.purchaseSuccess) {
+        const purchaseSuccess = this.props.product.purchaseLoaded
+        const prevPurchaseSuccess = !prevProps.product.purchaseLoaded
+        if (purchaseSuccess && prevPurchaseSuccess) {
             swal({
                 icon: 'success',
                 title: 'Pengajuan pinjaman berhasil!',
@@ -73,8 +128,9 @@ export default class DetailPage extends React.Component {
                 }
             });
         }
-
-        if (this.props.purchaseError && !prevProps.purchaseError) {
+        const purchaseError = this.props.product.purchaseError
+        const prevPurchaseError = prevProps.product.purchaseError
+        if (purchaseError && prevPurchaseError) {
             swal({
                 icon: 'error',
                 title: 'Pengajuan pinjaman gagal :(',
@@ -86,8 +142,9 @@ export default class DetailPage extends React.Component {
                 }
             });
         }
-
-        if (this.props.userBanned && !prevProps.userBanned) {
+        const userBanned = this.props.product.userBanned
+        const prevUserBanned = !prevProps.product.userBanned
+        if (userBanned && prevUserBanned) {
             swal({
                 icon: 'warning',
                 title: 'Ooops akun kamu bermasalah',
@@ -106,7 +163,7 @@ export default class DetailPage extends React.Component {
     }
 
     successfullyUploadedCallback = () => {
-        this.props.resetUploader();
+        console.log('before step'.this.currentStep)
         this.setState(prevState => ({ currentStep: prevState.currentStep + 1 }));
     }
 
@@ -122,7 +179,8 @@ export default class DetailPage extends React.Component {
     //     );
     // }
     render() {
-        const active = true
+        const {url_icon_1} = this.props.userDocument
+        const {url_icon_2} = this.props.userDocument
         const loading = this.props.product.detailLoading
         const loaded = this.props.product.detailLoaded
         const productDetail = this.props.product.detailedProduct
@@ -155,9 +213,10 @@ export default class DetailPage extends React.Component {
             docRequired,
             banks
         } = productDetail;
+        console.log("ini doc required", docRequired)
+        console.log("current step",this.state.currentStep)
         return (
             <Fragment>
-                <Content active={active}>
                 <Header>
                     <h1>Detil Peminjaman</h1>
                     <button onClick={() => navigate(SITEMAP.HOME)} id="asani-actions-close-product-detail"><img src={CloseIcon} /></button>
@@ -172,47 +231,76 @@ export default class DetailPage extends React.Component {
                 !isEmpty(productDetail) &&
                 docRequired.length !== 0 && (
                     <Steps>
-                        {docRequired.length > 0 &&
-                        docRequired.map((doc, index) => (
-                            <Step key={index} active={this.state.currentStep >= index}>
-                                <div className="logo">
-                                    <img src={doc.icon_url} />
-                                </div>
-                                <span>Upload {doc.doc_name}</span>
-                                {index !== 0 && (
-                                    <div className="leftBar" />
-                                )}
-                                <div className="rightBar" />
-                            </Step>
-                        ))}
-                        <Step active={this.state.currentStep === docRequired.length}>
+                        {/*<Step active={this.state.currentStep === docRequired.length}>*/}
+                            <Step active={this.state.currentStep === 0}>
                             <div className="logo">
                                 <img src={LoanIcon} />
                             </div>
-                            <div className="leftBar" />
+                            <div className="rightBar" />
                             <span>Review Peminjaman</span>
                         </Step>
+                        {docRequired.length === 2 && (
+                            <Fragment>
+                                <Step>
+                                    <Step active={this.state.currentStep === 1 }>
+                                        <div className="logo">
+                                            <img src={url_icon_1} />
+                                        </div>
+                                        <div className="leftBar" />
+                                        <div className="rightBar" />
+                                        <span>Upload {docRequired[0].doc_name}</span>
+                                        <div className="rightBar" />
+                                    </Step>
+                                </Step>
+                                <Step>
+                                    <Step active={this.state.currentStep === 2 }>
+                                        <div className="logo">
+                                            {/*<img src={docRequired[1].icon_url} />*/}
+                                            <img src={url_icon_2} alt=""/>
+                                        </div>
+                                        <div className="leftBar" />
+                                        <div className="rightBar" />
+                                        <span> Upload Selfie Dengan KTP</span>
+                                        <div className="rightBar" />
+                                    </Step>
+                                </Step>
+                            </Fragment>
+                        )}
+                        {docRequired.length === 1 && (
+                            <Step>
+                                <Step active={this.state.currentStep === 2 }>
+                                    <div className="logo">
+                                        {/*<img src={docRequired[1].icon_url} />*/}
+                                        <img src="https://s3-ap-southeast-1.amazonaws.com/asani-imagestorage/logo_operator/icon_selfie.png" alt=""/>
+                                    </div>
+                                    <div className="leftBar" />
+                                    <div className="rightBar" />
+                                    <span> Upload Selfie Dengan KTP</span>
+                                    <div className="rightBar" />
+                                </Step>
+                            </Step>
+                        )}
+                        {/*{docRequired.length > 0 &&*/}
+                        {/*docRequired.map((doc, index) => (*/}
+                            {/*<Step key={index} active={this.state.currentStep >= index}>*/}
+                                {/*<div className="logo">*/}
+                                    {/*<img src={doc.icon_url} />*/}
+                                {/*</div>*/}
+                                {/*<div className="leftBar" />*/}
+                                {/*<div className="rightBar" />*/}
+                                {/*<span>Upload {doc.doc_name}</span>*/}
+                                {/*{index !== 0 && (*/}
+                                    {/*<div className="rightBar" />*/}
+                                {/*)}*/}
+                            {/*</Step>*/}
+                        {/*))}*/}
                     </Steps>
                 )}
                 {loaded &&
                 productDetail &&
                 !isEmpty(productDetail) &&
-                this.state.currentStep < docRequired.length && (
-                    <DocUploadWrapper>
-                        <DocUpload
-                            userDocument={docRequired[this.state.currentStep]}
-                            upload={uploadDocument}
-                            progress={uploadProgress}
-                            finished={uploadFinished}
-                            finishedText="Selanjutnya"
-                            finishedCallback={this.successfullyUploadedCallback}
-                        />
-                    </DocUploadWrapper>
-                )}
-                {loaded &&
-                productDetail &&
-                !isEmpty(productDetail) &&
-                this.state.currentStep === docRequired.length && (
+                this.state.currentStep === 0 &&
+                docRequired.length && (
                     <Fragment>
                         <SummaryInfo>
                             <ProductLogo src={urlProductLogo} />
@@ -278,11 +366,29 @@ export default class DetailPage extends React.Component {
                 {loaded &&
                 productDetail &&
                 !isEmpty(productDetail) &&
-                this.state.currentStep === docRequired.length && (
+                this.state.currentStep > 0 && (
+                    <DocUploadWrapper>
+                        <DocUpload
+                            userDocument={docRequired[this.state.currentStep-1]}
+                            upload={uploadDocument}
+                            progress={uploadProgress}
+                            finished={uploadFinished}
+                            finishedText="Selanjutnya"
+                            finishedCallback={this.successfullyUploadedCallback}
+                            nextStep = {this.nextStep}
+                        />
+                    </DocUploadWrapper>
+                )}
+                {loaded &&
+                productDetail &&
+                !isEmpty(productDetail) &&
+                this.state.currentStep === 0 &&
+                docRequired.length && (
                     <ActionButtonWrapper>
                         <BigActionButton
                             color={hasActiveLoans ? 'N300' : 'G300'}
-                            onClick={() => purchase(productDetail.productId)}
+                            // onClick={() => purchase(productDetail.productId)}
+                            onClick={this.handleClickOpen}
                             disabled={purchaseLoading} id={`asani-actions-purchase-product-${productType}`}
                         >
                             {!purchaseLoading && 'Ambil Pinjaman'}
@@ -292,7 +398,52 @@ export default class DetailPage extends React.Component {
                         </BigActionButton>
                     </ActionButtonWrapper>
                 )}
-                </Content>
+                {loaded &&
+                productDetail &&
+                !isEmpty(productDetail) &&
+                docRequired.length===0 && (
+                    <div>
+                        <h1>Terima Kasih</h1>
+                        <ActionButtonWrapper>
+                            <BigActionButton
+                                color={hasActiveLoans ? 'N300' : 'G300'}
+                                // onClick={() => purchase(productDetail.productId)}
+                                onClick={()=> navigate('/dashboard')}
+                                disabled={purchaseLoading} id={`asani-actions-purchase-product-${productType}`}
+                            >
+                                Beranda
+                            </BigActionButton>
+                        </ActionButtonWrapper>
+                    </div>
+                )}
+                <div>
+                    <Dialog
+                        open={this.state.open}
+                        TransitionComponent={Transition}
+                        keepMounted
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-slide-title"
+                        aria-describedby="alert-dialog-slide-description"
+                    >
+                        <DialogTitle id="alert-dialog-slide-title">
+                            {"2 Langkah Lagi"}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-slide-description">
+                                Dibutuhkan foto ktp + selfie dengan ktp.
+                                Silahkan siapkan KTP anda
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                Close
+                            </Button>
+                            <Button onClick={this.nextStep} color="primary">
+                                Unggah KTP
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
             </Fragment>
         )
         // return (
@@ -704,3 +855,6 @@ const SummaryInfo = styled.div`
   padding: 0 1.5rem;
   margin: 0 0 2rem;
 `;
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailPage);
