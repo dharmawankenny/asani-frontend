@@ -183,8 +183,10 @@ export function uploadDocument(file, documentType) {
       if (response.data) {
         if (documentType === 2) {
           dispatch(urlIcon1(response.data.url));
+            dispatch(urlIcon2(response.data.url));
         }
         else if(documentType === 4) {
+            dispatch(urlIcon1(response.data.url));
             dispatch(urlIcon2(response.data.url));
         }
         const uploadResponse = await apiCalls.uploadDocument(
