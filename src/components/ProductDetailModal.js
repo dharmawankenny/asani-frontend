@@ -16,6 +16,9 @@ import { printPrice, fromNow } from '../commons/utils';
 import { BigActionButton } from './Buttons';
 import DocUpload from './DocUpload';
 import Spinner from './Spinner';
+import '../assets/css/styles.css'
+import Collapsible from 'react-collapsible';
+// import '../assets/sass/main.scss'
 
 export default class ProductDetailModal extends React.Component {
   static defaultProps = {
@@ -27,6 +30,7 @@ export default class ProductDetailModal extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
+    console.log('ini di modal page')
     if (!this.props.active && prevProps.active) {
       document.body.style.overflow = 'auto';
     } else if (this.props.active && !prevProps.active) {
@@ -89,23 +93,42 @@ export default class ProductDetailModal extends React.Component {
     this.props.onClose();
   }
 
+  // collapseBank () {
+  //     var coll = document.getElementsByClassName("collapsible");
+  //     var i;
+  //
+  //     for (i = 0; i < coll.length; i++) {
+  //         coll[i].addEventListener("click", function () {
+  //             this.classList.toggle("active");
+  //             var content = this.nextElementSibling;
+  //             if (content.style.display === "block") {
+  //                 content.style.display = "none";
+  //             } else {
+  //                 content.style.display = "block";
+  //             }
+  //         });
+  //     }
+  // }
+
   render() {
     const {
-      productType,
-      lenderName,
-      productPrice,
-      productNominal,
-      productDesc,
-      tenorDays,
-      interestPct,
-      interestAmount,
-      interestAnnualPct,
-      totalBill,
-      urlProductLogo,
-      adminFee,
-      penalty,
-      docRequired,
+        productType,
+        lenderName,
+        productPrice,
+        productNominal,
+        productDesc,
+        tenorDays,
+        interestPct,
+        interestAmount,
+        interestAnnualPct,
+        totalBill,
+        urlProductLogo,
+        adminFee,
+        penalty,
+        docRequired,
+        banks
     } = this.props.productDetail;
+    console.log(banks)
 
     return (
       <Modal active={this.props.active}>
@@ -206,6 +229,21 @@ export default class ProductDetailModal extends React.Component {
                       <span>Bayar {moment().add(tenorDays, 'days').fromNow()}</span>
                     </BillValue>
                   </SummaryInfo>
+                  <div style={{width: "calc(100% - 3rem)"}}>
+                      <button>
+                          <Collapsible trigger="Metode Pembayaran">
+                              {
+                                banks.map((bank, index) => (
+                                    <div key={index} className="collapsible">
+                                        <span> Nama Bank: <b>{bank.bankName}</b>  </span> <br/>
+                                        <span>Nomor Rekening : {bank.accountNumber} </span><br/>
+                                        <span>Atas Nama : {bank.accountName} </span>
+                                    </div>
+                                ))
+                              }
+                          </Collapsible>
+                      </button>
+                  </div>
                   <InfoPrompt color="G300" margin="0 auto 1.5rem">
                     <img src={ImproveIcon} />
                     <span>Tepat waktu melunasi pembayaran akan menaikan skor kredit kamu!</span>

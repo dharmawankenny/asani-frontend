@@ -164,6 +164,7 @@ export default class Home extends React.Component {
   isAllProductQueryNotEnabled = productQuery => Object.values(productQuery).every(flag => !flag);
 
   toggleAllProduct = () => {
+    console.log('toggleAll product')
     this.setState(prevState => {
       const newProductQuery = { ...prevState.productQuery };
 
@@ -184,7 +185,8 @@ export default class Home extends React.Component {
   };
 
   onProductClick = productId => () => {
-    this.props.productActions.getProductDetail(productId);
+    // this.props.productActions.getProductDetail(productId);
+      navigate('/dashboard/product_id/'+productId)
   };
 
   compareByUnlocked = (a, b) => {
@@ -355,8 +357,8 @@ export default class Home extends React.Component {
               />
             )}
           <Loans>
-            <FullSegmentHeader>Tawaran terbaik untuk kamu</FullSegmentHeader>
-            <SegmentDescription margin="0 0 0.25rem">Beli sekarang, bayar nanti, tanpa bunga, tanpa denda!</SegmentDescription>
+            <FullSegmentHeader>Tawaran pinjaman terbaik untuk kamu</FullSegmentHeader>
+            <SegmentDescription margin="0 0 0.25rem">Proses instan, tanpa bunga, tanpa denda!</SegmentDescription>
             {this.props.product.loaded &&
               this.props.product.products.length > 0 && (
                 <Filter>
@@ -375,6 +377,8 @@ export default class Home extends React.Component {
                           grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
                         })}
                         onClick={this.toggleProductQuery(product)}
+                        // onClick={() => navigate(SITEMAP.DETAIL_PAGE)}
+                        //   onClick={() => console.log('This is page change')}
                         id={`asani-actions-set-filter-type-to-${product}`}
                       >
                         {product}
@@ -393,31 +397,6 @@ export default class Home extends React.Component {
               this.applyFilter(this.props.product.products).map(product => (
                 <ProductCard product={product} onClick={this.onProductClick(product.productId)} />
               ))}
-            {this.props.product.loaded &&
-              this.props.product.products && (
-                <ProductDetailModal
-                  active={!isEmpty(this.props.product.detailedProduct) || this.props.product.detailLoading}
-                  loading={this.props.product.detailLoading}
-                  loaded={this.props.product.detailLoaded}
-                  productDetail={this.props.product.detailedProduct}
-                  onClose={() => {
-                    this.props.productActions.resetDetail();
-                    this.props.userDocumentActions.uploadingReset();
-                  }}
-                  uploadDocument={this.props.userDocumentActions.uploadDocument}
-                  resetUploader={this.props.userDocumentActions.uploadingReset}
-                  uploadProgress={this.props.userDocument.uploadProgress}
-                  uploadFinished={this.props.userDocument.uploadFinished}
-                  purchase={this.props.productActions.purchaseProduct}
-                  resetPurchase={this.props.productActions.resetPurchase}
-                  purchaseLoading={this.props.product.purchaseLoading}
-                  purchaseSuccess={this.props.product.purchaseLoaded}
-				  userBanned={this.props.product.userBanned}
-                  purchaseError={this.props.product.purchaseError}
-                  updateLoans={this.props.loanActions.getActiveLoans}
-                  hasActiveLoans={this.props.loan.activeLoansLoaded && this.props.loan.activeLoans && this.props.loan.activeLoans.length > 0}
-                />
-              )}
             {this.props.product.loaded &&
               this.props.product.products &&
               this.props.product.products.length === 0 && (

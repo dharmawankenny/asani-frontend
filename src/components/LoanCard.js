@@ -65,6 +65,7 @@ export default class LoanCard extends React.Component {
       tenorDays,
       urlProductLogo,
     } = this.props.loan;
+    console.log('ini dari loan card', this.props.loan)
 
     const dueTimeString = moment(dueTime).fromNow();
 

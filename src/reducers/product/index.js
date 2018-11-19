@@ -33,6 +33,7 @@ const initialState = {
   userBanned: false,
 };
 
+
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case LOADING:
@@ -139,7 +140,6 @@ export function getProductDetail(productId) {
   return async dispatch => {
     dispatch(loadingDetail());
     const response = await apiCalls.getProductDetail(productId);
-
     if (response && response.data) {
       if (response.data.data) {
         dispatch(loadingDetailSuccess(response.data.data));
@@ -156,7 +156,6 @@ export function purchaseProduct(productId) {
   return async dispatch => {
     dispatch(loadingPurchase());
     const response = await apiCalls.postLoan(productId);
-    console.error(response)
     if (response.data.status === -1) {
       dispatch(purchaseUserBanned('Error Purchasing Product'));
       // swal({

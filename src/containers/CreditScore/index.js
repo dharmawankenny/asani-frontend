@@ -231,7 +231,7 @@ export default class CreditScore extends React.Component {
                       </ProgressMarker>
                       <ProgressMarker progress={calculatePercentage(600, this.getLowerBoundary(), this.getUpperBoundary())}>
                         <img src={ProgressElectronicIcon} />
-                        <span>Elektronik</span>
+                        <span>Uang Tunai</span>
                       </ProgressMarker>
                       <ProgressMarker progress={calculatePercentage(700, this.getLowerBoundary(), this.getUpperBoundary())}>
                         <img src={ProgressCarIcon} />
@@ -247,9 +247,9 @@ export default class CreditScore extends React.Component {
             </ScoreProgress>
           </Dashboard>
           <UserData>
-            <FullSegmentHeader>Tingkatkan skor kredit kamu</FullSegmentHeader>
+            <FullSegmentHeader>Tingkatkan skor kredit kamu!</FullSegmentHeader>
             <SegmentDescription>
-              Upload dokumen-dokumen dan lakukan aksi-aksi rekomendasi dari kami dibawah ini
+                Pastikan dokumen-dokumen yang diupload dapat terbaca dengan jelas.
             </SegmentDescription>
             <UserDataAction onClick={() => navigate(SITEMAP.HOME)}>
               <img src={LoanHistoryIcon} />

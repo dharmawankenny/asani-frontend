@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { flex } from '../commons/theme';
 
 import { BigActionButton } from './Buttons';
-
+import store from "../store/index"
 export default class DocUpload extends React.Component {
   static propTypes = {
     upload: PropTypes.func.isRequired,
@@ -21,44 +21,107 @@ export default class DocUpload extends React.Component {
   clearInput = () => {
     this.inputRef.current.value = '';
   };
+    shouldComponentUpdate(nextProps) {
+        console.log('ini next props',nextProps)
+        let self = this
+        const progressDifferent = this.props.progress !== nextProps.progress
+        if(!progressDifferent) {
+            setTimeout(function(){
+                // console.log('Force render')
+                self.forceUpdate()
+            }, 2000)
+        }
+        else {
+            console.log("loh aneh")
+        }
+        console.log("something wonr")
+        return progressDifferent
+    }
+    componentDidUpdate () {
+    }
 
   handleInputChange = evt => {
-    this.props.upload(evt.target.files[0], this.props.userDocument.doc_code);
+    store().dispatch(this.props.upload(evt.target.files[0], this.props.userDocument.doc_code))
+      this.props.nextStep()
     this.clearInput();
   };
 
-  render() {
-    return (
-      <Wrapper>
-        {this.props.progress < 0 && (
-          <UploadButton>
-            <img src={this.props.userDocument.icon_url} />
-            <BigActionButton>Upload {this.props.userDocument.doc_name}</BigActionButton>
-            <input ref={this.inputRef} type="file" accept="image/*" id="file-input" onChange={this.handleInputChange} />
-          </UploadButton>
-        )}
-        {this.props.progress >= 0 &&
-          !this.props.finished && (
-          <ProgressBar progress={this.props.progress}>
-            <img src={this.props.userDocument.icon_url} />
-            <h1>Mengupload {this.props.userDocument.doc_name} - {this.props.progress}%</h1>
-            <div>
-              <div className="bar" />
-              <div className="bg" />
-            </div>
-          </ProgressBar>
-        )}
-        {this.props.progress === 100 &&
-          this.props.finished && (
-            <FinishedState>
-              <img src={this.props.userDocument.icon_url} />
-              <h1>Upload {this.props.userDocument.doc_name} Berhasil!</h1>
-              <BigActionButton onClick={this.props.finishedCallback}>{this.props.finishedText}</BigActionButton>
-            </FinishedState>
-          )}
-      </Wrapper>
-    );
-  }
+    render() {
+        console.log('ini error',this.props.progress)
+      if (this.props.progress < 0)  {
+        return (
+                <Wrapper>
+                      <h1>Hello</h1>
+                      <UploadButton>
+                        <img src={this.props.userDocument.icon_url} />
+                        <BigActionButton>Upload {this.props.userDocument.doc_name}</BigActionButton>
+                        <input ref={this.inputRef} type="file" accept="image/*" id="file-input" onChange={this.handleInputChange} />
+                      </UploadButton>
+                </Wrapper>
+        )
+      }
+      else if (this.props.progress >= 0 && !this.props.finished) {
+        console.log("masuk else if gak")
+        return (
+            <Wrapper>
+                <ProgressBar progress={this.props.progress}>
+                    <img src={this.props.userDocument.icon_url} />
+                    <h1>Mengupload {this.props.userDocument.doc_name} - {this.props.progress}%</h1>
+                    <div>
+                        <div className="bar" />
+                        <div className="bg" />
+                    </div>
+                </ProgressBar>
+            </Wrapper>
+        )
+      }
+      else {
+          return (
+              <Wrapper>
+                  <FinishedState>
+                      <img src={this.props.userDocument.icon_url} />
+                      <h1>Upload {this.props.userDocument.doc_name} Berhasil!</h1>
+                      <BigActionButton onClick={this.props.finishedCallback}>{this.props.finishedText}</BigActionButton>
+                  </FinishedState>
+              </Wrapper>
+          )
+      }
+    }
+  // render() {
+  //   console.log("this progress", this.props.progress)
+  //     console.log("this finished", this.props.finished)
+  //   return (
+  //     <Wrapper>
+  //         <h1>Hello</h1>
+  //       {this.props.progress < 0 && (
+  //         <UploadButton>
+  //           <img src={this.props.userDocument.icon_url} />
+  //           <BigActionButton>Upload {this.props.userDocument.doc_name}</BigActionButton>
+  //           <input ref={this.inputRef} type="file" accept="image/*" id="file-input" onChange={this.handleInputChange} />
+  //         </UploadButton>
+  //       )}
+  //       {this.props.progress >= 0 &&
+  //       !this.props.finished && (
+  //         <ProgressBar progress={this.props.progress}>
+  //           <img src={this.props.userDocument.icon_url} />
+  //           <h1>Mengupload {this.props.userDocument.doc_name} - {this.props.progress}%</h1>
+  //           <div>
+  //             <div className="bar" />
+  //             <div className="bg" />
+  //           </div>
+  //         </ProgressBar>
+  //       )}
+  //       {this.props.progress === 100 &&
+  //         this.props.finished && (
+  //           <FinishedState>
+  //             <img src={this.props.userDocument.icon_url} />
+  //             <h1>Upload {this.props.userDocument.doc_name} Berhasil!</h1>
+  //             <BigActionButton onClick={this.props.finishedCallback}>{this.props.finishedText}</BigActionButton>
+  //           </FinishedState>
+  //         )}
+  //     </Wrapper>
+  //   );
+  // }
 }
 
 const Wrapper = styled.div`
