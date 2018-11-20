@@ -21,6 +21,8 @@ import {
 } from './UserAccess.styled';
 import UserAccessFooter from './components/UserAccessFooter';
 import FeaturesMap from '../../components/FeaturesMap/FeaturesMap';
+import ThirdPartiesMap from '../../components/ThirdPartiesMap/ThirdPartiesMap';
+import TestimoniesMap from '../../components/TestimoniesMap/TestimoniesMap';
 
 export default class UserAccess extends React.Component {
   state = {
@@ -188,7 +190,7 @@ export default class UserAccess extends React.Component {
     let headingText = '';
     switch (this.state.step) {
       case 0:
-        headingText = 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!';
+        headingText = 'Bangun skor kredit kamu dan dapatkan pinjaman terbaik';
         break;
       case 1:
         headingText = 'Kode verifikasi OTP telah dikirim ke nomor Ponsel anda';
@@ -269,6 +271,8 @@ export default class UserAccess extends React.Component {
           )}
         </FormBox>
         <FeaturesMap />
+        <ThirdPartiesMap />
+        <TestimoniesMap />
         <UserAccessFooter />
       </Fragment>
     );

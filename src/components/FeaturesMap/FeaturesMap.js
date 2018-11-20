@@ -48,7 +48,12 @@ const Wrapper = styled.div`
   max-width: 32rem;
   flex-wrap: wrap;
   align-items: center;
-  margin: 60px auto;
+  @media screen and (min-width: 512px) {
+    margin: 60px auto;
+  }
+  @media screen and (max-width: 512px) {
+    margin: 160px auto 60px;
+  }
 `;
 
 const FeatureCard = styled.div`

@@ -49,7 +49,13 @@ export const FormBox = styled.div`
   background: #ffffff;
   border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  width: 512px;
+  @media screen and (min-width: 512px) {
+    width: 512px;
+  }
+  @media screen and (max-width: 512px) {
+    width: calc(100% - 30px);
+    margin: -140px 15px;
+  }
   margin: 0 auto;
   padding: 16px;
   margin-top: -140px;
@@ -67,6 +73,7 @@ export const FormBox = styled.div`
 
 export const BottomFooter = styled.div`
   max-width: 32rem;
+  padding: 16px;
   margin: 0 auto;
 `;
 
@@ -76,7 +83,13 @@ export const MastheadBackground = styled.div`
 `;
 
 export const MastheadImage = styled.img`
-  width: 512px;
+  @media screen and (min-width: 512px) {
+    width: 512px;
+  }
+  @media screen and (max-width: 512px) {
+    width: 100%;
+    height: auto;
+  }
   display: block;
   height: 260px;
   margin: 0 auto;
