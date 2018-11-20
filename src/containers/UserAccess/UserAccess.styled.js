@@ -64,10 +64,12 @@ export const FormBox = styled.div`
     padding: 0;
   }
 `;
+
 export const BottomFooter = styled.div`
   max-width: 32rem;
   margin: 0 auto;
 `;
+
 export const MastheadBackground = styled.div`
   background-color: rgb(39, 151, 251);
   padding-bottom: 200px;
@@ -79,6 +81,7 @@ export const MastheadImage = styled.img`
   height: 260px;
   margin: 0 auto;
 `;
+
 export const FormBoxSubheader = styled.div`
   width: 100%;
   display: block;

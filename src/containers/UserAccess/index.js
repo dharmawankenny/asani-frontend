@@ -20,6 +20,7 @@ import {
   MastheadBackground,
 } from './UserAccess.styled';
 import UserAccessFooter from './components/UserAccessFooter';
+import FeaturesMap from '../../components/FeaturesMap/FeaturesMap';
 
 export default class UserAccess extends React.Component {
   state = {
@@ -43,9 +44,7 @@ export default class UserAccess extends React.Component {
 
   validateTelNumber = async () => {
     const { telNumber } = this.state;
-    const cleanTelNumber = telNumber.startsWith('0')
-      ? telNumber.slice(1, telNumber.length)
-      : telNumber;
+    const cleanTelNumber = telNumber.startsWith('0') ? telNumber.slice(1, telNumber.length) : telNumber;
     let errorMessage = '';
 
     if (cleanTelNumber.length < 8) {
@@ -257,15 +256,11 @@ export default class UserAccess extends React.Component {
               </AuthConsumer>
               {this.state.retryTimer > 0 && (
                 <RetryCounter>
-                  Kirim ulang kode verifikasi OTP dalam{' '}
-                  <strong>{this.buildTimeString(this.state.retryTimer)}</strong>
+                  Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong>
                 </RetryCounter>
               )}
               {this.state.retryTimer === 0 && (
-                <RetryButton
-                  onClick={this.state.loading ? null : this.toRetryOTP}
-                  id="asani-actions-retry-otp"
-                >
+                <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
                   {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
                   {this.state.loading && <Spinner color="N0" />}
                 </RetryButton>
@@ -273,6 +268,7 @@ export default class UserAccess extends React.Component {
             </Fragment>
           )}
         </FormBox>
+        <FeaturesMap />
         <UserAccessFooter />
       </Fragment>
     );
