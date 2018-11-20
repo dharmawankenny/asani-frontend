@@ -12,13 +12,13 @@ import {
   BlogSubtitle,
   BlogText,
   BlogLink,
-} from '../../components/BlogBuilder';
-import { BigActionButton } from '../../components/Buttons';
-import Header from '../../components/Header';
+} from '../../components/BlogBuilder/BlogBuilder';
+import { BigActionButton } from '../../components/Buttons/Buttons';
+import Header from '../../components/Header/Header';
 import {
   PageWrapper,
   SpinnerWrapper,
-} from '../../components/PageBuilder';
+} from '../../components/PageBuilder/PageBuilder';
 
 export default class WhatIsACreditScore extends React.Component {
   render() {

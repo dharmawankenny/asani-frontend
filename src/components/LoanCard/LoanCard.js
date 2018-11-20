@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment-timezone';
 
-import { flex } from '../commons/theme';
-import { printPrice } from '../commons/utils';
+import { flex } from '../../commons/theme';
+import { printPrice } from '../../commons/utils';
 
-import ClockIcon from '../assets/clock.svg';
-import DummyIcon from '../assets/cash.svg';
+import ClockIcon from '../../assets/clock.svg';
+import DummyIcon from '../../assets/cash.svg';
 
 const STATUS_COLOR_MAP = [
   'Y300',

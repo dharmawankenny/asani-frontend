@@ -16,11 +16,11 @@ import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
 import { calculatePercentage } from '../../commons/utils';
 
-import { BigActionButton } from '../../components/Buttons';
-import Header from '../../components/Header';
-import LoanCard from '../../components/LoanCard';
-import LoanDetailModal from '../../components/LoanDetailModal';
-import ProductDetailModal from '../../components/ProductDetailModal';
+import { BigActionButton } from '../../components/Buttons/Buttons';
+import Header from '../../components/Header/Header';
+import LoanCard from '../../components/LoanCard/LoanCard';
+import LoanDetailModal from '../../components/LoanDetailModal/LoanDetailModal';
+import ProductDetailModal from '../../components/ProductDetailModal/ProductDetailModal';
 import {
   PageWrapper,
   SegmentContext,
@@ -33,9 +33,9 @@ import {
   SegmentDescription,
   SpinnerWrapper,
   EmptyWrapper,
-} from '../../components/PageBuilder';
-import ProductCard from '../../components/ProductCard';
-import Spinner from '../../components/Spinner';
+} from '../../components/PageBuilder/PageBuilder';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import Spinner from '../../components/Spinner/Spinner';
 
 import { Consumer as AuthConsumer } from '../../contexts/auth';
 

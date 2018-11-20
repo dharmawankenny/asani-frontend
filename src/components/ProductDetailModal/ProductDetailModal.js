@@ -5,17 +5,17 @@ import moment from 'moment-timezone';
 import isEmpty from 'lodash/isEmpty';
 import swal from 'sweetalert';
 
-import ChevronDownIcon from '../assets/chevron_down.svg';
-import CloseIcon from '../assets/close.svg';
-import LoanIcon from '../assets/loan_history.svg';
-import ImproveIcon from '../assets/improve.svg';
+import ChevronDownIcon from '../../assets/chevron_down.svg';
+import CloseIcon from '../../assets/close.svg';
+import LoanIcon from '../../assets/loan_history.svg';
+import ImproveIcon from '../../assets/improve.svg';
 
-import { flex } from '../commons/theme';
-import { printPrice, fromNow } from '../commons/utils';
+import { flex } from '../../commons/theme';
+import { printPrice, fromNow } from '../../commons/utils';
 
-import { BigActionButton } from './Buttons';
-import DocUpload from './DocUpload';
-import Spinner from './Spinner';
+import { BigActionButton } from '../Buttons/Buttons';
+import DocUpload from '../DocUpload/DocUpload';
+import Spinner from '../Spinner/Spinner';
 
 export default class ProductDetailModal extends React.Component {
   static defaultProps = {

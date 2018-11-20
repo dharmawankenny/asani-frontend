@@ -44,21 +44,49 @@ export default function reducer(state = initialState, action = {}) {
     case LOADING_DETAIL:
       return { ...state, detailLoading: true, detailError: null, detailLoaded: false };
     case LOAD_DETAIL_SUCCESS:
-      return { ...state, detailedProduct: action.payload.data, detailLoading: false, detailError: null, detailLoaded: true };
+      return {
+        ...state,
+        detailedProduct: action.payload.data,
+        detailLoading: false,
+        detailError: null,
+        detailLoaded: true,
+      };
     case LOAD_DETAIL_ERROR:
-      return { ...state, detailError: action.payload.error, detailLoading: false, detailLoaded: true };
+      return {
+        ...state,
+        detailError: action.payload.error,
+        detailLoading: false,
+        detailLoaded: true,
+      };
     case RESET_DETAIL:
-      return { ...state, detailedProduct: {}, detailLoading: false, detailError: null, detailLoaded: false };
+      return {
+        ...state,
+        detailedProduct: {},
+        detailLoading: false,
+        detailError: null,
+        detailLoaded: false,
+      };
     case LOADING_PURCHASE:
       return { ...state, purchaseLoading: true, purchaseError: null, purchaseLoaded: false };
     case PURCHASE_PRODUCT_SUCCESS:
       return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: true };
     case PURCHASE_PRODUCT_ERROR:
-      return { ...state, purchaseError: action.payload.error, purchaseLoading: false, purchaseLoaded: true };
+      return {
+        ...state,
+        purchaseError: action.payload.error,
+        purchaseLoading: false,
+        purchaseLoaded: true,
+      };
     case PURCHASE_USER_BANNED:
       return { ...state, userBanned: true, purchaseLoading: false, purchaseLoaded: true };
     case RESET_PURCHASE:
-      return { ...state, purchaseLoading: false, purchaseError: null, purchaseLoaded: false, userBanned: false };
+      return {
+        ...state,
+        purchaseLoading: false,
+        purchaseError: null,
+        purchaseLoaded: false,
+        userBanned: false,
+      };
     case RESET_ALL:
       return { ...initialState };
     default:
@@ -156,7 +184,8 @@ export function purchaseProduct(productId) {
   return async dispatch => {
     dispatch(loadingPurchase());
     const response = await apiCalls.postLoan(productId);
-    console.error(response)
+    // eslint-disable-next-line
+    console.error(response);
     if (response.data.status === -1) {
       dispatch(purchaseUserBanned('Error Purchasing Product'));
       // swal({
