@@ -31,7 +31,7 @@ export default class UserAccess extends React.Component {
     otpCode: '',
     otpCodeError: '',
     step: 0,
-    retryTimer: 300,
+    retryTimer: 180,
     loading: false,
   };
 
