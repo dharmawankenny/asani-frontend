@@ -1,15 +1,5 @@
 {
-  "extends": ["plugin:prettier/recommended", "prettier/react", "airbnb"],
-  "rules": {
-    "react/jsx-filename-extension": 0,
-    "react/jsx-one-expression-per-line": 0,
-    "import/no-named-as-default": 0,
-    "import/no-named-as-default-member": 0,
-    "prettier/prettier": [
-      "error",
-      { "singleQuote": true, "trailingComma": "es5", "printWidth": 100, "semi": true }
-    ]
-  },
+  "extends": ["marlint"],
   "globals": {
     "document": true
   }

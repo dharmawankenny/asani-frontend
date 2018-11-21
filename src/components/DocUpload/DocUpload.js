@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { flex } from '../commons/theme';
+import { flex } from '../../commons/theme';
 
-import { BigActionButton } from './Buttons';
+import { BigActionButton } from '../Buttons/Buttons';
 
 export default class DocUpload extends React.Component {
   static propTypes = {

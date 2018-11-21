@@ -1,26 +1,28 @@
 import React, { Fragment } from 'react';
-import styled from 'styled-components';
 import swal from 'sweetalert';
 
-import BgImage from '../../assets/bg.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { flex } from '../../commons/theme';
-
-import { BigActionButton } from '../../components/Buttons';
-import Footer from '../../components/Footer';
-import Header from '../../components/Header';
-import Input from '../../components/Input';
-import { PageWrapper } from '../../components/PageBuilder';
-import Spinner from '../../components/Spinner';
+import { BigActionButton } from '../../components/Buttons/Buttons';
+import Header from '../../components/Header/Header';
+import Input from '../../components/Input/Input';
+import Spinner from '../../components/Spinner/Spinner';
 
 import { Consumer as AuthConsumer } from '../../contexts/auth';
+import MastheadBannerImage from '../../assets/masthead-banner.png';
 
-import HelpIcon from '../../assets/help.svg';
-
+import { postSendOTP, postCheckOTPLogin } from '../../api';
 import {
-  postSendOTP,
-  postCheckOTPLogin,
-} from '../../api';
+  Subheader,
+  RetryCounter,
+  RetryButton,
+  FormBox,
+  FormBoxSubheader,
+  MastheadImage,
+  MastheadBackground,
+} from './UserAccess.styled';
+import UserAccessFooter from './components/UserAccessFooter';
+import FeaturesMap from '../../components/FeaturesMap/FeaturesMap';
+import ThirdPartiesMap from '../../components/ThirdPartiesMap/ThirdPartiesMap';
+import TestimoniesMap from '../../components/TestimoniesMap/TestimoniesMap';
 
 export default class UserAccess extends React.Component {
   state = {
@@ -29,7 +31,7 @@ export default class UserAccess extends React.Component {
     otpCode: '',
     otpCodeError: '',
     step: 0,
-    retryTimer: 300,
+    retryTimer: 180,
     loading: false,
   };
 
@@ -66,7 +68,7 @@ export default class UserAccess extends React.Component {
 
     await this.setState({ telNumberError: '' });
     return true;
-  }
+  };
 
   validateOTPCode = async () => {
     const { otpCode } = this.state;
@@ -87,7 +89,7 @@ export default class UserAccess extends React.Component {
 
     await this.setState({ otpCodeError: '' });
     return true;
-  }
+  };
 
   toRequestOTP = async () => {
     if (await this.validateTelNumber()) {
@@ -111,7 +113,8 @@ export default class UserAccess extends React.Component {
         }, 1000);
       } else {
         swal({
-          text: 'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+          text:
+            'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
           icon: 'error',
         });
       }
@@ -141,7 +144,8 @@ export default class UserAccess extends React.Component {
       }, 1000);
     } else {
       swal({
-        text: 'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+        text:
+          'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
         icon: 'error',
       });
     }
@@ -155,18 +159,19 @@ export default class UserAccess extends React.Component {
       await this.setState({ loading: true });
 
       const checkOTPLoginResult = await postCheckOTPLogin(this.state.telNumber, this.state.otpCode);
-      console.log(checkOTPLoginResult);
+      // console.log(checkOTPLoginResult);
 
       if (checkOTPLoginResult && checkOTPLoginResult.data && checkOTPLoginResult.data.token) {
-		    logIn(checkOTPLoginResult.data.token);
-      } else if (checkOTPLoginResult.data.result === 2){
-  		  swal({
-    			text: 'Mohon maaf, sepertinya OTP kamu salah. Mohon periksa kembali.',
-    			icon: 'error',
-  		  });
-	    } else {
+        logIn(checkOTPLoginResult.data.token);
+      } else if (checkOTPLoginResult.data.result === 2) {
         swal({
-          text: 'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
+          text: 'Mohon maaf, sepertinya OTP kamu salah. Mohon periksa kembali.',
+          icon: 'error',
+        });
+      } else {
+        swal({
+          text:
+            'Mohon maaf, sepertinya sedang ada gangguan pada sistem kami, terima kasih atas kesabaran dan pengertiannya.',
           icon: 'error',
         });
       }
@@ -182,201 +187,94 @@ export default class UserAccess extends React.Component {
   };
 
   render() {
+    let headingText = '';
+    switch (this.state.step) {
+      case 0:
+        headingText = 'Bangun skor kredit kamu dan dapatkan pinjaman terbaik';
+        break;
+      case 1:
+        headingText = 'Kode verifikasi OTP telah dikirim ke nomor Ponsel anda';
+        break;
+      default:
+      // no-default
+    }
     return (
       <Fragment>
-        <Header stopNavigation naked />
-        <PageWrapper vertical>
-          <Content>
-            <h1>
-              {this.state.step === 0 && 'Beli Pulsa dan Voucher Game Sekarang, Bayarnya Nanti!'}
-              {this.state.step === 1 && 'Kode verifikasi OTP telah dikirim ke nomor Ponsel anda'}
-            </h1>
-            {this.state.step === 0 && (
-              <Fragment>
-				<Subheader>
-				  <h5>
-					Nomor Ponsel Kamu
-				  </h5>
-				</Subheader>
-                <Input
-                  label=""
-                  prefix="+62"
-                  type="tel"
-                  placeholder="8XXXXXXXXX"
-                  value={this.state.telNumber}
-                  error={this.state.telNumberError}
-                  onChange={evt => this.setTelNumber(evt.target.value)}
-                />
-                <BigActionButton onClick={this.state.loading ? null : this.toRequestOTP} margin="1rem 0 0" id="asani-actions-sign-in">
-                  {!this.state.loading && 'Masuk / Daftar'}
-                  {this.state.loading && (
-                    <Spinner color="N0" />
-                  )}
-                </BigActionButton>
-              </Fragment>
-            )}
-            {this.state.step === 1 && (
-              <Fragment>
-				<Subheader>
-				  <h5>
-					Masukkan Kode OTP yang dikirimkan via SMS 
-				  </h5>
-				</Subheader>
-                <Input
-                  label=""
-                  type="text"
-                  placeholder="XXXX"
-                  value={this.state.otpCode}
-                  error={this.state.otpCodeError}
-                  onChange={evt => this.setOtpCode(evt.target.value)}
-                />
-                <AuthConsumer>
-                  {({ logIn }) => (
-                    <BigActionButton onClick={this.state.loading ? null : this.toVerifyOTP(logIn)} margin="1rem 0 0" id="asani-actions-verify-otp">
-                      {!this.state.loading && 'Verifikasi Kode OTP'}
-                      {this.state.loading && (
-                        <Spinner color="N0" />
-                      )}
-                    </BigActionButton>
-                  )}
-                </AuthConsumer>
-                {this.state.retryTimer > 0 && (
-                  <RetryCounter>Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong></RetryCounter>
+        <Header stopNavigation naked withContactButton />
+        <MastheadBackground>
+          <MastheadImage src={MastheadBannerImage} alt={'MastheadImage'} />
+        </MastheadBackground>
+
+        <FormBox>
+          <h1>{headingText}</h1>
+          {this.state.step === 0 && (
+            <Fragment>
+              <Subheader>
+                <FormBoxSubheader>Nomor Handphone Kamu</FormBoxSubheader>
+              </Subheader>
+              <Input
+                label=""
+                prefix="+62"
+                type="tel"
+                placeholder="8XXXXXXXXX"
+                value={this.state.telNumber}
+                error={this.state.telNumberError}
+                onChange={evt => this.setTelNumber(evt.target.value)}
+              />
+              <BigActionButton
+                onClick={this.state.loading ? null : this.toRequestOTP}
+                margin="1rem 0 0"
+                id="asani-actions-sign-in"
+              >
+                {!this.state.loading && 'Masuk / Daftar'}
+                {this.state.loading && <Spinner color="N0" />}
+              </BigActionButton>
+            </Fragment>
+          )}
+          {this.state.step === 1 && (
+            <Fragment>
+              <Subheader>
+                <h5>Masukkan Kode OTP yang dikirimkan via SMS</h5>
+              </Subheader>
+              <Input
+                label=""
+                type="text"
+                placeholder="XXXX"
+                value={this.state.otpCode}
+                error={this.state.otpCodeError}
+                onChange={evt => this.setOtpCode(evt.target.value)}
+              />
+              <AuthConsumer>
+                {({ logIn }) => (
+                  <BigActionButton
+                    onClick={this.state.loading ? null : this.toVerifyOTP(logIn)}
+                    margin="1rem 0 0"
+                    id="asani-actions-verify-otp"
+                  >
+                    {!this.state.loading && 'Verifikasi Kode OTP'}
+                    {this.state.loading && <Spinner color="N0" />}
+                  </BigActionButton>
                 )}
-                {this.state.retryTimer === 0 && (
-                  <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
-                    {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
-                    {this.state.loading && (
-                      <Spinner color="N0" />
-                    )}
-                  </RetryButton>
-                )}
-              </Fragment>
-            )}
-            {/*<table>
-              <tr>
-                <td colSpan="2"> <h1></h1></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="award" size='4x'/></FontAwesomeIconColor></td>
-                <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="trophy" size='4x'/></FontAwesomeIconColor></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><KeunggulanText>GRATIS cek skor kredit</KeunggulanText></td>
-                <td width="50%" align="center"><KeunggulanText>Bisa beli sekarang, bayar nanti</KeunggulanText></td>
-              </tr>
-              <tr>
-                <td colSpan="2"> <h1></h1></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="ban" size='4x'/></FontAwesomeIconColor></td>
-                <td width="50%" align="center"><FontAwesomeIconColor><FontAwesomeIcon icon="thumbs-up" size='4x'/></FontAwesomeIconColor></td>
-              </tr>
-              <tr>
-                <td width="57%" align="center"><KeunggulanText>Semua TANPA bunga & Denda</KeunggulanText></td>
-                <td width="50%" align="center"><KeunggulanText>Banyak pilihan produk</KeunggulanText></td>
-              </tr>
-            </table>*/}
-          </Content>
-		      <h1></h1>
-		      <table>
-		        <tr>
-				      <td width="60%">
-					      <Pttext>&copy; 2018 Asani</Pttext>
-				        <Pttext>PT Teknologi Skoring Nusantara</Pttext>
-				        <Pttext>Roxy Mas E2/35 Jl. K.H. Hasyim Ashari 125 Cideng, Gambir, Jakarta Pusat</Pttext>
-				        <Pttext>Telp: +6281311442228</Pttext>
-				      </td>
-				      <td><Footer /></td>
-			      </tr>
-			    </table>
-        </PageWrapper>
-        <Background src={BgImage} />
+              </AuthConsumer>
+              {this.state.retryTimer > 0 && (
+                <RetryCounter>
+                  Kirim ulang kode verifikasi OTP dalam <strong>{this.buildTimeString(this.state.retryTimer)}</strong>
+                </RetryCounter>
+              )}
+              {this.state.retryTimer === 0 && (
+                <RetryButton onClick={this.state.loading ? null : this.toRetryOTP} id="asani-actions-retry-otp">
+                  {!this.state.loading && 'Kirim Ulang Kode Verifikasi OTP'}
+                  {this.state.loading && <Spinner color="N0" />}
+                </RetryButton>
+              )}
+            </Fragment>
+          )}
+        </FormBox>
+        <FeaturesMap />
+        <ThirdPartiesMap />
+        <TestimoniesMap />
+        <UserAccessFooter />
       </Fragment>
     );
   }
 }
-
-
-const FontAwesomeIconColor = styled.div`
-color: ${props => props.theme.color.N300};
-`
-const Subheader = styled.div`
-color: ${props => props.theme.color.N300};
-`
-
-const  KeunggulanText = styled.div`
-color: ${props => props.theme.color.N300};
-font-size: 0.75rem;
-`
-
-const Pttext = styled.div`
-color: ${props => props.theme.color.N200};
-width: calc(100% - 0.5rem);
-pointer-events: none;
-font-size: 0.75rem;
-`
-const Background = styled.img`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100;
-  z-index: -1;
-  opacity: 0.5;
-`;
-
-const Content = styled.div`
-  width: 100%;
-  ${flex({ justify: 'flex-start' })}
-  flex: 1;
-
-  h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.5;
-    text-align: left;
-    margin: 0 0 2rem;
-    padding: 0;
-  }
-`;
-
-const RetryCounter = styled.span`
-  width: 100%;
-  margin: 1rem 0 0;
-  padding: 0;
-  font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1.25;
-  text-align: center;
-  color: ${props => props.theme.color.N300};
-
-  strong {
-    font-weight: 700;
-    color: ${props => props.theme.color.N800};
-  }
-`;
-
-const RetryButton = styled.button`
-  width: 100%;
-  margin: 1rem 0 0;
-  padding: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1;
-  text-align: center;
-  cursor: pointer;
-  color: ${props => props.theme.color.N0};
-  background: ${props => props.theme.color.N300};
-  border-radius: ${props => props.theme.borderRadius};
-  box-shadow: ${props => props.theme.shadow.base};
-`;
-
-const Help = styled.img`
-  height: 1.5rem;
-  width: auto;
-  margin: 0;
-  padding: 0;
-`;

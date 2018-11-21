@@ -1,45 +1,7 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { flex } from '../../commons/theme';
 
-import { flex } from '../commons/theme';
-
-export default class Input extends React.Component {
-  static propTypes = {
-    value: PropTypes.any,
-    onChange: PropTypes.function,
-    label: PropTypes.string,
-    prefix: PropTypes.string,
-    suffix: PropTypes.string,
-    error: PropTypes.string,
-  };
-
-  render() {
-    const { label = false, prefix = false, suffix = false, error = false, ...inputProps } = this.props;
-
-    return (
-      <Fragment>
-        {label && (
-          <InputLabel>{label}</InputLabel>
-        )}
-        <InputWrapper>
-          {prefix && (
-            <InputPrefix>{prefix}</InputPrefix>
-          )}
-          <input {...inputProps} />
-          {suffix && (
-            <InputSuffix>{suffix}</InputSuffix>
-          )}
-        </InputWrapper>
-        {error && (
-          <InputError>{error}</InputError>
-        )}
-      </Fragment>
-    );
-  }
-}
-
-const InputLabel = styled.span`
+export const InputLabel = styled.span`
   width: 100%;
   display: block;
   font-size: 0.75rem;
@@ -51,7 +13,7 @@ const InputLabel = styled.span`
   color: ${props => props.theme.color.N300};
 `;
 
-const InputError = styled.span`
+export const InputError = styled.span`
   width: 100%;
   display: block;
   font-size: 0.75rem;
@@ -63,7 +25,7 @@ const InputError = styled.span`
   color: ${props => props.theme.color.R300};
 `;
 
-const InputWrapper = styled.div`
+export const InputWrapper = styled.div`
   width: 100%;
   height: 3rem;
   ${flex({ justify: 'flex-start', align: 'stretch' })}
@@ -83,7 +45,7 @@ const InputWrapper = styled.div`
   }
 `;
 
-const InputPrefix = styled.div`
+export const InputPrefix = styled.div`
   margin: 0;
   padding: 1rem;
   font-size: 1rem;
@@ -93,7 +55,7 @@ const InputPrefix = styled.div`
   border-right: 1px solid ${props => props.theme.color.N40};
 `;
 
-const InputSuffix = styled.div`
+export const InputSuffix = styled.div`
   margin: 0;
   padding: 1rem;
   font-size: 1rem;

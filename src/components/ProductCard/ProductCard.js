@@ -4,12 +4,12 @@ import moment from 'moment';
 import { navigate } from '@reach/router';
 import styled from 'styled-components';
 
-import SITEMAP from '../commons/sitemap';
-import { flex } from '../commons/theme';
-import { printPrice } from '../commons/utils';
+import SITEMAP from '../../commons/sitemap';
+import { flex } from '../../commons/theme';
+import { printPrice } from '../../commons/utils';
 
-import LockIcon from '../assets/lock.svg';
-import DummyIcon from '../assets/cash.svg';
+import LockIcon from '../../assets/lock.svg';
+import DummyIcon from '../../assets/cash.svg';
 
 export default class ProductCard extends React.Component {
   static propTypes = {
