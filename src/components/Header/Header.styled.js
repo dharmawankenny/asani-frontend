@@ -30,8 +30,8 @@ export const Logo = styled.button`
   padding: 0;
   position: relative;
   z-index: 2000;
-
   img {
+    ${({ naked }) => (naked ? '' : 'filter: invert(100%);')}
     height: 2.5rem;
     width: auto;
   }

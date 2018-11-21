@@ -90,10 +90,7 @@ export default class Header extends React.Component {
         <Overlay active={this.state.showMenu} onClick={this.handleToggleMenu} />
         <Content active={this.state.showMenu}>
           <ContentAnimationWrapper active={this.state.showMenu}>
-            <NavigationButton
-              onClick={this.navigateTo(SITE_MAP.HOME)}
-              disabled={this.isLinkActive(SITE_MAP.HOME)}
-            >
+            <NavigationButton onClick={this.navigateTo(SITE_MAP.HOME)} disabled={this.isLinkActive(SITE_MAP.HOME)}>
               <img src={HomeIcon} alt={'HomeIcon'} />
               <span>{'Beranda'}</span>
             </NavigationButton>
@@ -152,7 +149,7 @@ export default class Header extends React.Component {
       <Headroom>
         <Wrapper naked={this.props.naked}>
           <LogoMenu>
-            <Logo onClick={this.navigateTo(SITE_MAP.HOME)}>
+            <Logo onClick={this.navigateTo(SITE_MAP.HOME)} naked={this.props.naked}>
               <img src={LogoImg} alt={'LogoImg'} />
             </Logo>
             {this.renderRightMenu()}
