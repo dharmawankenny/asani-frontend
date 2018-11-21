@@ -5,10 +5,10 @@ import { navigate } from '@reach/router';
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
 
-import { BigActionButton } from '../../components/Buttons/Buttons';
-import Footer from '../../components/Footer/Footer';
-import Header from '../../components/Header/Header';
-import { PageWrapper } from '../../components/PageBuilder/PageBuilder';
+import { BigActionButton } from '../../components/Buttons';
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import { PageWrapper } from '../../components/PageBuilder';
 
 export default class NotFound extends React.Component {
   render() {

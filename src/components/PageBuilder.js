@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { flex } from '../../commons/theme';
+import { flex } from '../commons/theme';
 
 export const PageWrapper = styled.div`
   width: 100%;

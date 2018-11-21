@@ -1,3 +1,4 @@
+import numeral from 'numeral';
 import moment from 'moment-timezone';
 
 import {

@@ -8,16 +8,19 @@ import isEmpty from 'lodash/isEmpty';
 
 import ArrowIcon from '../../assets/progress_arrow.svg';
 
-import { DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY, DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY } from '../../commons/constants';
+import {
+  DEFAULT_CREDIT_SCORE_LOWER_BOUNDARY,
+  DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY,
+} from '../../commons/constants';
 import SITEMAP from '../../commons/sitemap';
 import { flex } from '../../commons/theme';
 import { calculatePercentage } from '../../commons/utils';
 
-import { BigActionButton } from '../../components/Buttons/Buttons';
-import Header from '../../components/Header/Header';
-import LoanCard from '../../components/LoanCard/LoanCard';
-import LoanDetailModal from '../../components/LoanDetailModal/LoanDetailModal';
-import ProductDetailModal from '../../components/ProductDetailModal/ProductDetailModal';
+import { BigActionButton } from '../../components/Buttons';
+import Header from '../../components/Header';
+import LoanCard from '../../components/LoanCard';
+import LoanDetailModal from '../../components/LoanDetailModal';
+import ProductDetailModal from '../../components/ProductDetailModal';
 import {
   PageWrapper,
   SegmentContext,
@@ -30,9 +33,9 @@ import {
   SegmentDescription,
   SpinnerWrapper,
   EmptyWrapper,
-} from '../../components/PageBuilder/PageBuilder';
-import ProductCard from '../../components/ProductCard/ProductCard';
-import Spinner from '../../components/Spinner/Spinner';
+} from '../../components/PageBuilder';
+import ProductCard from '../../components/ProductCard';
+import Spinner from '../../components/Spinner';
 
 import { Consumer as AuthConsumer } from '../../contexts/auth';
 
@@ -98,12 +101,7 @@ export default class Home extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.product.loaded &&
-      this.props.product.products.length > 0 &&
-      !prevProps.product.loaded &&
-      prevProps.product.products.length === 0
-    ) {
+    if (this.props.product.loaded && this.props.product.products.length > 0 && !prevProps.product.loaded && prevProps.product.products.length === 0) {
       this.updateFilterStructure(this.props.product.products);
     }
   }
@@ -111,9 +109,9 @@ export default class Home extends React.Component {
   updateFilterStructure(products) {
     const filters = {};
 
-    products.forEach(product => (filters[product.productType] = true));
+    products.forEach(product => filters[product.productType] = true);
 
-    this.setState({ productQuery: { ...filters } });
+    this.setState({ productQuery: { ...filters } })
   }
 
   toggleFilter = () => {
@@ -126,14 +124,15 @@ export default class Home extends React.Component {
 
       return { showFilterModal: !prevState.showFilterModal };
     });
-  };
+  }
 
   setSortQuery = sortQuery => () => this.setState({ sortQuery });
 
   toggleProductQuery = productKey => () => {
     this.setState(prevState => {
+      // if (this.isAllProductQueryEnabled(prevState.productQuery)) {
       const newProductQuery = { ...prevState.productQuery };
-      Object.keys(newProductQuery).forEach(key => (newProductQuery[key] = false));
+      Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false );
 
       return {
         productQuery: {
@@ -141,23 +140,40 @@ export default class Home extends React.Component {
           [productKey]: true,
         },
       };
+      // } else if (this.isAllProductQueryNotEnabled({ ...prevState.productQuery, [productKey]: false })) {
+      //   const newProductQuery = { ...prevState.productQuery };
+      //   Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true );
+
+      //   return {
+      //     productQuery: {
+      //       ...newProductQuery,
+      //     },
+      //   };
+      // }
+
+      // return {
+      //   productQuery: {
+      //     ...prevState.productQuery,
+      //     [productKey]: !prevState.productQuery[productKey],
+      //   },
+      // };
     });
   };
 
   isAllProductQueryEnabled = productQuery => Object.values(productQuery).every(flag => flag);
   isAllProductQueryNotEnabled = productQuery => Object.values(productQuery).every(flag => !flag);
 
-  handleToggleAllProduct = () => {
+  toggleAllProduct = () => {
     this.setState(prevState => {
       const newProductQuery = { ...prevState.productQuery };
 
       if (this.isAllProductQueryEnabled(newProductQuery)) {
-        Object.keys(newProductQuery).forEach(key => (newProductQuery[key] = false));
+        Object.keys(newProductQuery).forEach(key => newProductQuery[key] = false);
 
         return { productQuery: { ...newProductQuery } };
       }
 
-      Object.keys(newProductQuery).forEach(key => (newProductQuery[key] = true));
+      Object.keys(newProductQuery).forEach(key => newProductQuery[key] = true);
 
       return { productQuery: { ...newProductQuery } };
     });
@@ -206,13 +222,15 @@ export default class Home extends React.Component {
 
     if (this.state.sortQuery === Home.SORT_QUERIES[1]) {
       sortFunction = this.compareDescending('productPrice');
-      // } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
-      //   sortFunction = this.compareAscending('interestPct');
+    // } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
+    //   sortFunction = this.compareAscending('interestPct');
     } else if (this.state.sortQuery === Home.SORT_QUERIES[2]) {
       sortFunction = this.compareDescending('tenorDays');
     }
 
-    return productList.filter(product => this.state.productQuery[product.productType]).sort(sortFunction);
+    return productList
+      .filter(product => this.state.productQuery[product.productType])
+      .sort(sortFunction);
   };
 
   printSortQuery = () => this.state.sortQuery;
@@ -231,7 +249,7 @@ export default class Home extends React.Component {
       }
 
       return res;
-    }, '');
+    }, '')
   };
 
   getLowerBoundary = () => {
@@ -265,9 +283,7 @@ export default class Home extends React.Component {
 
     return DEFAULT_CREDIT_SCORE_UPPER_BOUNDARY;
   };
-  handleResetDetails = () => {
-    this.props.loanActions && this.props.loanActions.resetDetail && this.props.loanActions.resetDetail();
-  };
+
   render() {
     return (
       <Fragment>
@@ -275,8 +291,8 @@ export default class Home extends React.Component {
         <PageWrapper>
           <CreditScoreSummary onClick={() => navigate(SITEMAP.CREDIT_SCORE)}>
             <SegmentContext>
-              <SegmentHeader>{'Skor kredit kamu'}</SegmentHeader>
-              <SegmentAction>{'Info lebih lanjut >'}</SegmentAction>
+              <SegmentHeader>Skor kredit kamu</SegmentHeader>
+              <SegmentAction>Info lebih lanjut ></SegmentAction>
             </SegmentContext>
             {(this.props.creditScore.loading || this.props.creditScore.scoreRangeLoading) && (
               <SpinnerWrapper>
@@ -296,33 +312,16 @@ export default class Home extends React.Component {
                         {this.props.creditScore.scoreRange.map((scoreRange, index) => (
                           <ProgressSegment
                             zIndex={this.props.creditScore.scoreRange.length - index}
-                            length={calculatePercentage(
-                              Number(scoreRange.upper_bounds + 1) -
-                                Number(scoreRange.lower_bounds) +
-                                this.getLowerBoundary(),
-                              this.getLowerBoundary(),
-                              this.getUpperBoundary(),
-                              true
-                            )}
+                            length={calculatePercentage((Number(scoreRange.upper_bounds + 1) - Number(scoreRange.lower_bounds)) + this.getLowerBoundary(), this.getLowerBoundary(), this.getUpperBoundary(), true)}
                             color={scoreRange.color}
-                            offset={calculatePercentage(
-                              scoreRange.lower_bounds,
-                              this.getLowerBoundary(),
-                              this.getUpperBoundary(),
-                              true
-                            )}
+                            offset={calculatePercentage(scoreRange.lower_bounds, this.getLowerBoundary(), this.getUpperBoundary(), true)}
                             leftRadius={index === 0}
                             rightRadius={index === this.props.creditScore.scoreRange.length - 1}
                           />
                         ))}
                         <ProgressSegment
                           zIndex={this.props.creditScore.scoreRange.length + 2}
-                          length={calculatePercentage(
-                            this.props.creditScore.data.credit_score,
-                            this.getLowerBoundary(),
-                            this.getUpperBoundary(),
-                            true
-                          )}
+                          length={calculatePercentage(this.props.creditScore.data.credit_score, this.getLowerBoundary(), this.getUpperBoundary(), true)}
                           color={this.props.creditScore.data.color}
                           opacity={1}
                           fullRadius
@@ -333,15 +332,15 @@ export default class Home extends React.Component {
                 </Fragment>
               )}
           </CreditScoreSummary>
-          {this.props.loan.activeLoansLoaded && this.props.loan.activeLoans && this.props.loan.activeLoans.length > 0 && (
+          {this.props.loan.activeLoansLoaded &&
+            this.props.loan.activeLoans &&
+            this.props.loan.activeLoans.length > 0 && (
             <Loans>
               {/* <SegmentContext>
                 <SegmentHeader>Pinjaman aktif kamu</SegmentHeader>
                 <SegmentAction onClick={() => navigate(SITEMAP.LOAN_HISTORY)}>Riwayat Pinjaman ></SegmentAction>
               </SegmentContext> */}
-              {this.props.loan.activeLoans.map(loan => (
-                <LoanCard key={loan.loanId} loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />
-              ))}
+              {this.props.loan.activeLoans.map(loan => <LoanCard loan={loan} onClick={this.onActiveLoanClick(loan.loanId)} />)}
             </Loans>
           )}
           {this.props.loan.activeLoansLoaded &&
@@ -352,39 +351,37 @@ export default class Home extends React.Component {
                 loading={this.props.loan.detailLoading}
                 loaded={this.props.loan.detailLoaded}
                 loanDetail={this.props.loan.detailedLoan}
-                onClose={this.handleResetDetails}
+                onClose={this.props.loanActions.resetDetail}
               />
             )}
           <Loans>
-            <FullSegmentHeader>{'Tawaran pinjaman terbaik untuk kamu'}</FullSegmentHeader>
-            {this.props.product.loaded && this.props.product.products.length > 0 && (
-              <Filter>
-                <div>
-                  <button
-                    className={classNames('item', {
-                      active: this.isAllProductQueryEnabled(this.state.productQuery),
-                    })}
-                    onClick={this.handleToggleAllProduct}
-                    id="asani-actions-set-filter-type-to-all"
-                  >
-                    {'Semua Produk'}
-                  </button>
-                  {Object.keys(this.state.productQuery).map(product => (
+            <FullSegmentHeader>Pinjaman terbaik untuk kamu</FullSegmentHeader>
+            {this.props.product.loaded &&
+              this.props.product.products.length > 0 && (
+                <Filter>
+                  <div>
                     <button
-                      key={product.productId}
-                      className={classNames('item', {
-                        active: this.state.productQuery[product],
-                        grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
-                      })}
-                      onClick={this.toggleProductQuery(product)}
-                      id={`asani-actions-set-filter-type-to-${product}`}
+                      className={classNames('item', { active: this.isAllProductQueryEnabled(this.state.productQuery) })}
+                      onClick={this.toggleAllProduct}
+                      id="asani-actions-set-filter-type-to-all"
                     >
-                      {product}
+                      Semua Produk
                     </button>
-                  ))}
-                </div>
-              </Filter>
-            )}
+                      {Object.keys(this.state.productQuery).map(product => (
+                      <button
+                        className={classNames('item', {
+                          active: this.state.productQuery[product],
+                          grayscaled: this.isAllProductQueryEnabled(this.state.productQuery),
+                        })}
+                        onClick={this.toggleProductQuery(product)}
+                        id={`asani-actions-set-filter-type-to-${product}`}
+                      >
+                        {product}
+                      </button>
+                    ))}
+                  </div>
+                </Filter>
+              )}
             {this.props.product.loading && (
               <SpinnerWrapper>
                 <Spinner color="N800" />
@@ -393,46 +390,40 @@ export default class Home extends React.Component {
             {this.props.product.loaded &&
               this.props.product.products.length > 0 &&
               this.applyFilter(this.props.product.products).map(product => (
-                <ProductCard
-                  key={product.productId}
-                  product={product}
-                  onClick={this.onProductClick(product.productId)}
-                />
+                <ProductCard product={product} onClick={this.onProductClick(product.productId)} />
               ))}
-            {this.props.product.loaded && this.props.product.products && (
-              <ProductDetailModal
-                active={!isEmpty(this.props.product.detailedProduct) || this.props.product.detailLoading}
-                loading={this.props.product.detailLoading}
-                loaded={this.props.product.detailLoaded}
-                productDetail={this.props.product.detailedProduct}
-                onClose={() => {
-                  this.props.productActions.resetDetail();
-                  this.props.userDocumentActions.uploadingReset();
-                }}
-                uploadDocument={this.props.userDocumentActions.uploadDocument}
-                resetUploader={this.props.userDocumentActions.uploadingReset}
-                uploadProgress={this.props.userDocument.uploadProgress}
-                uploadFinished={this.props.userDocument.uploadFinished}
-                purchase={this.props.productActions.purchaseProduct}
-                resetPurchase={this.props.productActions.resetPurchase}
-                purchaseLoading={this.props.product.purchaseLoading}
-                purchaseSuccess={this.props.product.purchaseLoaded}
-                userBanned={this.props.product.userBanned}
-                purchaseError={this.props.product.purchaseError}
-                updateLoans={this.props.loanActions.getActiveLoans}
-                hasActiveLoans={
-                  this.props.loan.activeLoansLoaded &&
-                  this.props.loan.activeLoans &&
-                  this.props.loan.activeLoans.length > 0
-                }
-              />
-            )}
-            {this.props.product.loaded && this.props.product.products && this.props.product.products.length === 0 && (
-              <EmptyWrapper>
-                {`Mohon Maaf, sepertinya tidak ada pinjaman terbaik untuk kamu saat ini, tunggu
-                  pembaharuan selanjutnya ya!`}
-              </EmptyWrapper>
-            )}
+            {this.props.product.loaded &&
+              this.props.product.products && (
+                <ProductDetailModal
+                  active={!isEmpty(this.props.product.detailedProduct) || this.props.product.detailLoading}
+                  loading={this.props.product.detailLoading}
+                  loaded={this.props.product.detailLoaded}
+                  productDetail={this.props.product.detailedProduct}
+                  onClose={() => {
+                    this.props.productActions.resetDetail();
+                    this.props.userDocumentActions.uploadingReset();
+                  }}
+                  uploadDocument={this.props.userDocumentActions.uploadDocument}
+                  resetUploader={this.props.userDocumentActions.uploadingReset}
+                  uploadProgress={this.props.userDocument.uploadProgress}
+                  uploadFinished={this.props.userDocument.uploadFinished}
+                  purchase={this.props.productActions.purchaseProduct}
+                  resetPurchase={this.props.productActions.resetPurchase}
+                  purchaseLoading={this.props.product.purchaseLoading}
+                  purchaseSuccess={this.props.product.purchaseLoaded}
+				  userBanned={this.props.product.userBanned}
+                  purchaseError={this.props.product.purchaseError}
+                  updateLoans={this.props.loanActions.getActiveLoans}
+                  hasActiveLoans={this.props.loan.activeLoansLoaded && this.props.loan.activeLoans && this.props.loan.activeLoans.length > 0}
+                />
+              )}
+            {this.props.product.loaded &&
+              this.props.product.products &&
+              this.props.product.products.length === 0 && (
+                <EmptyWrapper>
+                  Mohon Maaf, sepertinya tidak ada pinjaman terbaik untuk kamu saat ini, tunggu pembaharuan selanjutnya ya!
+                </EmptyWrapper>
+              )}
           </Loans>
         </PageWrapper>
       </Fragment>
