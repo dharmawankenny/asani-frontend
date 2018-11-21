@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // TODO change PREFIX_API_URL to development server
-let PREFIX_API_URL = 'https://api-staging.asani.net';
+let PREFIX_API_URL = 'https://api-prod.asani.net';
 // let PREFIX_API_URL = 'http://localhost:8080';
 
 if (process.env.NODE_ENV === 'production') {
@@ -12,7 +12,9 @@ export const api = axios.create({
   baseURL: PREFIX_API_URL,
 });
 
-export const postSendOTP = async telNumber => {
+const cdnApi = axios.create({});
+
+export const postSendOTP = async (telNumber) => {
   try {
     const response = await api.post('/send_otp/', { phone_number: telNumber });
     return response;
@@ -55,7 +57,7 @@ export const getProducts = async () => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const getProductDetail = async productId => {
   try {
@@ -64,7 +66,7 @@ export const getProductDetail = async productId => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const getLoans = async (nonCompleteOnly = 0) => {
   try {
@@ -73,7 +75,7 @@ export const getLoans = async (nonCompleteOnly = 0) => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const getLoanDetail = async loanId => {
   try {
@@ -82,7 +84,7 @@ export const getLoanDetail = async loanId => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const postLoan = async productId => {
   try {
@@ -91,7 +93,7 @@ export const postLoan = async productId => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const getDocuments = async () => {
   try {
@@ -100,7 +102,7 @@ export const getDocuments = async () => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const signDocument = async (fileName, fileType) => {
   try {
@@ -109,7 +111,7 @@ export const signDocument = async (fileName, fileType) => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const uploadDocument = async (url, file, onUploadProgress) => {
   try {
@@ -117,12 +119,10 @@ export const uploadDocument = async (url, file, onUploadProgress) => {
     formData.append('file', file);
     const opts = {
       onUploadProgress,
-      transformRequest: [
-        (data, headers) => {
-          delete headers.common['Authorization'];
-          return data;
-        },
-      ],
+      transformRequest: [(data, headers) => {
+        delete headers.common['Authorization'];
+        return data;
+      }],
       headers: {
         'Content-Type': 'binary/octet-stream',
       },
@@ -134,7 +134,7 @@ export const uploadDocument = async (url, file, onUploadProgress) => {
   } catch (err) {
     return err.response;
   }
-};
+}
 
 export const postDocument = async (type, url) => {
   try {
@@ -143,4 +143,4 @@ export const postDocument = async (type, url) => {
   } catch (err) {
     return err.response;
   }
-};
+}

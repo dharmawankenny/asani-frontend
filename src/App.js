@@ -26,6 +26,7 @@ import { resetAll as resetUserDocument } from './reducers/userDocument';
 
 import configureStore from './store';
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsUp, faAward, faTrophy, faBan } from '@fortawesome/free-solid-svg-icons'
 
 library.add({ faThumbsUp,faAward, faTrophy, faBan })
@@ -37,7 +38,7 @@ const store = configureStore();
 api.interceptors.response.use(res => res, err => {
   if (err.response && err.response.status === 401) {
     localStorage.removeItem('asaniMainAuthToken');
-    delete api.defaults.headers.common.Authorization;
+    delete api.defaults.headers.common['Authorization'];
     window.location.reload();
   } else {
     return Promise.reject(err);
@@ -64,14 +65,14 @@ const Authenticated = ({ auth, componentKey, ...rest }) => {
 
 export default class App extends React.Component {
   state = {
-    loggedIn: localStorage.getItem('asaniMainAuthToken') !== null,
+    loggedIn: localStorage.getItem('asaniMainAuthToken') ? true : false,
     loading: false,
   };
 
   componentWillMount() {
     if (this.state.loggedIn) {
       const token = localStorage.getItem('asaniMainAuthToken');
-      api.defaults.headers.common.Authorization = `${token}`;
+      api.defaults.headers.common['Authorization'] = `${token}`;
     }
   }
 
@@ -87,7 +88,7 @@ export default class App extends React.Component {
   logIn = async (token) => {
     // cache token and add auth header
     await localStorage.setItem('asaniMainAuthToken', token);
-    api.defaults.headers.common.Authorization = `${token}`;
+    api.defaults.headers.common['Authorization'] = `${token}`;
 
     // log in and redirect
     this.setState({ loggedIn: true });
@@ -97,7 +98,7 @@ export default class App extends React.Component {
   logOut = async () => {
     // delete cache and remove auth header
     await localStorage.removeItem('asaniMainAuthToken');
-    delete api.defaults.headers.common.Authorization;
+    delete api.defaults.headers.common['Authorization'];
 
     // reset reducers
     store.dispatch(resetCreditScore());
@@ -116,20 +117,18 @@ export default class App extends React.Component {
         <ThemeProvider theme={theme}>
           <AuthProvider value={{ logIn: this.logIn, logOut: this.logOut }}>
             <Router>
-              {Object.keys(UNAUTHENTICATED_PAGES).map((key, idx) => (
+              {Object.keys(UNAUTHENTICATED_PAGES).map(key => (
                 <UnAuthenticated
                   auth={this.state.loggedIn}
                   componentKey={key}
                   path={SITEMAP[key]}
-                  key={idx}
                 />
               ))}
-              {Object.keys(AUTHENTICATED_PAGES).map((key, idx) => (
+              {Object.keys(AUTHENTICATED_PAGES).map(key => (
                 <Authenticated
                   auth={this.state.loggedIn}
                   componentKey={key}
                   path={SITEMAP[key]}
-                  key={idx}
                 />
               ))}
               <NotFound path="/*" />

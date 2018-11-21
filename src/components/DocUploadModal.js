@@ -2,10 +2,11 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import CloseIcon from '../../assets/close.svg';
-import { flex } from '../../commons/theme';
+import CloseIcon from '../assets/close.svg';
+import { flex } from '../commons/theme';
 
-import DocUpload from '../DocUpload/DocUpload';
+import DocUpload from './DocUpload';
+import Spinner from './Spinner';
 
 export default class DocUploadModal extends React.Component {
   static defaultProps = {
